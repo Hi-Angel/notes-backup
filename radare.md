@@ -1,0 +1,7 @@
+Loading a binary file `r2 -nn file`.
+
+Loading a header *(inside the r2)* "to header.h"
+
+Printing struct at address: `tp mystruct = <address>`
+
+Print hex at offset 4096 `px@4096`
