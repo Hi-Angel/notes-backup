@@ -115,6 +115,8 @@ Given CEPH is using CRUSH with file systems, it could simply store a file block 
 
 CRUSH algo is like a trained ANN, except that we never know what changing a weight in an ANN might end up in.
 
+"pseudo-random reproducible function" being a hash of values.
+
 # References
 
 1. https://serverfault.com/questions/339128/what-are-the-different-widely-used-raid-levels-and-when-should-i-consider-them
