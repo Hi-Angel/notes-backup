@@ -54,3 +54,7 @@ Use circular buffer of only 5 elements, because upon finger up there won't be mu
 4. if sum > 0 then undo movements till this last one
 
 `undo movements` is probably easier by emulating the move in reverse order.
+
+# todo
+
+* don't see a point in `TOUCH_NONE`. If a touch doesn't exist, then there's no pointer to it. The way libinput works is a touch bound to touchpad state aka `tp_dispatch`, which in turn stores pointers to touches. So, currently there're 2 different ways to disable a touch: set pointer to 0, or set a  `TOUCH_NONE`. Let's consolidate it by only using a pointer. Also, what's the difference between `TOUCH_HOVERING` and `TOUCH_UPDATE`.
