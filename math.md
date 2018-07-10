@@ -18,6 +18,7 @@ Finite fields typically made out of prime number of elements. Otherwise multipli
 
 # Ereasure codes
 
+* `erasure` an error in known position.
 * `hamming codes`: are using "control codes" at every power of 2 position that controls parity of a group of the information. Not really effective.
 * `codeword` is a data + redundancy.
 
