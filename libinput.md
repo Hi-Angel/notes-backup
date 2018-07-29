@@ -1,3 +1,13 @@
+# Internals
+
+## touchpads
+
+Touchpad device: `x` increases right, decreases left; `y` decreases *up*, increases down.
+
+Scroll log: `vert` and `horiz` concur with `y` and `x` *(see higher)*.
+
+`tp->device->abs.absinfo_x->resolution` *(and acc. for y)* looks like width of the touchpad in mm. That said, for mine y was reported as `80` by libinput, but as `94` by `evemu-describe`.
+
 # hysteresis
 
 Also is currently implemented in `evdev_hysteresis`.
@@ -30,13 +40,13 @@ Record motions within threshold into a byte. Then search for pattern `101` at th
 2. add the code to do the recordings
 3. add the code to enable hysteresis if motions says it wobbles (i.e. `101` matches).
 
-# ignore movement upon finger up
+## ignore movement upon finger up
 
 Approach 1: buffer movement, and ignore the buffered content when finger is up. It'd introduce a latency, not good.
 
 Approach 2: record movements, and undo the movement upon finger-up.
 
-# how much to ignore?
+## how much to ignore?
 
 It gotta be quick, and not to look like a swipe. So both length and time is in play.
 
@@ -55,6 +65,36 @@ Use circular buffer of only 5 elements, because upon finger up there won't be mu
 
 `undo movements` is probably easier by emulating the move in reverse order.
 
-# todo
+# wobbly 2-fingers scroll when fingers move in opposite directions
 
-* don't see a point in `TOUCH_NONE`. If a touch doesn't exist, then there's no pointer to it. The way libinput works is a touch bound to touchpad state aka `tp_dispatch`, which in turn stores pointers to touches. So, currently there're 2 different ways to disable a touch: set pointer to 0, or set a  `TOUCH_NONE`. Let's consolidate it by only using a pointer. Also, what's the difference between `TOUCH_HOVERING` and `TOUCH_UPDATE`. **UPD**: ok, it's not even pointers. I can simplify the code by using instead of `TOUCH_NONE` algebraic data type.
+## data:
+
+`tp_gesture_state` is `GESTURE_STATE_SCROLL` when scroll happens. Also, 2 `tp_touch`es are active.
+
+"Opposite directions" means "more than perpendicular", i.e. angle > 90° ≥ π/2.
+
+## solution
+
+Even if angle is 91° — which direction you'd move? Taking the middle would just confuse the user. Not to mention bigger angles.
+
+Best, probably, to ignore the movement.
+
+# todos
+
+* rename `device_delta` to `coords_delta`
+
+If I gonna make the general algo for discarding movement, let's write that info somewhere into evemu or whatever.
+
+# twitchy scroll (hw issue)
+
+## Solution 1:
+
+* find resolution per mm
+* let `speed_max_mm` = largest possible movement distance in mm
+* let `speed_max` = largest possible movement distance in touchpad points
+* let `speed_avg` = calculate from `res_per_mm` an average movement speed in touchpad points
+* `when speed > speed_max then speed_avg`
+
+### reasoning
+
+Analogous to existing assumptions e.g. that a human can't move left-right-left within 40ms, add an assumption how fast a human can consciously move.
