@@ -37,3 +37,13 @@ All I found useful is that down the stack it calls `radeon_sync_scanout_pixmaps(
     DrawablePtr src = &drmmode_crtc->scanout[scanout_id ^ 1].pixmap->drawable;
 
 Apparently `scanout_id` is guaranteed to be 0 or 1.
+
+# temporary resolution change for games
+
+Resolution gets changed at `ProcVidModeSwitchToMode()` at `vidmode.c`. At the end, I presume, it cycles over existing modes, and compares to the requested. Given a match, it sets the new mode.
+
+`SwitchMode()` calls `xf86SetSingleMode()` *(at least at one of the instances — but I assume there's only one)*.
+
+# possible refactoring
+
+* output should be stored at crtc *(instead both are at `xf86CrtcConfigPtr`, which leads to checks whether crtc is enabled, or owns the output.)*.
