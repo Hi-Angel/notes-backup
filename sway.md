@@ -1,0 +1,29 @@
+# general
+
+The code seems to be badly designed, lots of global variables' usage.
+
+Judging by having a pid in `bar_config`, it's rather a `bar_status`. Maybe worth renaming.
+
+# misc
+
+Config entities implementation is in `sway/commands` dir.
+
+# bars
+
+Each one identified through IPC by `char *id`.
+
+`load_swaybars()` seems to rather "reload" them, because it deletes old ones, then invokes new bars. It's probably called so because functional of checking/deleting old ones was added later.
+
+IPC note: in `invoke_swaybar()` sway makes a pipe, then forks a process for a bar. Then sway (i.e. the parent) checks whether there's `sizeof(size_t)` bytes sent by the child, in which case it's a length of an error, which sway then reads too.
+
+# reload config instead of restarting a bar
+
+`cmd_reload()` does:
+
+1. stores bars' ids
+2. loads a config
+3. calls some `ipc_event_workspace()`, which doesn't seem to do anything useful, just stores something into json hanging in the air *(an odd way of storing logs?)*.
+4. terminates old bars, and invokes new ones, with `load_swaybars()`
+5. for each bars' id that matches an old one calls `ipc_event_barconfig_update(bar)`
+
+Apparently I need to remake `load_swaybars()` function.
