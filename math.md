@@ -1,3 +1,7 @@
+# General
+
+A time span with stops *(e.g. intervals between events)* is isomorphic to "path" from graph theory. A path is a graph without branches; i.e. a graph with two nodes of degree one *(first and last)*, and the rest of degree two.
+
 # Algebra
 
 `Irreducible polynomial`: a one that can't be reduced into multiple polynomials of a lower degree within the same field. Also, if a polynomial ƒ(x) have a root, that is `∃a, ƒ(a) = 0` then `x-a` is a factor of ƒ(x), i.e. ƒ(x) can be reduced.
