@@ -12,9 +12,18 @@ Config entities implementation is in `sway/commands` dir.
 
 Each one identified through IPC by `char *id`.
 
-`load_swaybars()` seems to rather "reload" them, because it deletes old ones, then invokes new bars. It's probably called so because functional of checking/deleting old ones was added later.
+sway's `load_swaybars()` seems to rather "reload" them, because it deletes old ones, then invokes new bars. It's probably called so because functional of checking/deleting old ones was added later.
+
+Part of bars' boot sequence is: `main` → `bar_setup` → `ipc_initialize`.
 
 IPC note: in `invoke_swaybar()` sway makes a pipe, then forks a process for a bar. Then sway (i.e. the parent) checks whether there's `sizeof(size_t)` bytes sent by the child, in which case it's a length of an error, which sway then reads too.
+
+It gets configs at `ipc_initialize`; specifically the line:
+
+        char *res = ipc_single_command(bar->ipc_socketfd,
+                IPC_GET_BAR_CONFIG, bar_id, &len);
+
+Config parsing is at `ipc_parse_config()`
 
 # reload config instead of restarting a bar
 
@@ -26,4 +35,8 @@ IPC note: in `invoke_swaybar()` sway makes a pipe, then forks a process for a ba
 4. terminates old bars, and invokes new ones, with `load_swaybars()`
 5. for each bars' id that matches an old one calls `ipc_event_barconfig_update(bar)`
 
-Apparently I need to remake `load_swaybars()` function.
+Apparently I need to remake `load_swaybars()` function. I gotta send `IPC_GET_BAR_CONFIG` to every bar from sway, over the IPC — can I?
+
+# json
+
+It's probably used in IPC. Better ask IRC for details.
