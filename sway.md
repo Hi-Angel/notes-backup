@@ -4,6 +4,10 @@ The code seems to be badly designed, lots of global variables' usage.
 
 Judging by having a pid in `bar_config`, it's rather a `bar_status`. Maybe worth renaming.
 
+# IPC
+
+https://i3wm.org/docs/ipc.html
+
 # misc
 
 Config entities implementation is in `sway/commands` dir.
