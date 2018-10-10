@@ -8,6 +8,10 @@ Judging by having a pid in `bar_config`, it's rather a `bar_status`. Maybe worth
 
 Config entities implementation is in `sway/commands` dir.
 
+# commands
+
+A stuff that can be bound to keypresses, came from i3.
+
 # bars
 
 Each one identified through IPC by `char *id`.
@@ -42,6 +46,8 @@ Apparently I need to remake `load_swaybars()` function. I gotta send `IPC_GET_BA
 It's probably used in IPC. Better ask IRC for details.
 
 # transparency/opacity
+
+Opacity is a command. E.g. `bindsym $mod+f opacity 0.5` works.
 
 `cmd_opacity()` receives an opacity command, then cycles over all containers on all outputs.
 
