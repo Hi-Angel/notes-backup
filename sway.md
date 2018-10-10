@@ -43,7 +43,7 @@ It's probably used in IPC. Better ask IRC for details.
 
 # transparency/opacity
 
-`cmd_opacity()` receives an opacity command, then damages all containers on all outputs.
+`cmd_opacity()` receives an opacity command, then cycles over all containers on all outputs.
 
 `output_damage_whole_container()` calculates some relation of current container to global position for given `sway_output`. Then scales with `scale_box`. Then gives out to `wlr_output_damage_add_box()` to (quote) "accumulate a damage and schedule frame event".
 
