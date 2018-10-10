@@ -7,6 +7,7 @@
 * May be color-identifiers mode don't need a timeout after all? After all, syntax highlight works immediately.
 *  *DEPRECATION: Duplicated values in array option "cpp_link_args" is deprecated. This will become a hard error in the future.* — wtf? Check if it gonna break CFLAGS and CXXFLAGS
 * libinput: improve jump detection to work with the record on the closed bug of mine.
+* emacs: remove `global-highlight-symbol-mode`, and instead highlight whatever is selected *(without regexp)*.
 
 # done
 
