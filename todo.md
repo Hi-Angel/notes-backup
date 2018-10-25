@@ -8,6 +8,11 @@
 *  *DEPRECATION: Duplicated values in array option "cpp_link_args" is deprecated. This will become a hard error in the future.* — wtf? Check if it gonna break CFLAGS and CXXFLAGS
 * libinput: improve jump detection to work with the record on the closed bug of mine.
 * emacs: remove `global-highlight-symbol-mode`, and instead highlight whatever is selected *(without regexp)*.
+* wine: build with debug symbols, and run "perf" on h4mod.exe. There, probably, ddraw optimizations could be done.
+* sway: pointer lock doesn't work
+* sway: tray icons doesn't work *(possibly XEmbed protocol)*.
+* sway: switching between windows stops working in non-english layout
+* sway: per-window keyboard layout would be nice https://github.com/swaywm/sway/issues/2361
 
 # done
 
@@ -18,6 +23,10 @@ Tried porting, but there're complex conflicts. In addition I seem to have seen m
 > * add transparency to Sway
 >     * consider wiring up libanimation, adding transparency there instead
 
-Opened issue https://github.com/swaywm/sway/issues/2787 It's been closed as it should work with python script. I gotta find out how though.
+Opened issue https://github.com/swaywm/sway/issues/2787 It's been closed as it should work with a python script. WIP.
+
+> * sway: rework transparency python script to keep track of existing windows, and not to issue commands too often. Then scratch up a PR to sway docs.
+
+Done. Instead of docs it's added into a separate directory though.
 
 [1]: https://stackoverflow.com/questions/2612447/pinpointing-conditional-jump-or-move-depends-on-uninitialized-values-valgrin
