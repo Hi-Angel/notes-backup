@@ -17,7 +17,7 @@ A library for i3: https://github.com/acrisci/i3ipc-python
 
 Config entities implementation is in `sway/commands` dir.
 
-`sway_view` whatever it is, can have a single container.
+Windows are are represented be `sway_view`, which contains `wlr_xwayland_surface`.
 
 Some interesting structs:
 
@@ -106,14 +106,28 @@ Per drewdevault:
 
 `sway_seat->wlr_seat` has `wlr_keyboard`.
 
-`struct wlr_input_device *wlr_device = keyboard->seat_device->input_device->wlr_device;`
+`struct wlr_input_device *wlr_device = keyboard->seat_device->input_device->wlr_device;`, where type of `keyboard` is `wlr_keyboard`.
+
+`device->keyboard->xkb_state`, where `device : wlr_input_device`.
+
+`wl_keyboard.keymap` event contains a file descriptor to the keymap and a format classifier.
+
+## keyboard focus
+
+`wlr_seat_keyboard_notify_enter` is called to give a surface keyboard focus.
+
+* for some reason `seat_set_focus_surface` is only called on creating `rofi` window. But not on refocusing windows, neither on creation of Wayland and XWayland apps.
 
 ## per-window layout impl.
 
-Add it to a surface. Q: what to add?
+[This is elaborate enough](https://github.com/xkbcommon/libxkbcommon/issues/72)
 
 ## see also
 
 https://drewdevault.com/2018/07/17/Input-handling-in-wlroots.html
 
 [1]: https://github.com/swaywm/wlroots/blob/4984ea49eeaa292d66be9e535d93a4d8185f3e18/examples/simple.c#L114
+
+# focus
+
+`seat_set_focus()` refocuses from one window to another. Somewhere down the stack it calls `seat_send_focus()` which in particular sends keyboard focus to the window/surface.

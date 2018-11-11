@@ -13,6 +13,7 @@
 * sway: tray icons doesn't work *(possibly XEmbed protocol)*.
 * sway: switching between windows stops working in non-english layout
 * sway: per-window keyboard layout would be nice https://github.com/swaywm/sway/issues/2361
+* sway: `parse_movement_direction` being run on every `focus` command. It should not be called, unless a command came from `swaymsg`.
 
 # done
 

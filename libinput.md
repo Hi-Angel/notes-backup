@@ -98,3 +98,9 @@ If I gonna make the general algo for discarding movement, let's write that info 
 ### reasoning
 
 Analogous to existing assumptions e.g. that a human can't move left-right-left within 40ms, add an assumption how fast a human can consciously move.
+
+# jump detection
+
+The jump being driven by `ABS_Y` evemu event. Not the `ABS_MT_POSITION_Y`, which I can successfully remove from the testcase without influencing it; whilst removing `ABS_Y` results in record not doing anything at all.
+
+Increasing timestamp to 30ms didn't help.
