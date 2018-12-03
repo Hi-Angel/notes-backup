@@ -8,8 +8,9 @@
 *  *DEPRECATION: Duplicated values in array option "cpp_link_args" is deprecated. This will become a hard error in the future.* — wtf? Check if it gonna break CFLAGS and CXXFLAGS
 * libinput: improve jump detection to work with the record on the closed bug of mine.
 * emacs: remove `global-highlight-symbol-mode`, and instead highlight whatever is selected *(without regexp)*.
+  I measured, and the jumps don't get anywhere close to the thresholds libinput is using.
 * wine: build with debug symbols, and run "perf" on h4mod.exe. There, probably, ddraw optimizations could be done.
-* sway: pointer lock doesn't work
+* sway: pointer lock doesn't work https://github.com/swaywm/sway/issues/1071#issuecomment-331705286
 * sway: tray icons doesn't work *(possibly XEmbed protocol)*.
 * sway: switching between windows stops working in non-english layout
 * sway: per-window keyboard layout would be nice https://github.com/swaywm/sway/issues/2361

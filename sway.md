@@ -85,6 +85,14 @@ What's `focus_stack`?
 
 # input
 
+## map `sway_keyboard` and `wlr_keyboard`
+
+Every `sway_seat` has a `devices` field of type `sway_seat_device`, where:
+    * `sway_keyboard` is at `sway_seat_device::keyboard`
+    * `wlr_keyboard` is at `sway_seat_device::input_device::wlr_device::keyboard`
+
+Even though it would rational to keep `wlr_keyboard` inside `sway_keyboard`, but right now `wlr_device` has a union that might be a keyboard, or something else, besides `wlr_` stuff being a separate lib, so there's no easy solution.
+
 ## wlroots
 
 `wlr_backend` abstracts outputs and input devices.
@@ -131,3 +139,14 @@ https://drewdevault.com/2018/07/17/Input-handling-in-wlroots.html
 # focus
 
 `seat_set_focus()` refocuses from one window to another. Somewhere down the stack it calls `seat_send_focus()` which in particular sends keyboard focus to the window/surface.
+
+# keyboard state update after changing `xkb_state`
+
+## misc
+
+* leds are updated with `wlr_keyboard_led_update` only upon configuring a keyboard.
+* wlroots has a `wlr_keyboard_notify_key` and `wlr_keyboard_notify_modifiers` which seems to update different states.
+
+## todos:
+
+* when layout switched with cursor, the led is not updated immediately. The solution is to add `*led_update*` func into `wlr_keyboard_notify_modifiers`

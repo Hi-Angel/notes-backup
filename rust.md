@@ -46,3 +46,12 @@ Casting data to a struct, example:
         let s: MyStruct = unsafe { std::ptr::read(v.as_ptr() as *const _) };
         println!("here is the struct: {:?}", s);
     }
+
+# wrapper types
+
+https://doc.rust-lang.org/book/first-edition/choosing-your-guarantees.html
+
+`Cell<T>` allows for mutability without mutable borrow. Mutation however makes a full copy of T every time.
+`RefCell<T>` like `Cell<T>`, but provides read-write lock pattern at *runtime* with `borrow()` and `borrow_mut()` funcs, which makes sure that there's no other borrows active if a mutable one is taken *(otherwise it panics)*. Thread-unsafe.
+`Rc<T>` a reference counted pointer, `T` is immutable.
+`Rc<RefCell<T>>` a reference counted pointer to mutable data, which however can only have one mutable reference at a time.
