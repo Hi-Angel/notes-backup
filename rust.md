@@ -31,6 +31,20 @@ The syntax:
 
 It's a replacement to index, but it's better because if `s` been modified, we can forget to keep index in sync. However, here having a slice would disallow to mutate the string.
 
+# type parameters/templates/generics
+
+Function example:
+
+    fn func<T: std::fmt::Debug>(a: T) {
+        println!("{:?}", a);
+    }
+
+    fn main() {
+        func(1);
+        func::<u32>(1);
+        func::<_>(1);
+    }
+
 # misc
 
 Casting data to a struct, example:
