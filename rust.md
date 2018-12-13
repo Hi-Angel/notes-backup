@@ -69,3 +69,7 @@ https://doc.rust-lang.org/book/first-edition/choosing-your-guarantees.html
 `RefCell<T>` like `Cell<T>`, but provides read-write lock pattern at *runtime* with `borrow()` and `borrow_mut()` funcs, which makes sure that there's no other borrows active if a mutable one is taken *(otherwise it panics)*. Thread-unsafe.
 `Rc<T>` a reference counted pointer, `T` is immutable.
 `Rc<RefCell<T>>` a reference counted pointer to mutable data, which however can only have one mutable reference at a time.
+
+# flycheck-mode
+
+Just call `flycheck-rust-setup` before enabling it.
