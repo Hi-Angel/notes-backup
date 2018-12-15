@@ -1,12 +1,18 @@
+# general
+
+Wayland works on "objects" that enclose methods. All requests are method invocations on them, and include an object ID. Each object implements an interface and the requests include an opcode that identifies method in the interface to invoke.
+
 # bestiary
 
-`request` is a compositor's method that a client might want to call.
+`request`: a message sent from a client to server.
 
-`event` is something that happens with a compositor that a client sets a callback to.
+`event`: a message sent from server to a client.
 
-`globals` are global resources, stuff like `wl_outputs` *(which displays are connected; also this specific global supplies `wl_registry`)*.
+`wl_surface`: a rectangle that clients draws in. Essentially a window. Has events for whether it's visible.
 
-`wl_registry` is a list of available `globals`.
+`globals`: global resources, stuff like `wl_outputs` *(which displays are connected; also this specific global supplies `wl_registry`)*.
+
+`wl_registry`: a list of available `globals`.
 
 # misc
 

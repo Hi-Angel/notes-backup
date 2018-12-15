@@ -19,6 +19,8 @@ Stack-only variables are distinctive in having implemented trait `Copy**.
 
 `&String` is a reference declaration *(e.g. in function decl)*, and `&s` would be passing value by reference *(it gotta be done explicitly)*. The `s` there would be borrowed.
 
+References are always assigned lifetimes *(most of the times they're derived by compiler though)*. The syntax is as `fn bar<'a, 'b>(...)`, where `a` and `b` are lifetimes' names, which are then used in args such as `...(x: &'a i32)`
+
 If a reference is mutable, only one is allowed within the scope. But multiple ones allowed by creating a new scope with curly braces!
 
 ## Slices
@@ -73,3 +75,11 @@ https://doc.rust-lang.org/book/first-edition/choosing-your-guarantees.html
 # flycheck-mode
 
 Just call `flycheck-rust-setup` before enabling it.
+
+# destructor
+
+`Drop` interface is it.
+
+# phantom data
+
+`marker::PhantomData` is used in structs that hold and own pointers, to mark pointed-to type as owned. Otherwise, simply having a pointer in a struct does not attach any ownership, thus destructors of pointers not gonna get ran upon struct being destroyed.
