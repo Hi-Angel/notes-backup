@@ -10,7 +10,8 @@ Wayland works on "objects" that enclose methods. All requests are method invocat
 * `wl_surface`: a rectangle that clients draws in. Essentially a window. Has events for whether it's visible.
 * `globals`: global resources, stuff like `wl_outputs` *(which displays are connected; also this specific global supplies `wl_registry`)*.
 * `wl_registry`: a list of available `globals`.
-* `wl_interface`: a struct with a shallow description of protocol object.
+* `wl_interface`: a struct with a description of protocol object. A list of fields: {protocol name, protocol version, num requests, requests `:: [wl_message]`, num events, events `:: [wl_message]`}
+* `wl_message`: a description of a function arguments/return value in Wayland byte-code.
 
 # misc
 
