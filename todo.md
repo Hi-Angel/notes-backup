@@ -7,6 +7,7 @@
 * May be color-identifiers mode don't need a timeout after all? After all, syntax highlight works immediately.
 *  *DEPRECATION: Duplicated values in array option "cpp_link_args" is deprecated. This will become a hard error in the future.* — wtf? Check if it gonna break CFLAGS and CXXFLAGS
 * libinput: improve jump detection to work with the record on the closed bug of mine.
+* emacs: lexical scope cause useless warnings in byte-compilation. Report that after making sure everything indeed works.
 * emacs: remove `global-highlight-symbol-mode`, and instead highlight whatever is selected *(without regexp)*.
   I measured, and the jumps don't get anywhere close to the thresholds libinput is using.
 * wine: build with debug symbols, and run "perf" on h4mod.exe. There, probably, ddraw optimizations could be done.

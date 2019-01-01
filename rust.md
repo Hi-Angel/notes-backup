@@ -47,6 +47,10 @@ Function example:
         func::<_>(1);
     }
 
+# type-inference
+
+Aside of C++-like, type can be inferred from return values. This is how `into()` works.
+
 # misc
 
 Casting data to a struct, example:
