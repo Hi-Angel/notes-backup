@@ -4,18 +4,30 @@
 
 # software development
 
+## emacs
+
 * May be color-identifiers mode don't need a timeout after all? After all, syntax highlight works immediately.
 *  *DEPRECATION: Duplicated values in array option "cpp_link_args" is deprecated. This will become a hard error in the future.* — wtf? Check if it gonna break CFLAGS and CXXFLAGS
+* Lexical scope cause useless warnings in byte-compilation. Report that after making sure everything indeed works.
+* Remove `global-highlight-symbol-mode`, and instead highlight whatever is selected *(without regexp)*.
+
+## libinput
+
 * libinput: improve jump detection to work with the record on the closed bug of mine.
-* emacs: lexical scope cause useless warnings in byte-compilation. Report that after making sure everything indeed works.
-* emacs: remove `global-highlight-symbol-mode`, and instead highlight whatever is selected *(without regexp)*.
   I measured, and the jumps don't get anywhere close to the thresholds libinput is using.
-* wine: build with debug symbols, and run "perf" on h4mod.exe. There, probably, ddraw optimizations could be done.
-* sway: pointer lock doesn't work https://github.com/swaywm/sway/issues/1071#issuecomment-331705286
-* sway: tray icons doesn't work *(possibly XEmbed protocol)*.
-* sway: switching between windows stops working in non-english layout
-* sway: per-window keyboard layout would be nice https://github.com/swaywm/sway/issues/2361
-* sway: `parse_movement_direction` being run on every `focus` command. It should not be called, unless a command came from `swaymsg`.
+
+## wine
+
+* Build with debug symbols, and run "perf" on h4mod.exe. There, probably, ddraw optimizations could be done.
+* Use linked-list and other data structures from glibc, they're more likely to have a good performance than anything hand-crafted.
+
+## sway
+
+* Pointer lock doesn't work https://github.com/swaywm/sway/issues/1071#issuecomment-331705286
+* Tray icons doesn't work *(possibly XEmbed protocol)*.
+* Switching between windows stops working in non-english layout
+* *(✓ implemented, on review)* Per-window keyboard layout would be nice https://github.com/swaywm/sway/issues/2361
+* `parse_movement_direction` being run on every `focus` command. It should not be called, unless a command came from `swaymsg`.
 
 # done
 
