@@ -4,12 +4,14 @@ Wayland works on "objects" that enclose methods. All requests are method invocat
 
 # bestiary
 
-* `object`: an entity that surpasses requests/events, and version of a given Wayland protocol.
+* `object`: an instance of a `interface`. Can be global *(i.e. ideantical for all clients)*, or local to every client. "Created" with `wl_registry_bind`, destroyed with interface's `*_destroy` method from the generated code.
+* `destructor`: the opposite of `wl_registry_bind`. Can be overridden by manually declaring in XML a destructor method. When object is global, it's `destroy` may just destroy the client-side part.
 * `request`: a message sent from a client to server.
 * `event`: a message sent from server to a client.
-* `wl_surface`: a rectangle that clients draws in. Essentially a window. Has events for whether it's visible.
 * `globals`: global resources, stuff like `wl_outputs` *(which displays are connected; also this specific global supplies `wl_registry`)*.
-* `wl_registry`: a list of available `globals`.
+* `wl_display`: something. Client gets it upon making Wayland connection.
+* `wl_registry`: a list of available `globals`, "things you can create from then on", apparently list of interfaces. Created out of `wl_display`.
+* `wl_surface`: a rectangle that clients draws in. Essentially a window. Has events for whether it's visible.
 * `wl_interface`: a struct with a description of protocol object. A list of fields: {protocol name, protocol version, num requests, requests `:: [wl_message]`, num events, events `:: [wl_message]`}
 * `wl_message`: a description of a function arguments/return value in Wayland byte-code.
 

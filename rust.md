@@ -51,6 +51,21 @@ Function example:
 
 Aside of C++-like, type can be inferred from return values. This is how `into()` works.
 
+# packages
+
+* `package` is a collection of crates.
+* `crate` is a binary or library.
+* `module`s are created by `mod foo{}` declaration, whereas included by just `mod foo;`, and are brought into scope by `use foo;`. `main.rs` and `lib` are creating a module `crate`.
+
+# cargo tips
+
+* `cargo` is a native build system for Rust. It handles dependencies, configuration, compilation… It builds a source code down the `src/` dir. Specifically, it compiles `main.rs` or `lib.rs`, and and everything referenced from there with `mod foo;`
+* `cargo build --all` builds everything.
+
+# code-generation
+
+Cargo looks up by default for "build.rs" file, which gets compiled and executed for distinct preparations, such as generation of a code for handling Wayland protocols. The executed gets some environment variables set, such as `OUT_DIR`, etc.
+
 # misc
 
 Casting data to a struct, example:
