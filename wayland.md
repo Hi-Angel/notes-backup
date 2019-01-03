@@ -2,6 +2,8 @@
 
 Wayland works on "objects" that enclose methods. All requests are method invocations on them, and include an object ID. Each object implements an interface and the requests include an opcode that identifies method in the interface to invoke.
 
+Communication compositor↔client happens through UNIX sockets called `wayland-0` *(can be overridden)*.
+
 # bestiary
 
 * `object`: an instance of a `interface`. Can be global *(i.e. ideantical for all clients)*, or local to every client. "Created" with `wl_registry_bind`, destroyed with interface's `*_destroy` method from the generated code.
