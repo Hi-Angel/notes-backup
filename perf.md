@@ -1,3 +1,9 @@
+# recording
+
+By default stacks a recorded with frame-pointers, but those typically optimized out.
+
+If app is built with libunwind, use `--call-graph dwarf` instead. There are other options.
+
 # misc
 
 There's lots of different events; all of them can be enabled explicitly with `-e my-event`.

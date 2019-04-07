@@ -6,7 +6,8 @@ Communication compositor↔client happens through UNIX sockets called `wayland-0
 
 # bestiary
 
-* `object`: an instance of a `interface`. Can be global *(i.e. ideantical for all clients)*, or local to every client. "Created" with `wl_registry_bind`, destroyed with interface's `*_destroy` method from the generated code.
+* `object`: an instance of a `interface`. Can be global *(i.e. identical for all clients)*, or local to every client. "Created" with `wl_registry_bind` *(returns a pointer to an interface object)*, destroyed with interface's `*_destroy` method from the generated code.
+    * `wl_global_create()` on the server side adds an object to `wl_registry`.
 * `destructor`: the opposite of `wl_registry_bind`. Can be overridden by manually declaring in XML a destructor method. When object is global, it's `destroy` may just destroy the client-side part.
 * `request`: a message sent from a client to server.
 * `event`: a message sent from server to a client.
@@ -26,6 +27,8 @@ Clients are usually using libwayland which to supply callbacks for certain event
 # code generation
 
 Happens through `wayland-scanner` binary. Usage example: `wayland-scanner client-header xdg-shell.xml out.c`. The help output is clear on supported options *(though not on their meaning)*.
+
+Generated sources + headers allows to build a library, which is what Sway with its "protocols" dir does.
 
 xml construction: protocol(mandatory) → interface(mandatory) → events/requests (optional).
 
@@ -63,5 +66,6 @@ Basic communication is implemented at `libwayland-server.c`/`libwayland-client.c
 
 # references
 
-http://www.jlekstrand.net/jason/projects/wayland/language-bindings-guide/ nice overview of how the xml sticks together with the final code.
-http://sircmpwn.github.io/2017/06/10/Introduction-to-Wayland.html wayland from a POV of client.
+* http://www.jlekstrand.net/jason/projects/wayland/language-bindings-guide/ nice overview of how the xml sticks together with the final code.
+* http://sircmpwn.github.io/2017/06/10/Introduction-to-Wayland.html wayland from a POV of client.
+* `wlr_screenshooter.c:wlr_screenshooter_create`: an example of a compositor *(wlroots specifically)* adding an interface object to `wl_registry`.

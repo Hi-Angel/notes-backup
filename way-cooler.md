@@ -13,7 +13,7 @@ pub struct Object<'lua, S: ObjectStateType> {
 
 * `protocols` dir contains some of wayland protocols.
 * `awesome/src/build.rs` builds wayland protocols.
-* generated from `xdg-shell.xml` code is brought in scope with `use wayland_protocols::xdg_shell::{…`. Occasionally or not, but it matches the path to `xdg_shell.rs` that extracts the generated code into itself. You also need to modify `wayland_protocols/mod.rs` to include the new module.
+* generated from `xdg-shell.xml` code is brought in scope with `use wayland_protocols::xdg_shell::{…`. Occasionally or not, but it matches the path to `xdg_shell.rs` that extracts the generated code into itself. Then it uses `mod`ules from the generated code. You also need to modify `wayland_protocols/mod.rs` to include the new module.
 
 # todo
 
@@ -21,8 +21,8 @@ pub struct Object<'lua, S: ObjectStateType> {
 
 * mouse state solving:
   1. ✓ Create a minimal noop protocol.
-  2. Include it into awesome, and make it query the object somewhere at initialization state. Abort if object not found (it won't be just yet)
-  3. Include it into way-cooler, and impl. the noop object.
+  2. ✓ Include it into awesome, and make it query the object somewhere at initialization state. Abort if object not found (it won't be just yet)
+  3. ✓ Include it into way-cooler, and impl. the noop object.
   4. Add a request, and impl. on both sides, check that it's working.
   5. Impl. in Way-Cooler either interface or protocol "Way-Cooler", which should be for connection of Awesome, and would accept only one.
   6. Impl. some basic mouse state sharing.
