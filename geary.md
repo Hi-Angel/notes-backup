@@ -102,3 +102,7 @@ I measured every call here, and the only noticeable amounts were:
 # misc
 
 "To compare" function in `ArrayList` at least in Geary is `equal_to`.
+
+# performance of CoversationListView
+
+`data.render` gets called a lot, but apparently I can't skip calls because that code is exactly what does the rendering.

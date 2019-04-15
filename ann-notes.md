@@ -92,3 +92,9 @@ Any ANN varying its topology and size.
 ### Holographic Associative Memory
 
 Probably akin to LSTM.
+
+# word2vec and GloVe
+
+Both calculate "distance" of a word to every other. Except word2vec is probability-based, and GloVe is count-based. Also that GloVe is more easily paralleled since it takes whole matrix at once, whereas word2vec ANN-based, and uses many passes.
+
+Acc. to internet, final results are more-or-less identical.
