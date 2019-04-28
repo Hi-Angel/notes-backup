@@ -73,6 +73,10 @@
 
 * the dispatch functions *(see also https://www.mesa3d.org/dispatch.html)* are defined and written in asm. I think, the code can possibly be optimized by a compiler if written i C, but defining a function in C may make a compiler to add `push`es at the beginning and what not. However it might be interesting to define a symbol in asm, but write the code in C. As a side effect this may be cross-platform.
 
+## Geary
+
+* there're foreaches with `window as MainWindow;` text in it that simply searches for main window. Can at least be extracted to a function.
+
 ## games to play with
 
 * fortnite, it's "epic games", but doesn't have Linux version

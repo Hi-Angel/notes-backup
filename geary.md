@@ -95,9 +95,17 @@ I measured every call here, and the only noticeable amounts were:
 * `add_email` line took 7xx ms in total for 21 email; a line alone takes 25..50 ms.
 * `yield throttle_loading()` takes a lot, 150..250 ms every call.
 
+### Email construction
+
+`ConversationMessage` constructor at `conversation-message.vala` takes most of the time in the `add_email`. Down the inside of `ConversationMessage` the reason is `ConversationWebView(config)`
+
 # non-ASCII text attachments getting broken
 
 `GMime.Part` is a "part" of a multipart MIME message. Also, they represented as a tree i Geary.
+
+# Geary inserts newlines
+
+Newlines are added when sending a mail. I think it happens at `ComposerPageState.htmlToText`. If not, one can trace it from `get_text()` at `composer-web-view.vala`.
 
 # misc
 

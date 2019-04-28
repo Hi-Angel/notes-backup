@@ -1,8 +1,19 @@
-## Objective
+# Create BNF for source code
 
-To query for patterns tied to a parcticular word in a code. E.g.: to a variable in C always tied pattern "declaration".
+**Input**:?
 
-## Algo:
+**Learning**:?
+
+**Output**: any format with purpose similar to BNF.
+
+**Supervisor**: function `gen_character` generates characters valid to language analyzed to pass into `review_character`, `review_character` is a state machine that based on the BNF either accepts and saves *(and changes state)* or rejects input. The input saved by `review_character` gets later checked against a compiler for syntax errors.
+
+**Performance estimate**: the line number where last syntax error was. Might want to ignore specific types of errors… For starters, let's ignore all non-syntax errors.
+
+**Alternative supervisor and estimate**: instead of random characters use known valid source code that wasn't analyzed. Performance then measured by going further into the code without rejecting it.
+
+## Older algo:
+
 1. take word w
 2. remember distance to other words in distance d
 3. if the word already happened, check for patterns both in regard to prev. word and the new one.
