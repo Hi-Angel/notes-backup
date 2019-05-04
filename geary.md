@@ -114,3 +114,11 @@ Newlines are added when sending a mail. I think it happens at `ComposerPageState
 # performance of CoversationListView
 
 `data.render` gets called a lot, but apparently I can't skip calls because that code is exactly what does the rendering.
+
+# Reading Stacktrace
+
+After vala gets translated to C, functions gets added and renamed. Some transformation examples:
+
+* constructor Foo: `foo_construct`
+* `new Foo()`: `foo_new` → `foo_construct`
+* constructor `new Foo.something()`: `foo_new_something` → `foo_construct_something`
