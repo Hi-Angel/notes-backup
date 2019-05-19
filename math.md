@@ -39,3 +39,7 @@ Addition & multiplication are not the usual ones. Multiplication works as `(a×b
 Basically, works like following: a sequence of bits, e.g. `1111` being represented as a polynom `1 * x^3 + 1 * x^2 + 1 * x^1 + 1 * x^0`. Then we find an irreducible polynom of a degree `n` higher, which we use to encode information. Then we can lose n bits of information, and, with some magic, still restore the `1111`. The magic of decoding is a big research field, with a bunch of different algos, and, seemingly, none is easy to describe.
 
 1: Notes on Reed-Solomon codes.
+
+# Combinatorics
+
+Number of permutations of n is `n!` Number of *k permutations of n* is `n! / (n-k)!`.
