@@ -1,4 +1,14 @@
-# writing functions in python
+# interactive python
+
+`py` and `pi` allow for python inside gdb session.
+
+Then, to call a gdb command from python use `gdb.execute('cmd', to_string=True)`
+
+`gdb.inferiors()` returns "currently running applications", typically just one.
+
+More docs: https://sourceware.org/gdb/onlinedocs/gdb/Basic-Python.html#Basic-Python
+
+# scripting in python
 
 Python allows creating both convenience_variables-like functions, and just commands. It requires creating a class with different properties, where `__init__` shows the name by which it gonna be called.
 

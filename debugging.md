@@ -4,6 +4,10 @@ Notes on various debugging tools and techniques.
 
 See `perf.md` file.
 
+# gdb
+
+See `gdb.md` file.
+
 # `rr`, reverse execution and stuff
 
 Well integrated with gdb, so you can use the usual gdb commands.
