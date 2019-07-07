@@ -68,3 +68,7 @@ Use `-F+period` option. E.g. `perf report --stdio --no-children -F+period`
 After a record is ready, `flamegraph` package can be used as `perf script | stackcollapse-perf.pl | flamegraph.pl > out.svg`.
 
 Order: there's none. Don't count on right-to-left or otherwise columns location as meaning anything — they don't, it's random.
+
+# links
+
+Some discussion on formatting involving a perf developer https://lwn.net/Articles/379949/
