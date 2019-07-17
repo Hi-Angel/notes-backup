@@ -8,6 +8,6 @@
 * Recursively modify files: `ack -l --print0 pattern | xargs -r0 perl -i -pe 's/pattern/replacement/g'`
 * Print nth *(9th in example)* column, count starts from `0`: `perl -lane 'if (/pattern/) { print $F[8] }' ./file`
 
-# hints
+## hints
 
 Use `ack` instead of `grep` or `find` + `perl`, since it has better syntax than find+perl, and perl-compatible regexps, so you can test them.
