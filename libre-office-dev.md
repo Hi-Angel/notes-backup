@@ -30,6 +30,9 @@ Filters implement a `css::lang::XServiceInfo`, so that `cppu::supportsService()`
 
 `OdtGenerator &rGenerator` that `parse()` of AbiWordImportFilter accepts is declared in `parse()` declaration as `librevenge::RVNGTextInterface *documentInterface`
 
+* `PivotTable` inside UNO API is shown as a `DataPilotTables` *(note the "pilot")* property of sheets. See also [here for some human-readable docs](https://wiki.openoffice.org/wiki/Documentation/DevGuide/Spreadsheets/Creating_a_New_DataPilot_Table).
+* given `pilotTable` and existing filters aka `Page Fields`, to change rows under the filters use `pilotTable.DataPilotFields.getByIndex(9).Items.getByIndex(3).IsHidden`
+
 # glossary
 
 `Filter` — the code to import/export a file format.
