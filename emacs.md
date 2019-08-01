@@ -1,3 +1,7 @@
+# TAGS
+
+Emacs loads that into a buffer, and parses whole buffer every time searching for a tag *(barring caches in various places through the stack)*. This is done by `find-tag-in-order` func. So if you wanna something like "extract all methods in file1", bad news for ya.
+
 # Misc
 
 Vanilla Emacs defines minor-modes through `easy-mmode` package. `smerge-mode` is one example, its `smerge-next`, `smerge-prev` are defined though `easy-mmode` mode.
