@@ -76,7 +76,7 @@ pseudo-Haskell breakdown:
 ```haskell
 let ptr_shadow_mem_base = Ptr 0x7fff8000
 let ptr_foo = address foo + i -- foo and i we got somewhere higher
-ptr_shadow_foo = (binary_shift 3 ptr_foo) + ptr_shadow_mem_base
+ptr_shadow_foo = (binary_shift_r 3 ptr_foo) + ptr_shadow_mem_base
 shadow_byte = byte_from ptr_shadow_foo
 is_shadow_byte_set = shadow_byte != 0
 smthng4 = shadow_byte >= (ptr_foo & 7)
