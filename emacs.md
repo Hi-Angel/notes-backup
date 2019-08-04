@@ -16,6 +16,12 @@ Some info I gathered:
 * the error is about `buffer-undo-list` being set to just `(nil undo-tree-canary)`. The only place, I think, that could result in that is the function `undo-list-transfer-to-tree ()`, which has a line `(setq buffer-undo-list '(nil undo-tree-canary))`.
 * `undo-tree.el` has only 2 functions that deal with `undo-tree-canary` thing.
 
+# font-lock
+
+To check font-lock-face set on the symbol/word under cursor use `describe-text-properties`.
+
+# Done:
+
 ## Emacs resize works wrong in KWin
 
 It's due to `program specified resize increment` in `WM_SIZE_HINTS`. Works in other WMs simply because they ignore it *(which is bad though)*.

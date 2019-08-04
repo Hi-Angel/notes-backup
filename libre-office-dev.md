@@ -32,6 +32,24 @@ Filters implement a `css::lang::XServiceInfo`, so that `cppu::supportsService()`
 
 `OdtGenerator &rGenerator` that `parse()` of AbiWordImportFilter accepts is declared in `parse()` declaration as `librevenge::RVNGTextInterface *documentInterface`
 
+# UNO aka libreoffice macros
+
+## Workflow
+
+Every "object" in it *(at least in Python backend)* is an abstract entity, that can have properties and methods magically appear and disappear. Well, there're types, services, but I haven't found knowing that useful. Except maybe, if you gonna ask IRC or a forum "how do I do X" or report a bug, it may be useful to include type of the object.
+
+Best way to find out what you can do with a given object is connecting to LO from an interactive python session, then typing object name and a dot, like `row1.`, and pressing TAB twice to force python to show possible completions.
+
+See also [this question](https://ask.libreoffice.org/en/question/201568/uno-find-hierarchy-till-a-selected-object/).
+
+About MRI: given the way above with python, I find MRI and co pretty useless. They show you info on a given object, which you can see in python interactive shell anyway. But python shell is clearly more flexible.
+
+Python trick: if you have a collection of UNO objects, and want to see their contents, then instead of writing a loop *(which is a multiline expression, and these are not very convenient inside python shell)* use set-builder notation, e.g.: `[s.Name for s in pilotTable.DataPilotFields]`.
+
+## Misc
+
+* there're useful methods in [dispatch commands](https://wiki.documentfoundation.org/Development/DispatchCommands). Copy/paste in particular is there. Example of duplicating a slide: `dispatcher.executeDispatch(currFrame, ".uno:DuplicatePage", "", 0, ())`.
+* "Controller" is an entity in UNO that stores currently active elements *(e.g. current selection, current slide, etc)*.
 * `PivotTable` inside UNO API is shown as a `DataPilotTables` *(note the "pilot")* property of sheets. See also [here for some human-readable docs](https://wiki.openoffice.org/wiki/Documentation/DevGuide/Spreadsheets/Creating_a_New_DataPilot_Table).
 * given `pilotTable` and existing filters aka `Page Fields`, to change rows under the filters use `pilotTable.DataPilotFields.getByIndex(9).Items.getByIndex(3).IsHidden`
 
