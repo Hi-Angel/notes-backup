@@ -39,14 +39,14 @@ While debugging a complex sanitizer bug I wrote down below the actual implementa
 
 Given this code:
 
-    foo[i] = 0;
+    arr[i] = 0;
 
 The assembly snip my GCC generated is:
 
-    movq	-232(%rbp), %rdx	# foo, tmp127
+    movq	-232(%rbp), %rdx	# arr, tmp127
     movq	-240(%rbp), %rax	# i, tmp128
     leaq	(%rdx,%rax), %rcx	#, _1
-    # ../iscsi/asan_testcase.c:23:         foo[i] = 0;
+    # ../iscsi/asan_testcase.c:23:         arr[i] = 0;
     .loc 1 23 16 discriminator 3
     movq	%rcx, %rax	# _1, _19
     movq	%rax, %rdx	# _19, _20
@@ -62,12 +62,12 @@ The assembly snip my GCC generated is:
     andl	%esi, %edx	# _24, _28
     testb	%dl, %dl	# _28
     je	.L6	#,
-    # ../iscsi/asan_testcase.c:23:         foo[i] = 0;
+    # ../iscsi/asan_testcase.c:23:         arr[i] = 0;
     .loc 1 23 16 is_stmt 0
     movq	%rax, %rdi	# _19,
     call	__asan_report_store1@PLT	#
     .L6:
-    # ../iscsi/asan_testcase.c:23:         foo[i] = 0;
+    # ../iscsi/asan_testcase.c:23:         arr[i] = 0;
     .loc 1 23 16 discriminator 3
     movb	$0, (%rcx) 	#, *_1
 
@@ -75,13 +75,13 @@ pseudo-Haskell breakdown:
 
 ```haskell
 let ptr_shadow_mem_base = Ptr 0x7fff8000
-let ptr_foo = address foo + i -- foo and i we got somewhere higher
-ptr_shadow_foo = (binary_shift_r 3 ptr_foo) + ptr_shadow_mem_base
-shadow_byte = byte_from ptr_shadow_foo
+let ptr_arr_elem = address arr + i    -- arr and i appears somewhere higher
+ptr_shadow_arr = (binary_shift_r 3 ptr_arr_elem) + ptr_shadow_mem_base
+shadow_byte = get_byte ptr_shadow_arr
 is_shadow_byte_set = shadow_byte != 0
-smthng4 = shadow_byte >= (ptr_foo & 7)
+smthng4 = shadow_byte >= (ptr_arr_elem & 7)
 if is_shadow_byte_set != smthng4 then
-    __asan_report_store1 ptr_foo
+    __asan_report_store1 ptr_arr_elem
 else
-    store_at 0 ptr_foo
+    store_at 0 ptr_arr_elem
 ```
