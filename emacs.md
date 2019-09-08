@@ -20,6 +20,8 @@ Some info I gathered:
 
 To check font-lock-face set on the symbol/word under cursor use `describe-text-properties`.
 
+font-lock is managed by `font-lock-keywords` list, which can store regexps as well as actual functions that do scan and stuff. Color-identifies is using that to scan a buffer.
+
 # Done:
 
 ## Emacs resize works wrong in KWin
