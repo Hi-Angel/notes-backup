@@ -6,6 +6,10 @@ Emacs loads that into a buffer, and parses whole buffer every time searching for
 
 Vanilla Emacs defines minor-modes through `easy-mmode` package. `smerge-mode` is one example, its `smerge-next`, `smerge-prev` are defined though `easy-mmode` mode.
 
+# Contributing
+
+This is hard. They're using some custom changelog format which you definitely not gonna want to do by hand. You may use hotkey `C-x 4 a` to produce changelog entried from currently uncommited changes, and then copy it to a commit.
+
 # Tasks
 
 ## Unrecognized entry in undo list undo-tree-canary
@@ -21,6 +25,12 @@ Some info I gathered:
 To check font-lock-face set on the symbol/word under cursor use `describe-text-properties`.
 
 font-lock is managed by `font-lock-keywords` list, which can store regexps as well as actual functions that do scan and stuff. Color-identifies is using that to scan a buffer.
+
+## diff-mode: fixing up wrong line count when working with patchset
+
+Problem: upon updating such header: `@@ -25,7 +25,6 @@` it sets the 2nd number *(i.e. 7 here)* wrong. It's one bigger than should be, because patchset ends with `--` thing, which Emacs considers as `removed`.
+
+A patch sent https://debbugs.gnu.org/cgi/bugreport.cgi?bug=37395
 
 # Done:
 
