@@ -82,6 +82,8 @@ Casting data to a struct, example:
         println!("here is the struct: {:?}", s);
     }
 
+Rust's analog to `std::set<T>` is `HashSet<T>`. Apparently it's implemented as `HashMap<T,()>`.
+
 # wrapper types
 
 https://doc.rust-lang.org/book/first-edition/choosing-your-guarantees.html
