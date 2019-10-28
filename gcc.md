@@ -24,6 +24,8 @@ Tree-dump has may have mentions of various optimization passes. Available ones a
 
 However, actual supported passes you can get with `-fdump-passes`. Then, suppose you want a pass for `tailc`. Then use: `-fdump-tree-tailc-all=filename`.
 
+A source file example that contains an optimization pass: `gcc/tree-tailcall.c`
+
 ## Links
 
 * GCC Architecture Internals https://en.wikibooks.org/wiki/GNU_C_Compiler_Internals/GNU_C_Compiler_Architecture
