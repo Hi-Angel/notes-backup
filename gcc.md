@@ -26,6 +26,35 @@ However, actual supported passes you can get with `-fdump-passes`. Then, suppose
 
 A source file example that contains an optimization pass: `gcc/tree-tailcall.c`
 
+## Backend IR
+
+It starts with converting GIMPLE to a backend-specific IR, which is represented by a LISP-like syntax. The RTL for passes on it can be looked upon with `-fdump-rtl-all`.
+
+Quoting:
+
+>     (reg:m n)
+> is an expression representing a register access, and
+>
+>     (plus:m x y)
+> represents adding the expressions x and y.
+
+…
+
+> The m in the expressions denotes a machine mode that defines the size and representation of the data object or operation in the expression
+
+Machine-codes example: `QI` — "Quarter Integer" mode, a single byte treated as integer. `HI` — "Half-Integer" a two-byte one.
+
+### Optimizations
+
+They're mostly same as in GIMPLE, but can do better job with the target arch knowledge. For example, dead-code elimination may see that the operations working on the upper part of n-bit variables.
+
 ## Links
 
 * GCC Architecture Internals https://en.wikibooks.org/wiki/GNU_C_Compiler_Internals/GNU_C_Compiler_Architecture
+
+### GCC Developer blogs
+
+* https://kristerw.blogspot.com/
+* http://hubicka.blogspot.com/
+* https://developers.redhat.com/blog/2019/10/11/a-upside-down-approach-to-gcc-optimizations/
+* https://developers.redhat.com/blog/tag/gcc/
