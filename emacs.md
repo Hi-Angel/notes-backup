@@ -20,6 +20,14 @@ Some info I gathered:
 * the error is about `buffer-undo-list` being set to just `(nil undo-tree-canary)`. The only place, I think, that could result in that is the function `undo-list-transfer-to-tree ()`, which has a line `(setq buffer-undo-list '(nil undo-tree-canary))`.
 * `undo-tree.el` has only 2 functions that deal with `undo-tree-canary` thing.
 
+### Scratches for a post
+
+Looking at how Alan recently updated a bunch of packages on SO and made a post on reddit, I figured I could do likewise, and get some free points from making this work and then posting an answer on stackexchange.
+
+----
+
+I was recently amazed to find unit-testing framework in Emacs and how nicely it being used for regress-testing `rust-mode`. I figured I could do the same with `undo-tree`, and thus try to find the combination that leads to the infamous problem *(making the project more robust on the way)*.
+
 # font-lock
 
 To check font-lock-face set on the symbol/word under cursor use `describe-text-properties`.
