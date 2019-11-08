@@ -4,11 +4,9 @@
 
 Needs to be compiled in separate dir, i.e. `mkdir build`, `cd build`, `../configure …`, `make`. The configure flags I used:
 
-    export BOOT_CFLAGS="-O0" # we don't want to spend time optimizing debug version
-    export BOOT_CXXFLAGS="-O0"
     ../configure --prefix= --build=x86_64-linux-gnu --disable-multilib --with-system-zlib --without-included-gettext --enable-threads=posix --enable-libstdcxx-debug --enable-libstdcxx-time=yes --disable-werror --disable-nls --enable-languages=c,c++,lto
 
-Using CFLAGS, CXXFLAGS have been resulting in stage-comparision failure. What have worked though, is using `BOOT_CFLAGS` instead.
+For how to change CFLAGS [see this](https://gcc.gnu.org/wiki/DebuggingGCC). It's interesting to notes that if you have a built GCC, you can rebuild just one directory with the new flags *(e.g. `gcc/` dir)*.
 
 ### Testing built GCC without installing
 
