@@ -16,6 +16,10 @@ If you're going to debug a C/C++ code, then from the build dir you can run `gcc/
 
 However, if you need to test it in full, as in, all includes/libraries, there's no way other than to install. Though you can install into the build directory. Just do `mkdir install`, then pass to configure an option `--prefix=/path/to/build-dir/install`, and after having it built run `make install`.
 
+# Debugging GCC
+
+While in code, you always can make GCC to pretty-print current GIMPLE and whatnot. Take a look at `gcc/gdbinit.in` file for available debugging helpers. *(note, currently they're a bit broken, [hopefully the patch fixing them will be accepted soon](https://gcc.gnu.org/ml/gcc-patches/2019-11/msg00610.html))*
+
 # Optimizations internals
 
 There's a bunch of options for printing successful optimizations, however the option that seems to cover the most *(as in, the rest of them can lack some the info you wanted)* is `-fdump-tree-all-*=*`. The `-fdump-tree-all-optimized=1` that I used prints functions many times as they go through various passes.
@@ -47,6 +51,10 @@ Machine-codes example: `QI` — "Quarter Integer" mode, a single byte treated as
 ### Optimizations
 
 They're mostly same as in GIMPLE, but can do better job with the target arch knowledge. For example, dead-code elimination may see that the operations working on the upper part of n-bit variables.
+
+## Glossary
+
+* **GSI** apparently `gimple_stmt_iterator`
 
 ## Links
 
