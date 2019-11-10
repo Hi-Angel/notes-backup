@@ -40,6 +40,12 @@ Problem: upon updating such header: `@@ -25,7 +25,6 @@` it sets the 2nd number *
 
 A patch sent https://debbugs.gnu.org/cgi/bugreport.cgi?bug=37395
 
+## symbol-overlay mode highlights an off-the-caret word for rust-mode
+
+Turned out, the reason is that `(racer-eldoc)` changes the `(point)`, and deep the stack calls a `(accept-process-output)` to wait for docs at point, and then while on it, an idle timer gets triggered, and calls `overlay-mode` hook. The bug is in Emacs: the timer calls it with the same environment as the rust-mode function. Like, if you trigger a debugger, you'll literally see the stack with `accept-process-output` and then the `overlay-mode-foo` on top of it. As result, `overlay-mode` gets a different `(point)` than the actual.
+
+Not motivated enough to make a testcase for a bugreport though. In part because I'm sure nobody gonna fix it: Emacs project is opposed to multithreading because their design is completely broken, and this stacktrace thingy in async call is a part of it. And I doubt GNU project can handle it.
+
 # Done:
 
 ## Emacs resize works wrong in KWin
