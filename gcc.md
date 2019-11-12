@@ -54,6 +54,13 @@ They're mostly same as in GIMPLE, but can do better job with the target arch kno
 
 * **GSI** apparently `gimple_stmt_iterator`
 
+## GIMPLE syntax snippets
+
+From IRC:
+
+> Q: explain LHS of the following GIMPLE assignment `*_1(D) = descend.constprop([…snip…]);`. My questions are: α) what "(D)" is, and β) why the "_1" variable is not declared in the function where this lines resides, neither it's declared at the top-level
+> A: `(D)` after `SSA_NAME` means a default definition, for parameters that is the value passed to a function, for other `SSA_NAME`s it means uninitialized use. As _1 has no `SSA_NAME_VAR`, it is the latter case, so dereference an uninitialized pointer
+
 ## Links
 
 * GCC Architecture Internals https://en.wikibooks.org/wiki/GNU_C_Compiler_Internals/GNU_C_Compiler_Architecture
