@@ -16,7 +16,7 @@ However, if you need to test it in full, as in, all includes/libraries, there's 
 
 # Debugging GCC
 
-While in code, you always can make GCC to pretty-print current GIMPLE and whatnot. Take a look at `gcc/gdbinit.in` file for available debugging helpers. *(note, currently they're a bit broken, [hopefully the patch fixing them will be accepted soon](https://gcc.gnu.org/ml/gcc-patches/2019-11/msg00610.html))*
+While in code, you always can make GCC to pretty-print current GIMPLE and whatnot. Take a look at `gcc/gdbinit.in` file for available debugging helpers. *(note, currently they're broken, [hopefully the patch-set fixing them will be accepted soon](https://gcc.gnu.org/ml/gcc-patches/2019-11/msg00884.html))*
 
 # Optimizations internals
 
