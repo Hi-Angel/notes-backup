@@ -18,6 +18,11 @@ However, if you need to test it in full, as in, all includes/libraries, there's 
 
 While in code, you always can make GCC to pretty-print current GIMPLE and whatnot. Take a look at `gcc/gdbinit.in` file for available debugging helpers. *(note, currently they're broken, [hopefully the patch-set fixing them will be accepted soon](https://gcc.gnu.org/ml/gcc-patches/2019-11/msg00884.html))*
 
+GCC stores various states in global variables *(at least global inside a file)*, so you may want to print them when debugging GCC internals. A few examples:
+
+* `cfun`: GIMPLE view of a function, being currently analyzed.
+* `stmt`: currently analyzed statement.
+
 # Optimizations internals
 
 There's a bunch of options for printing successful optimizations, however the option that seems to cover the most *(as in, the rest of them can lack some the info you wanted)* is `-fdump-tree-all-*=*`. The `-fdump-tree-all-optimized=1` that I used prints functions many times as they go through various passes.
