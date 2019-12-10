@@ -33,7 +33,7 @@ To decode lost content, we get:
     H⁻¹ * H * O = H⁻¹ * Y ⇒
     O = H⁻¹ * Y
 
-If all this sounds too abstract, go look at the original habr article, it has much nicer illustrations.
+I bet this sounds too abstract, go look at the original habr article, it has much nicer illustrations.
 
 ## Implementation with ISA-L library
 
