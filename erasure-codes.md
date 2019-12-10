@@ -43,5 +43,5 @@ The input coefficients it accepts is the part of generator matrix that starts ri
 
 * `k`, actually `n_cols`: num cols in the generator matrix.
 * `rows`, actually `n_rows`: num rows at the "input coefficients" part of the generator matrix.
-* `a` actually `input_coefficients`: a pointer to input coefficients *(usually, part of the generator matrix that is after identity)*.
+* `a` actually `input_coefficients`: a pointer to input coefficients *(usually, part of the generator matrix that is after identity)*. Note: at the current version of ISA-L for some reason this parameter is mutable. But it does not get mutated.
 * `gftbls`, actually… ?
