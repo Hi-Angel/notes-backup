@@ -41,7 +41,18 @@ I bet this sounds too abstract, go look at the original habr article, it has muc
 
 The input coefficients it accepts is the part of generator matrix that starts right after the identity part.
 
-* `k`, actually `n_cols`: num cols in the generator matrix.
-* `rows`, actually `n_rows`: num rows at the "input coefficients" part of the generator matrix.
-* `a` actually `input_coefficients`: a pointer to input coefficients *(usually, part of the generator matrix that is after identity)*. Note: at the current version of ISA-L for some reason this parameter is mutable. But it does not get mutated.
-* `gftbls`, actually… ?
+1. `k`, actually `n_cols`: num cols in the generator matrix.
+2. `rows`, actually `n_rows`: num rows at the "input coefficients" part of the generator matrix.
+3. `a` actually `input_coefficients`: a pointer to input coefficients *(usually, part of the generator matrix that is after identity)*. Note: at the current version of ISA-L for some reason this parameter is mutable. But it does not get mutated.
+4. `gftbls`, actually… ?
+
+### `ec_encode_data()`
+
+Given payload, writes redundancy to the buffers provided. Sizes of buffers should satisfy constraints as noted in parameters description.
+
+1. `len`: length of each buffer *(all buffers must have the same length)*
+2. `k`, actually `n_payload_bufs`: number of payload buffers, but it must be equal to the number of columns in the generator matrix.
+3. `rows`, actually `n_redundancy_bufs`: number of redundancy buffers, but it must be equal to the number of rows in the "input coefficients"-part of the generator matrix.
+4. `gftbls`, actually… ?
+5. `data`, actually `payload_bufs`: an array of pointers to buffers that contain payload.
+6. `coding`, actually `redundancy_bufs`: an array of pointers to buffers, where to write redundancy.
