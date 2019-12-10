@@ -41,7 +41,7 @@ I bet this sounds too abstract, go look at the original habr article, it has muc
 
 The input coefficients it accepts is the part of generator matrix that starts right after the identity part.
 
-* `k`, but actually `n_rows`: num rows in the generator matrix.
-* `rows`, but actually… ?
-* `a` but actually `input_coefficients`: a pointer to input coefficients.
-* `gftbls`, but actually… ?
+* `k`, actually `n_cols`: num cols in the generator matrix.
+* `rows`, actually `n_rows`: num rows at the "input coefficients" part of the generator matrix.
+* `a` actually `input_coefficients`: a pointer to input coefficients *(usually, part of the generator matrix that is after identity)*.
+* `gftbls`, actually… ?
