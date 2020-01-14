@@ -48,11 +48,26 @@ The input coefficients it accepts is the part of generator matrix that starts ri
 
 ### `ec_encode_data()`
 
-Given payload, writes redundancy to the buffers provided. Sizes of buffers should satisfy constraints as noted in parameters description.
+It may act in 2 modes: encoding and restoring. Sizes of buffers should satisfy constraints as noted in parameters description.
+
+#### Encoding
+
+Given payload, writes redundancy to the buffers provided.
 
 1. `len`: length of each buffer *(all buffers must have the same length)*
-2. `k`, actually `n_payload_bufs`: number of payload buffers, but it must be equal to the number of columns in the generator matrix.
+2. `k`, actually `n_payload_bufs`: number of payload buffers, also must be equal to the number of columns in the generator matrix.
 3. `rows`, actually `n_redundancy_bufs`: number of redundancy buffers, but it must be equal to the number of rows in the "input coefficients"-part of the generator matrix.
 4. `gftbls`, actually… ?
 5. `data`, actually `payload_bufs`: an array of pointers to buffers that contain payload.
 6. `coding`, actually `redundancy_bufs`: an array of pointers to buffers, where to write redundancy.
+
+#### Restoring
+
+Given redundancy, writes "lost buffers" to the buffers provided.
+
+1. `len`: length of each buffer *(all buffers must have the same length)*
+2. `k`, actually `n_payload_bufs`: number of payload buffers, also must be equal to the number of columns in the generator matrix.
+3. `rows`, actually `n_restore_to_bufs`: number of buffers to restore to.
+4. `gftbls`, actually… ?
+5. `data`, actually `left_bufs`: an array of pointers to buffers that contain left valid payload.
+6. `coding`, actually `lost_bufs`: an array of pointers to buffers, where to write restored data.
