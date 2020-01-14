@@ -1,3 +1,7 @@
+# How it works
+
+Here https://backreference.org/2010/03/26/tuntap-interface-tutorial/ TL;DR: `tun` and `tup` are kernel interfaces for IP-level and ethernet-level packets acc . When kernel decides to send data on the wire, it consults a `tun` interface. It has a userspace app attached to it, which reads data and does something to it. Usually, when the app destroyed, kernel deletes an interface too, but the interface can be made persistent.
+
 # Misc
 
 ## Cisco Anyconnect
