@@ -43,6 +43,14 @@ These `someid1` and `someid2` accord to `/dev/disk/by-id/someid1` and `…2` *(n
 
 # ZFS internals
 
+Details can be found at "ZFS ondisk format" document.
+
+All writes are done in "transaction groups". Each group has a number that is referred to in other structs.
+
+* `vdev label` is contained within first `256KB` of each physical vdev. It has various information about the current vdev, other vdevs that are in the pool, etc. A vdev has 4 copies of the label.
+* `uberblock array` is contained inside the label *(after various other information)*. It contains an info necessary to access the pool content.
+    Only one `uberblock` may be active, and it's never updated. Instead write is done into another `uberblock` in the array, and then transaction group number and timestamp are incremented to make it the active one.
+
 Each vdev is broken to "partitions" called `metaslabs`. Usually there's roughly 200 of them.
 
 Each metaslab has `spacemap`.
@@ -54,6 +62,29 @@ Represented as a tree, and allows to work with free and used blocks inside a met
 Block sizes it allows are in range 512..16М. "Free space" doesn't get accounted for blocks that never were used, it only does for those that were written and later removed.
 
 Upon write to some metaslab, ZFS makes up a map of free space "free map", to figure out appropriate ranges of contiguous free space.
+
+## Dataset
+
+`Dataset` in ZFS represents a collection of `object`s. It manages space consumption stats, contains object set location information, and snapshots connections.
+
+An object may represent a bunch of stuff, there are various types of objects. But ultimately, it has a block pointer and number of indirection levels. Object itself is represented by `dnode` struct.
+
+### dataset zdb dump
+
+```
+0 L1  0:9800:400 1:9800:400 4000L/400P F=2 B=190
+```
+
+ * `L1` means two levels of indirection *(a num of block pointers which need to be traversed to arrive at this data)*. `L0` would mean a `block level`, it's the one that actually hold data.
+ * at `0:9800:400`:
+   * 0 is some device index
+   * 9800 is offset from the beginning of the disk
+   * 400 size of the block (0x400 == 1024)
+   * also: the `0:9800` is a dva1 *(Data Virtual Address 1)*
+ * `1:9800:400` similar to previous: ZFS is using two disk blocks to hold pointers to file data.
+ * `F=2` "fill count", it's the number of non-zero block pointers under this block pointer.
+   * At `block level`, i.e. at `L0` this counter means if block has data or not *(0 or 1)*.
+ * `B=190` birth time, same as txg number (190) that creates the block.
 
 ## References
 
