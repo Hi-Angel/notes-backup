@@ -104,3 +104,19 @@ Just call `flycheck-rust-setup` before enabling it.
 # phantom data
 
 `marker::PhantomData` is used in structs that hold and own pointers, to mark pointed-to type as owned. Otherwise, simply having a pointer in a struct does not attach any ownership, thus destructors of pointers not gonna get ran upon struct being destroyed.
+
+# Debugging
+
+## Abort on panic
+
+You can either write in `Cargo.toml`:
+
+```
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+```
+
+or run rustc with `-C panic=abort` option.
