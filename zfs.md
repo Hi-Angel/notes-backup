@@ -15,7 +15,8 @@
 
 # Misc
 
-* creating a dataset `mydataset`: given existing pool `mypool`, `zfs create mypool/mydataset`
+* Creating a pool `zpool create mypool /dev/disk/by-id/some-disk`.
+* Creating a dataset `mydataset`: given existing pool `mypool`, `zfs create mypool/mydataset`
 * listing datasets: `zfs list`
 * Getting all properties for pool `mypool` and dataset `mydataset2`: `zfs get all mypool/mydataset2`.
 * Getting id of a dataset: `/lib/udev/zvol_id /dev/zd0`. Example output: `mypool/mydataset2`.
