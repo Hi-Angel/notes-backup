@@ -46,7 +46,7 @@ These `someid1` and `someid2` accord to `/dev/disk/by-id/someid1` and `…2` *(n
 
 Details can be found at "ZFS ondisk format" document.
 
-All writes are done in "transaction groups". Each group has a number that is referred to in other structs.
+All writes are done in "transaction groups". Consistency is guaranteed at their granularity. Each group has a number that is referred to in other structs.
 
 * `vdev label` is contained within first `256KB` of each physical vdev. It has various information about the current vdev, other vdevs that are in the pool, etc. A vdev has 4 copies of the label.
 * `uberblock array` is contained inside the label *(after various other information)*. It contains an info necessary to access the pool content.
@@ -86,6 +86,10 @@ An object may represent a bunch of stuff, there are various types of objects. Bu
  * `F=2` "fill count", it's the number of non-zero block pointers under this block pointer.
    * At `block level`, i.e. at `L0` this counter means if block has data or not *(0 or 1)*.
  * `B=190` birth time, same as txg number (190) that creates the block.
+
+## Objects
+
+* `bpobj` type of object stands for "block pointer object". Used mainly in snapshots, but from my experiments some of them store prev. system state even without snapshots being used.
 
 ## References
 
