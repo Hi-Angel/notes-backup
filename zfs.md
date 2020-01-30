@@ -94,3 +94,4 @@ An object may represent a bunch of stuff, there are various types of objects. Bu
 ## References
 
 * https://habr.com/ru/post/160943/
+* Inspecting ZFS with radare https://habr.com/ru/post/348354/
