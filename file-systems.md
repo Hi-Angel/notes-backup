@@ -41,9 +41,17 @@ There's a separate file `zfs.md` on ZFS
 
 Report a disk health.
 
-## References
+## Failures
 
-* A nice breakdown of a few attributes for figuring out a drive health https://www.backblaze.com/blog/what-smart-stats-indicate-hard-drive-failures/
+Turns out, ongoing failure of a drive can't be determined for sure just by looking at stats. Instead, people using smart tools take advantage of statics: given an attribute, how often with its value greater than zero a drive fails in future or remains operational.
+
+[Per this article](https://www.backblaze.com/blog/what-smart-stats-indicate-hard-drive-failures/)
+
+For attribute 184 "End to End Errors" bigger than zero, 1.5% of drives fail and just 0.1% operational drives report it.
+
+Given attributes 5, 187, 188, 197, 198: if two or more of them simultaneously greater than zero, this almost always means ongoing fail. There's other fun statics about their relationship over at the article linked.
+
+189 "High Fly Writes": this one steadily increasing over months means nothing. However having it increased by a few dozens for a period of just one week means you can start worrying.
 
 # CEPH
 
