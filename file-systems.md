@@ -33,6 +33,18 @@ Layers used in order from the most primitive:
 2. **volume groups**, prefix `gv...` — storage pools of **physical volumes** that abstract characteristics of underlying devices.
 3. **logical volumes**, prefix `lv...` or `lvm...` — slices of a **volume group**, it's like partitions.
 
+# ZFS
+
+There's a separate file `zfs.md` on ZFS
+
+# SMART tools
+
+Report a disk health.
+
+## References
+
+* A nice breakdown of a few attributes for figuring out a drive health https://www.backblaze.com/blog/what-smart-stats-indicate-hard-drive-failures/
+
 # CEPH
 
 Cluster based storage system. Stores data across the network. Also employs erasure coding.
