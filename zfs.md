@@ -70,6 +70,10 @@ Upon write to some metaslab, ZFS makes up a map of free space "free map", to fig
 
 An object may represent a bunch of stuff, there are various types of objects. But ultimately, it has a block pointer and number of indirection levels. Object itself is represented by `dnode` struct.
 
+## DVA
+
+Data Virtual Address, location of the data. `zdb` shows it in bytes, but ZFS internally stores it as 512-sized sector index. A block may contain multiple DVAs *(up to `SPA_DVAS_PER_BP`)*.
+
 ### dataset zdb dump
 
 ```
