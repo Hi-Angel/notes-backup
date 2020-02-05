@@ -23,6 +23,13 @@ raid 6 — like raid 5, but stores two "parity blocks". Allows for loss of two d
 
 raid 50, 60 — I decided to gloss over, [see here][1].
 
+# RAID software
+
+* `mdadm` classic app for creating a RAID. Simple and mature.
+* `lvmraid` per comparison on SE, it seems to be using md-raid under the cover. However as of 2015 *(date of the answer)* they say, its utilities are not as mature.
+* `zfs` has embedded means for creating a RAID. Probably not as performant as mdadm due to CoW though, but it has its features.
+* `btrfs` ditto as ZFS.
+
 # LVM
 
 Logical Volume Management — allows for representing multiple disks as a single one, an online modifications to partitions, etc. Basically, it's just an added easy-of-use and flexibility.

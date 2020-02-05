@@ -4,7 +4,6 @@
 * `pool`: essentially *(??)* a collection of vdevs.
 * `dataset`: basically a directory. Like, a place to store files and other directories, just that.
 * `ZVOL` raw block devices, represented to system.
-* `L2ARC` and `SLOG`: special kind of created block devices, intended to be fast. Reads and writes to this device are essentially spread over hw disks in a way to maximize speed.
 * `scrub`: an utility similar to fsck. It runs against a mounted and live filesystem. Also according to Wiki, ZFS seems to store multiple copies of a file *(disregarding RAID functional)*, so a file whose checksum doesn't match can be restored.
 * `quota`: a limit set for a particular dataset. E.g. here we limit a dataset `customers/1` to only have 5G available: `zfs set quota=5G mypool/customers/1`
 * `metaslab`: a hash tree that stores what and where blocks are written. It's usually being written from disks, and there's an option to make it always be loaded in RAM for more speed.
@@ -94,6 +93,14 @@ Data Virtual Address, location of the data. `zdb` shows it in bytes, but ZFS int
 ## Objects
 
 * `bpobj` type of object stands for "block pointer object". Used mainly in snapshots, but from my experiments some of them store prev. system state even without snapshots being used.
+
+## ARC (Adaptive Replacement Cache)
+
+Cache for data, metadata, etc. Async data gets cached in ARC, while sync data gets written to ZIL.
+
+Its stats can be seen at `/proc/spl/kstat/zfs/arcstats`, also there's `arc_summary.py` script that makes that data even more interesting.
+
+While ARC is global for the whole ZFS system, one can add another cache L2ARC, which is specific to a pool.
 
 ## References
 
