@@ -85,3 +85,20 @@ if is_shadow_byte_set != smthng4 then
 else
     store_at 0 ptr_arr_elem
 ```
+
+# bpftrace
+
+## Glossary
+
+Probes, kprobes, tracepoint, etc. Refer to the table https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md#terminology
+
+An analog to Solaris `dtrace`. Syntax and options are different though, so scripts have to be ported between them.
+
+## Misc
+
+* `bpftrace` supports passing arguments to the script on command line. To print the first one, use `printf("%s", str($1));`. It's funny, that `$1` by default is an integer, i.e. you can print it with `%d` and you can not do it with `%s`. But applying a `str()` to it magically converts it from an integer to string. No idea.
+* **Missing prints**: are usually caused by lack of `\n` at printf call. bpftrace has printfs newline-buffered, so it won't appear until either ^C or newline.
+
+## References
+
+1. Crush course: https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md
