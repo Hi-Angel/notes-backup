@@ -7,7 +7,7 @@
 int fib(int x) {
     if (x == 0) return 0;
     else if (x == 1) return 1;
-    return fib(x - 1) + fib(x - 2);
+    else return fib(x - 1) + fib(x - 2);
 }
 
 int main(int argc, char *argv[]) {
@@ -53,7 +53,7 @@ If `perf` is built with libunwind or libdw, use `--call-graph dwarf` instead. Th
 
 # misc
 
-There's lots of different events; all of them can be enabled explicitly with `-e my-event`.
+There's lots of different events; all of them can be enabled explicitly with `-e my-event`. For example `perf record -g -e branch-misses,cycles myapp`
 
 Pressing "a" in perf-report shows record per assembly instructions *(and maybe source code)*. The percentage near instructions means "percentage of probes taken here compared to total within the function"; bear that in mind to make sense of those values.
 
