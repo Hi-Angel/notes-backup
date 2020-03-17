@@ -50,3 +50,10 @@ For commands, example:
     GrepCmd() # needed to get it registered
 
 Here, `gdb.COMMAND_STATUS` and other types are only influencing documentation.
+
+# Using gdbserver
+
+* Starting up gdbserver: `gdbserver :PORT path_to_app app_args`
+* Connecting to the gdbserver:
+  1. `gdb`
+  2. In gdb cmd line: `target extended-remote :PORT`

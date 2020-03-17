@@ -1,3 +1,7 @@
+# Notes
+
+* Any modification requires opening a file with `-w` option. At least in older versions modifications were pretending to be working *(i.e. no error, warning)*, however upon printing the content you'd find it's unchanged.
+
 # Examples
 
 * Loading a binary file `r2 -nn file`.
