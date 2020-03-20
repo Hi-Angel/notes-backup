@@ -57,3 +57,9 @@ Here, `gdb.COMMAND_STATUS` and other types are only influencing documentation.
 * Connecting to the gdbserver:
   1. `gdb`
   2. In gdb cmd line: `target extended-remote :PORT`
+
+# kgdb
+
+Ultimately, you need to enable module that allows you to connect from gdb with `target remote` command. With the kernel there's a driver for debugging over a serial port. There's also off-tree driver `gdboe` *(gdb over ethernet)*, which I used. Enabling it is simple: `insmod kgdboe.ko device_name=enp0s25 udp_port=3333`. It even prints in dmesg how to connect from gdb to it. However when I connected gdb, the system hanged. Idk why.
+
+There's also multiple configs that may need to be enabled to be able to debug over gdb.

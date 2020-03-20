@@ -72,3 +72,10 @@ Order: there's none. Don't count on right-to-left or otherwise columns location 
 # links
 
 Some discussion on formatting involving a perf developer https://lwn.net/Articles/379949/
+
+## Missing symbols
+
+If you're reading `perf.data` from a PC different to one where report was created, you may want to give it a path to debug symbols. For debugging a Linux kernel module it helped me to do 2 things:
+
+1. Give path to vmlinux file with `-k`
+2. Give path to "kallsyms" with `--kallsyms=`. This file that resides in `/proc/kallsyms` file. Note that if you access a system remotely, this file may seem empty, so you need to copy it first.
