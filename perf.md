@@ -76,6 +76,10 @@ If you're reading `perf.data` from a PC different to one where report was create
 1. Give path to vmlinux file with `-k`
 2. Give path to "kallsyms" with `--kallsyms=`. This file that resides in `/proc/kallsyms` file. Note that if you access a system remotely, this file may seem empty, so you need to copy it first.
 
+## Measure an app execution time
+
+`perf stat -r 10 myapp` would execute it 10 times, and print an overall statistics.
+
 # links
 
 Some discussion on formatting involving a perf developer https://lwn.net/Articles/379949/
