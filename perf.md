@@ -59,19 +59,15 @@ Pressing "a" in perf-report shows record per assembly instructions *(and maybe s
 
 In making `how to read perf-report` so far the best is to look at example in the bottom of `man perf-report`. The bottom part is: by default `perf` is using `--children`, but you usually want to look at `Self` column. So, to sort by `Self` pass a `--no-children` option — in this case "Overhead" col. should be the `Self`.
 
-# Show the actual number of events that accords to a percentage
+## Show the actual number of events that accords to a percentage
 
 Use `-F+period` option. E.g. `perf report --stdio --no-children -F+period`
 
-# Flamegraphs
+## Flamegraphs
 
 After a record is ready, `flamegraph` package can be used as `perf script | stackcollapse-perf.pl | flamegraph.pl > out.svg`.
 
 Order: there's none. Don't count on right-to-left or otherwise columns location as meaning anything — they don't, it's random.
-
-# links
-
-Some discussion on formatting involving a perf developer https://lwn.net/Articles/379949/
 
 ## Missing symbols
 
@@ -79,3 +75,7 @@ If you're reading `perf.data` from a PC different to one where report was create
 
 1. Give path to vmlinux file with `-k`
 2. Give path to "kallsyms" with `--kallsyms=`. This file that resides in `/proc/kallsyms` file. Note that if you access a system remotely, this file may seem empty, so you need to copy it first.
+
+# links
+
+Some discussion on formatting involving a perf developer https://lwn.net/Articles/379949/
