@@ -19,3 +19,18 @@ Otherwise, `blktrace -d /dev/sda` gonna write to `sda.blktrace.*` files, which c
 It's written in man, paragraph `DEFAULT OUTPUT`, but the man is a bit confusing: part of the output, where process name and offsets, is mentioned as some "default header" *(even though it's in the end of each line, rarely a place for headers)*.
 
 Offsets are written in format like `1234567 + 16`, where the left part is offset and the right is the number of blocks being read. It's usually `512` bytes. The offset is apparently in decimals since I've never seen an `abcdef` in it.
+
+# RAID misc
+
+## duplicating mount points
+
+I noted it with MD RAID, but may be not specific to it. Suppose you have a RAID over sdX and sdY. Issuing `lsblk -f` may give something like
+
+```
+sdX
+    md0p0 mount-pointX
+sdY
+    md0p0 mount-pointX
+```
+
+Note the mount point is the same! Devices are different, but mount point is the same. This is actually just a confusing output: you only have one `md0p0` device, and hence one mount point. But the device itself is created over two physical devices sdX and sdY.

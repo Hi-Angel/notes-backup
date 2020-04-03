@@ -11,3 +11,12 @@
 ## hints
 
 Use `ack` instead of `grep` or `find` + `perl`, since it has better syntax than find+perl, and perl-compatible regexps, so you can test them.
+
+# Misc
+
+* booleans: "false" is anything of `undef`, `0`, `"0"`, `""`, and "true" is everything else. Note that this can lead to subtle error if you do `while($line)` where line is `"0"`.
+* processing stdin: use `<>`. This operator is a call to `readline()` wrapped. You can do e.g. `my $line = <>` Or `while(<>) {…}` is a "for-each-input-line" loop. And here `map m{Directory.+trunk/(.+?)/}, <>` we do replacement similarly for each input line.
+* String replacement: inside a `while(<>)` loop use `if (/pattern/)`
+* String replacement delimiter changed: given a `if (/pattern/)`, add `m` to change delimiter, e.g. `if (m{pattern})`
+* Set-builder notation: `my @arr = map m{Directory.+trunk/(.+?)/}, <>` here we map the function over stdin, and store result in `arr`
+* Printing array without assigning to variable: you may need to explicitly order the code `print ((map m{Directory.+trunk/(.+?)/}, <>)[0])`.
