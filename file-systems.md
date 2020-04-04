@@ -44,6 +44,11 @@ Layers used in order from the most primitive:
 
 There's a separate file `zfs.md` on ZFS
 
+# BTRFS
+
+* Creating a RAID: `mkfs.btrfs -m raid5 -d raid5 /dev/sd{g,h,i,j,k,m,o,p,r,v}1 -f`
+* Destroy the RAID: apparently, there's no dedicated command to it. After talking on IRC, the way to get rid of above RAID would be `wipefs -a /dev/sd{g,h,i,j,k,m,o,p,r,v}1`. I was told that btrfs rescan running might be needed, but as of kernel 5.6 I didn't need it, i.e. `btrfs fi show` didn't show the devices anymore.
+
 # SMART tools
 
 Report a disk health.
