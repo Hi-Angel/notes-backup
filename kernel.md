@@ -23,4 +23,4 @@ Use something like
     I am not sure this is really needed, from the cursory look I am not seeing why would this field have debris; and if function don't need that info anymore, why wouldn't it just ignore it?
 * in `tcp_v4_rcv` there's branching upon `sk->sk_state`. The values are enum, but the `sk_state` is a char. See if we can do anything about it.
 * `inet_ehashfn` takes some time, the stack ends in there but I'm guessing it's the hashing part that takes time. Can we optimize it somehow?
-* in various functions, a bunch of time may be spent to release `skb`: (`skb_release_data`, `kfree`; and the opposite `sk_stream_alloc_skb`). Makes me wonder if we could reserve some hundreds of bytes to make it go easier.
+* in various functions, a bunch of time may be spent to release `skb`: (`skb_release_data`, `kfree`; and the opposite `sk_stream_alloc_skb`). Makes me wonder if we could reserve some hundreds of bytes to make it go easier. UPD: actually, I gotta measure how much time it really takes. It is especially interesting for newer kernel as there was a lot of reworks around memory management.
