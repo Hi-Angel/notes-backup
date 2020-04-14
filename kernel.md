@@ -25,3 +25,7 @@ Use something like
 * `inet_ehashfn` takes some time, the stack ends in there but I'm guessing it's the hashing part that takes time. Can we optimize it somehow?
 * in various functions, a bunch of time may be spent to release `skb`: (`skb_release_data`, `kfree`; and the opposite `sk_stream_alloc_skb`). Makes me wonder if we could reserve some hundreds of bytes to make it go easier. UPD: actually, I gotta measure how much time it really takes. It is especially interesting for newer kernel as there was a lot of reworks around memory management.
 * `iscsi_tcp_recv_skb()` has argument `offloaded`, which allows to skip most of the function. It's not quite clear though, what exact feature allows that from the output `ehttool -k`. As of 4.19, the argument is only set in `libcxgbi.c`. Figure out if we can exploit that somehow.
+
+# Devices location
+
+* there're devices that appear like `PNP*`, these can be found at `/sys/bus/platform/devices/`
