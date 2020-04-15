@@ -20,6 +20,8 @@ int main(int argc, char *argv[]) {
 
 ## Reading
 
+To make percents appear everywhere press `V` hotkey.
+
 ### `fractal`
 
 After running `perf report -g fractal -F+period`, percentages on a single align-level adds up to 100%.
@@ -75,6 +77,7 @@ If you're reading `perf.data` from a PC different to one where report was create
 
 1. Give path to vmlinux file with `-k`
 2. Give path to "kallsyms" with `--kallsyms=`. This file that resides in `/proc/kallsyms` file. Note that if you access a system remotely, this file may seem empty, so you need to copy it first.
+3. Give path to where root is mounted with `--symfs=`. That said, for me when I used it, it broke working symbols, i.e. I started seeing offsets instead of names. Idk why, maybe a bug.
 
 ## Measure an app execution time
 
