@@ -86,3 +86,12 @@ If you're reading `perf.data` from a PC different to one where report was create
 # links
 
 Some discussion on formatting involving a perf developer https://lwn.net/Articles/379949/
+
+# Measuring time that threads spend sleeping, locked, etc.
+
+As of writing these words, the tool has nothing useful. Some research on the situation below.
+
+* kernel tutorial for perf has a paragraph called "measuring sleeping times", but that results in useless stacktraces. Specifically, you won't get a stack that answers "where sleep/lock/whatever was called in my app". [Report](https://bugzilla.kernel.org/show_bug.cgi?id=207301). The only thing it may perhaps be useful for is figuring out whether there's a problem with sleeping too much in app given.
+* there's `perf sched record` that records scheduler events. Its results can later be read with:
+    * `perf-report`, but it would suffer from the same problem as the tutorial paragraph: no useful traces. It again may be useful to figure out if some task/thread gets migrated between CPUs too much, or sleeps too much, not much beyond that though.
+    * various `perf-shed` stats commands, like `latency`, `timehist`… I don't have anything notable to say about them though.
