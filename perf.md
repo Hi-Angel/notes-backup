@@ -95,3 +95,5 @@ As of writing these words, the tool has nothing useful. Some research on the sit
 * there's `perf sched record` that records scheduler events. Its results can later be read with:
     * `perf-report`, but it would suffer from the same problem as the tutorial paragraph: no useful traces. It again may be useful to figure out if some task/thread gets migrated between CPUs too much, or sleeps too much, not much beyond that though.
     * various `perf-shed` stats commands, like `latency`, `timehist`… I don't have anything notable to say about them though.
+
+A report is filled https://bugzilla.kernel.org/show_bug.cgi?id=207323
