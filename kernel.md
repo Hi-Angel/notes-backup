@@ -6,6 +6,14 @@ Use something like
     make -C /lib/modules/5.4.28-050428-generic/build M=/home/user/Projects/mymodule_dir INSTALL_MOD_DIR=extra/dev_handlers CONFIG_MODULE_SIG_ALL= modules_install
     ```
 
+# Building one module
+
+IIRC the example below worked for me. But there's a gotcha: make sure the module you're building is enabled in configs. For that you can find how the driver is called in configs in `Kconfig` file in its *(or higher)* directory, and then using search in `menuconfig`.
+
+```
+make -C . M=drivers/scsi/cxgbi
+```
+
 # Errors
 
 * `FATAL: parse error in symbol dump file`: in my experience of building an external module, this means you've got a `Module.symvers` file cached from a different kernel version. If you're building an external module, just run `find -name Module.symvers -delete` over your source code, it should get regenerated.
@@ -30,3 +38,39 @@ Use something like
 # Devices location
 
 * there're devices that appear like `PNP*`, these can be found at `/sys/bus/platform/devices/`
+
+# Debugging
+
+## Measuring time spent
+
+    ktime_t start, end;
+    u64 actual_time;
+    start = ktime_get();
+    // do some workload
+    end = ktime_get();
+    actual_time = ktime_to_ns(ktime_sub(end, start));
+    printk("time spent is %lld ns\n", actual_time);
+
+or, to print accum every second:
+
+```
+    static ktime_t prev_sec_at = 0;
+    static u64 sum_at_prev_sec_ns = 0;
+    ktime_t start, end;
+    start = ktime_get();
+    // do some workload
+    end = ktime_get();
+    sum_at_prev_sec_ns += ktime_to_ns(ktime_sub(end, start));
+    if (ktime_to_ms(end) - prev_sec_at >= 1000) {
+        if (sum_at_prev_sec_ns > 1000000)
+            printk("time spent is %lld ms\n", sum_at_prev_sec_ns / 1000000);
+        else if (sum_at_prev_sec_ns > 1000)
+            printk("time spent is %lld μs\n", sum_at_prev_sec_ns / 1000);
+        else
+            printk("time spent is %lld ns\n", sum_at_prev_sec_ns);
+        prev_sec_at = ktime_to_ms(end);
+        sum_at_prev_sec_ns = 0;
+    }
+```
+
+Note that some of them may be GPL-only if you're building an external module. As far as I can tell, in the kernel type of export is a compile-time decision. But you can edit `META` file of the module you're working with to change license to GPL.
