@@ -12,6 +12,15 @@
 
 * `zdb` is a zfs debugger.
 
+## Quickly installing the code while hacking
+
+Code below is for module itself, so adapt for you needs if you're hacking into some userspace utilities.
+
+```
+cd module/
+make modules && cp zfs/zfs.ko /lib/modules/$(uname -r)/extra/zfs/zfs.ko
+```
+
 # Misc
 
 * Creating a pool `zpool create mypool /dev/disk/by-id/some-disk`.
