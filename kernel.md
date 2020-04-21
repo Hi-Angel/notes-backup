@@ -74,3 +74,7 @@ or, to print accum every second:
 ```
 
 Note that some of them may be GPL-only if you're building an external module. As far as I can tell, in the kernel type of export is a compile-time decision. But you can edit `META` file of the module you're working with to change license to GPL.
+
+# Misc
+
+* while profiling/debugging you may find one of these `ret_from_intr`, `ret_from_exception`, `ret_from_sys_call`, `and` `ret_from_fork`. [There's some description on how they work](https://www.oreilly.com/library/view/understanding-the-linux/0596002130/ch04s08.html), but not much on what they are. I think here's what happens: while a process gets executed, various events may happen. Most usually that is a timer interrupt. At this point kernel scheduler accepts execution. These functions are basically entry points into the scheduler.
