@@ -39,6 +39,10 @@ make -C . M=drivers/scsi/cxgbi
 
 * there're devices that appear like `PNP*`, these can be found at `/sys/bus/platform/devices/`
 
+# Block layer
+
+Here's a good article, although it is probably a bit obsolete in the sense that AFAIK page cache for block devices is no more *(there's still VFS one)*. I was told it was removed because all FSes do caching on their own, and that peoples who use raw block devices directly are never interested in having their data cached.
+
 # Debugging
 
 ## Measuring time spent
