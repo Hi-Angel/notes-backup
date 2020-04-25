@@ -23,6 +23,7 @@ Offsets are written in format like `1234567 + 16`, where the left part is the bl
 # Misc
 
 * block size is usually 512 bytes. AFAIR it was hardcoded. Anyway, it can be gotten with `blockdev --report /dev/sdX`
+* `gdisk` shows offsets in sectors, and the sector size is usually 512. As a hint that this is the case note whether first partitions starts at `2048` offset. `2048 * 512 = 1MB`.
 
 # RAID misc
 
