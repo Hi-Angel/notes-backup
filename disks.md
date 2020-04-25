@@ -20,6 +20,15 @@ It's written in man, paragraph `DEFAULT OUTPUT`, but the man is a bit confusing:
 
 Offsets are written in format like `1234567 + 16`, where the left part is the block index and the right one is the number of blocks being acted upon. A block is usually `512` bytes. The offset is apparently in decimals since I've never seen an `abcdef` in it.
 
+## Mapping blktrace/blkparse offset to an actual file
+
+As of writing the words, blkparse shows global indices even if you pointed blktrace at a partition. So:
+
+1. Convert block index to an offset by multiplying by 512
+2. Substract offset of the beginning of the partition *(I found it out by using `gdisk -l /dev/sdX` to get partition "start sector", and then multiplied it by 512)*
+
+What to do next varies for file systems. [There's an answer](https://superuser.com/questions/490787/reverse-lookup-of-inode-file-from-offset-in-raw-device-on-linux-and-ext3-4) for ext-family using `debugfs`. For btrfs you translate that to logical address with [this script](https://github.com/Hi-Angel/scripts/blob/master/btrfs-physical-to-logical-mapping.py) and then use it with `btrfs inspect-internal`, for example: `sudo btrfs inspect-internal logical-resolve 378331914240 /`.
+
 # Misc
 
 * block size is usually 512 bytes. AFAIR it was hardcoded. Anyway, it can be gotten with `blockdev --report /dev/sdX`
