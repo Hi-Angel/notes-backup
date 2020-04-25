@@ -21,3 +21,4 @@ Use `ack` instead of `grep` or `find` + `perl`, since it has better syntax than 
 * Set-builder notation: `my @arr = map m{Directory.+trunk/(.+?)/}, <>` here we map the function over stdin, and store result in `arr`
 * Printing array without assigning to variable: you may need to explicitly order the code `print ((map m{Directory.+trunk/(.+?)/}, <>)[0])`.
 * Note that some ways of splitting a string on newlines leave the newline inside the split string. Use `split /\n/, $mystr` or if you want a list of files in a dir, then `glob()`.
+* `print /.*/` returns just `1`: read `Matching in list context` in `perldoc perlop`. Basically, it would by default print matched groups in regexp or just `1` for success if none groups were used. So you can make it work with either `print /(.*)/` or `print /.*/g`.
