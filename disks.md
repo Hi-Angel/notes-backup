@@ -18,7 +18,11 @@ Otherwise, `blktrace -d /dev/sda` gonna write to `sda.blktrace.*` files, which c
 
 It's written in man, paragraph `DEFAULT OUTPUT`, but the man is a bit confusing: part of the output, where process name and offsets, is mentioned as some "default header" *(even though it's in the end of each line, rarely a place for headers)*.
 
-Offsets are written in format like `1234567 + 16`, where the left part is offset and the right is the number of blocks being read. It's usually `512` bytes. The offset is apparently in decimals since I've never seen an `abcdef` in it.
+Offsets are written in format like `1234567 + 16`, where the left part is the block index and the right one is the number of blocks being acted upon. A block is usually `512` bytes. The offset is apparently in decimals since I've never seen an `abcdef` in it.
+
+# Misc
+
+* block size is usually 512 bytes. AFAIR it was hardcoded. Anyway, it can be gotten with `blockdev --report /dev/sdX`
 
 # RAID misc
 
