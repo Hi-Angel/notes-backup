@@ -8,6 +8,12 @@
 * `quota`: a limit set for a particular dataset. E.g. here we limit a dataset `customers/1` to only have 5G available: `zfs set quota=5G mypool/customers/1`
 * `metaslab`: a hash tree that stores what and where blocks are written. It's usually being written from disks, and there's an option to make it always be loaded in RAM for more speed.
 
+# Failing drives
+
+This can be simulated with `zpool offline mypool device`.
+
+For missing drive `zpool status` says "OFFLINE" for the disk and "DEGRADED" as a pool state. It can be replaced with `zpool replace -f mypool old_device new_device`. That will trigger a resilver/rebuild, and the `scan:` in `zpool status` will say about resilver happening/happened.
+
 # Debugging
 
 * `zdb` is a zfs debugger.
