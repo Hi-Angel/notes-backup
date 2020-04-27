@@ -38,6 +38,7 @@ make -C . M=drivers/scsi/cxgbi
 # Devices location
 
 * there're devices that appear like `PNP*`, these can be found at `/sys/bus/platform/devices/`
+* do `cat /proc/bus/input/devices` to see locations for input devices.
 
 # Block layer
 
