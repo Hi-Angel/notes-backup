@@ -35,6 +35,13 @@ make modules && cp zfs/zfs.ko /lib/modules/$(uname -r)/extra/zfs/zfs.ko
 * Getting all properties for pool `mypool` and dataset `mydataset2`: `zfs get all mypool/mydataset2`.
 * Getting id of a dataset: `/lib/udev/zvol_id /dev/zd0`. Example output: `mypool/mydataset2`.
 * Getting `/dev/zd*` device *(at least if the dataset represents a block device)*: `ls -l /dev/zvol/mypool/mydataset`
+* `dd: error writing '/dev/zd0': No space left on device` — that error can appear if you ran `dd` *(or similar command)* too early. Per my understanding, after pool and volume has been created, there's a short time before `zd0` is configured. You need to wait, say, a second. I've seen this happening on 0.8.3. IMO this is a bug as commands creating a volume shouldn't return if `zd0` wasn't configured yet, but I don't have motivation in reporting it right now.
+
+# Installing
+
+You can create packages, but there's no single command to only create all packages you may need. It either creates too many or too little.
+
+So, assuming you on deb-based distro *(similar for rpm-based)*, do `make deb`, then `rm *dkms*.deb` *(or remove `kmod` ones if you want dkms instead)*, then install stuff.
 
 # What devices constitute a ZFS pool RAID?
 
