@@ -4,6 +4,8 @@ After `autogen`, use `make` to build and run test suit. `make build-nocheck` —
 
 Every option `--with-system-PACKAGE` *(which means "use the system PACKAGE")* has the opposite `--without-system-PACKAGE`. If you use something not "system-only", make sure `--disable-fetch-external` is not present.
 
+After it is built, it can be ran as `instdir/program/soffice`
+
 # Links
 
 * Docs: https://docs.libreoffice.org/
