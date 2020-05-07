@@ -2,7 +2,15 @@ Notes on various debugging tools and techniques.
 
 # Profiling
 
+## Perf
+
 See `perf.md` file.
+
+## Sysprof
+
+A nice GUI utility with graphs and stuff, supporting both system-wide and not profiling, profiling CPU, memory allocations, IO accesses, power consumption, and other things. Can be used without GUI with `sysprof-cli`
+
+As of latest nice tutorial is here https://blogs.gnome.org/chergert/2020/03/14/how-to-use-sysprof-to/ and https://blogs.gnome.org/chergert/2020/03/15/how-to-use-sysprof-to-part-ii/
 
 # gdb
 
