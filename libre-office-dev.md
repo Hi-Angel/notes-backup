@@ -196,26 +196,6 @@ At the end of `ParseCSS1_background_color()` of svxcss1.cxx there is seting of b
 
 `SvxCSS1Parser` class converts CSS properties into `SvxItem(Set)`.
 
-## html todo:
-### content
-Wire up `content` property support. Support for counters is pointless otherwise.
-
-`ParseSelector()`does some parsing, but its only influence to outside world is through the returned value, which in turn, higher the stack, gets into `m_Selectors`. Interestingly, there are two `SelectorParsed()`'s, and gets called not the one that doesn't do anything with args. The real one can only be seen in debugger.
-
-`SwCSS1Parser::StyleParsed()` is where selectors and their styles meet each other. They're stored through `InsertClass()` into a std::map `m_Classes` for further processing.
-
-`SwCSS1Parser::ParseStyleSheet()` calls `SvxCSS1Parser::ParseStyleSheet()` which does the parsing. FTR: with a simple CSS test about yellow background for a class, after the `ParseStyleSheet()` all those "page" codes below getting skipped through `if`s.
-
-1. add `css1_double_semicolon` *(for starters make it working with a single one)*
-2. at `ParseSelector()` reuse the parsing of `CSS1_IDENT`+`CSS1_DOT_W_WS`. To `eType` assign a new element of CSS1SelectorType.
-
-* Look at how `aColor` is assigned. Possibly `content` has to be added there.
-  ✓ yes, it's done. Some properties set in `pItemSet`.
-* How does `SfxItemSet` know what class/element it belongs to ?
-  class is accessed at `SwCSS1Parser::GetTextFormatColl()` (htmlcss1.cxx), the last `else` block in the end. The function sets the current style and its attributes, and is called from `NewHeading()` at swhtml.cxx
-* Consider asking #libreoffice-dev of better implementation: I could manually cycle throuh nodes and the text, or is there an established property I have to set?
-
-
 `ParseSelector()` is bailing out on `CSS1_COLON == nToken` to `default:`
 
 # UI
@@ -248,3 +228,23 @@ I've choosen to modify `writerperfect/source/writer/AbiWordImportFilter.cxx`. Fo
 aCSS1PropFnTab should be constexpr-sorted.
 
 Unused variable `bFound` at `ParseCSS1_font_family`. A run with gcc warn-set could be useful.
+
+## html todo
+
+### content
+Wire up `content` property support. Support for counters is pointless otherwise.
+
+`ParseSelector()`does some parsing, but its only influence to outside world is through the returned value, which in turn, higher the stack, gets into `m_Selectors`. Interestingly, there are two `SelectorParsed()`'s, and gets called not the one that doesn't do anything with args. The real one can only be seen in debugger.
+
+`SwCSS1Parser::StyleParsed()` is where selectors and their styles meet each other. They're stored through `InsertClass()` into a std::map `m_Classes` for further processing.
+
+`SwCSS1Parser::ParseStyleSheet()` calls `SvxCSS1Parser::ParseStyleSheet()` which does the parsing. FTR: with a simple CSS test about yellow background for a class, after the `ParseStyleSheet()` all those "page" codes below getting skipped through `if`s.
+
+1. add `css1_double_semicolon` *(for starters make it working with a single one)*
+2. at `ParseSelector()` reuse the parsing of `CSS1_IDENT`+`CSS1_DOT_W_WS`. To `eType` assign a new element of CSS1SelectorType.
+
+* Look at how `aColor` is assigned. Possibly `content` has to be added there.
+  ✓ yes, it's done. Some properties set in `pItemSet`.
+* How does `SfxItemSet` know what class/element it belongs to ?
+  class is accessed at `SwCSS1Parser::GetTextFormatColl()` (htmlcss1.cxx), the last `else` block in the end. The function sets the current style and its attributes, and is called from `NewHeading()` at swhtml.cxx
+* Consider asking #libreoffice-dev of better implementation: I could manually cycle throuh nodes and the text, or is there an established property I have to set?
