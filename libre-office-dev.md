@@ -248,3 +248,24 @@ Wire up `content` property support. Support for counters is pointless otherwise.
 * How does `SfxItemSet` know what class/element it belongs to ?
   class is accessed at `SwCSS1Parser::GetTextFormatColl()` (htmlcss1.cxx), the last `else` block in the end. The function sets the current style and its attributes, and is called from `NewHeading()` at swhtml.cxx
 * Consider asking #libreoffice-dev of better implementation: I could manually cycle throuh nodes and the text, or is there an established property I have to set?
+
+# Work
+
+## Missing INS tag when opening an html document
+
+It's useful to compare with italic tag aka "emphasis" which works. It is in function `SwCSS1Parser::GetChrFormat()`: there is `RES_POOLCHR_HTML_EMPHASIS` for italic, but no similar element for `ins` tag.
+
+Then `pCFormat = m_pDoc->FindCharFormatByName( sCName )` assigns nullptr for `ins` tag. A few lines further a `pCFormat = m_pDoc->MakeCharFormat( sCName, m_pDoc->GetDfltCharFormat() );` seems to assign plain text format to `ins` tag.
+
+Per my understanding, none of the styles at `switch( nToken2 )` that assign to `sName` are implemented.
+
+Down the `pCFormat = GetCharFormatFromPool( nPoolId );` the code juggling the id is (then it goes creating a format):
+
+```
+            if (nId >= RES_POOLCHR_HTML_BEGIN && nId < RES_POOLCHR_HTML_END)
+                pRCId = STR_POOLCHR_HTML_ARY[nId - RES_POOLCHR_HTML_BEGIN];
+            else if (nId >= RES_POOLCHR_NORMAL_BEGIN && nId < RES_POOLCHR_NORMAL_END)
+                pRCId = STR_POOLCHR_ARY[nId - RES_POOLCHR_BEGIN];
+```
+
+Also turns out: it can be made to work if either CSS with underline property is added against ins tag or `ins` is replaced with `u`. Solution should be creating default style against INS, which may then be changed by a CSS *(if there's one)*.
