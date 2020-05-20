@@ -27,6 +27,14 @@ cd module/
 make modules && cp zfs/zfs.ko /lib/modules/$(uname -r)/extra/zfs/zfs.ko
 ```
 
+# Removing older zfs
+
+At least for deb, there's no meta-package for all separate ZFS packages, so upon upgrading a version you may get a bunch of leftovers. You can remove zfs before installing a newer version with something like:
+
+```
+apt remove $(dpkg -l | perl -lane 'print @F[1] if /^ii/ and /.*0.8.0-999.*/')
+```
+
 # Misc
 
 * Creating a pool `zpool create mypool /dev/disk/by-id/some-disk`.
