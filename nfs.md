@@ -32,5 +32,5 @@ Suppose you want to share `/home/myuser`. First do on server:
 Then on client:
 
 ```
-sudo mount -t nfs -o proto=tcp myserver:/ nfs-test/
+sudo mount -t nfs -o proto=tcp,fsc myserver:/ nfs-test/
 ```
