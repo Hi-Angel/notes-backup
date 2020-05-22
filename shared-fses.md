@@ -16,7 +16,7 @@ sshfs with compression and cache options | 33 sec 014 ms  | 31sec 464 ms
 nfs with cache *(fsc,nocto)*             | 29 sec 382 ms  | 4 sec 485 ms
 samba with cache *(fsc,cache=loose)*     | 1 min 21 sec 49 ms | 1 min 19 sec 95 ms
 
-Results of running `time git status` *(or actually `time git status && time git status`)* in the same shares *(after shares got remounted, so no cache remained from the prev. test)*. Worth noting, the share has lots of files permissions modified.
+Results of running `time git status` *(or actually `time git status && time git status`)* in the same shares *(after shares got remounted, so no cache remained from the prev. test)*. Worth noting, the share has lots of files permissions modified, i.e. there was a lot of content in the command output.
 
 FS                                       | test 1   | test 2
 ---------------------------------------- | -------- | -----
