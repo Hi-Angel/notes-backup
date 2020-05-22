@@ -37,15 +37,16 @@ The complicated thing is, NFS doesn't allow to just share a directory. You need 
 
 Suppose you want to share `/home/myuser`. First do on server:
 
-1. Create `/export/myuser` dirs and run `sudo mount --bind /home/myuser /export/myuser`
-2. Add to `/etc/exports` file:
+1. Create `/export/myuser` dirs and do `chmod 0777 /export/ && chmod 0777 /export/myuser`
+2. Run `sudo mount --bind /home/myuser /export/myuser`
+3. Add to `/etc/exports` file:
     ```
     /export        myclient/24(rw,fsid=0,insecure,no_subtree_check,async,all_squash,anonuid=1000,anongid=1000)
     /export/myuser myclient/24(rw,nohide,insecure,no_subtree_check,async,all_squash,anonuid=1000,anongid=1000)
 
     ```
-3. Run `sudo exportfs -a`
-4. Start `sudo systemctl start nfs-server`
+4. Run `sudo exportfs -a`
+5. Start `sudo systemctl start nfs-server`
 
 Then on client:
 
