@@ -102,7 +102,7 @@ mount -t cifs -o rw,guest,fsc,cache=loose //172.16.23.156/export_foo foo/
 
 # sshfs
 
-I don't care enough to mention the server `ssh` config because it's simple, I don't think I changed much or anything from defaults.
+I don't care enough to mention the server `ssh` config because it's simple, it's mostly defaults.
 
 The sshfs call might be of interest though:
 
