@@ -23,6 +23,7 @@ FS                                       | test 1   | test 2
 sshfs with compression and cache options | 3 min 50 sec 72 ms  | 3 min 50 sec 72 ms
 nfs with cache *(fsc,nocto)*             | 3 min 44 sec 86 ms  | 2 min 03 sec 11 ms
 samba with cache *(fsc,cache=loose)*     | 16 min 36 sec 68 ms | 15 min 08 sec 92 ms
+Running locally after `echo 3 > /proc/sys/vm/drop_caches`              | 1 sec 457 ms        | 0 sec 066 ms
 
 So, what gives. SMB has so bad performance, that even if you sum up performance of SSHFS and NFS, SMB still gonna lose. Both SMB and SSHFS are bad at caching. And NFS has at least caching working and is the winner.
 
