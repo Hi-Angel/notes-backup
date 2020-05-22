@@ -6,11 +6,25 @@ Both NFS and SMB got me terrible experience. No compression support, complicated
 
 Bad for all three of them: neither seem to be good at caching, trying to work with git remotely results in long hangs every time even though you'd expect it to have cached the files *(and it was tested on a machine with over than 100GB of RAM)*.
 
+## Performance
+
 Results of timing a python script in the shared dir, which basically loads lots of files inside the share:
 
-* sshfs with compression and cache options: 33.014, 31.464
-* nfs with cache *(fsc,nocto)*: 29.382, 4.485
-* samba with cache *(fsc,cache=loose)*: 1:21.49, 1:19.95
+FS                                       | test 1  | test 2
+---------------------------------------- | ------  | -----
+sshfs with compression and cache options | 33 sec 014 ms  | 31sec 464 ms
+nfs with cache *(fsc,nocto)*             | 29 sec 382 ms  | 4 sec 485 ms
+samba with cache *(fsc,cache=loose)*     | 1 min 21 sec 49 ms | 1 min 19 sec 95 ms
+
+Results of running `time git status` *(or actually `time git status && time git status`)* in the same shares *(after shares got remounted, so no cache remained from the prev. test)*. Worth noting, the share has lots of files permissions modified.
+
+FS                                       | test 1   | test 2
+---------------------------------------- | -------- | -----
+sshfs with compression and cache options | 3 min 50 sec 72 ms  | 3 min 50 sec 72 ms
+nfs with cache *(fsc,nocto)*             | 3 min 44 sec 86 ms  | 2 min 03 sec 11 ms
+samba with cache *(fsc,cache=loose)*     | 16 min 36 sec 68 ms | 15 min 08 sec 92 ms
+
+So, what gives. SMB has so bad performance, that even if you sum up performance of SSHFS and NFS, SMB still gonna lose. Both SMB and SSHFS are bad at caching. And NFS has at least caching working and is the winner.
 
 # NFS
 
