@@ -58,7 +58,7 @@ sudo mount -t nfs -o proto=tcp,fsc,nocto myserver:/ nfs-test/
 
 I must admit, it is even worse to setup than NFS. Its logs were also unhelpful in debugging problems I stumbled upon.
 
-While setup looks simple, I was trying for a long time to overcome `permission denied` while mounting the share. It's interesting that I could share a `/tmp` dir but couldn't a `/home/…` one. I hacked it around similarly to common recommendation for NFS: I created a dir `/exports/foo` with `0777` permissions for both of them, and then `mount --bind`ed the target dir over there. And then I shared the `/exports/foo` instead of the one at `/home/…`
+While setup looks simple, I was trying for a long time to overcome `permission denied` while mounting the share. It's interesting that I could share a `/tmp` dir but couldn't a `/home/…` one. I hacked it around by using the common recommendation for NFS: I created a dir `/exports/foo` with `0777` permissions for both of them, and then `mount --bind`ed the target dir over there. And then I shared the `/exports/foo` instead of the one at `/home/…`
 
 Afterwards I had a weird situation *(for both tmp and home shares)* where I could see and read files, they had correct permissions, and in various combinations of setup I tried they had the correct users too. But I never could change files, it was giving `permission denied` me. In the end I noted: if you mounted trough `sudo` you can change files as root but not as a usual user, despite files permissions having a common username/group. Anyway, this is the best I got with motivation at hand. This setup, that kind of works, is the following:
 
