@@ -28,7 +28,7 @@ Results of running `time git status` *(or actually `time git status && time git 
 
 FS                                                        | test 1              | test 2
 ----------------------------------------                  | --------            | -----
-sshfs with compression and cache options                  | 3 min 50 sec 72 ms  | 3 min 50 sec 72 ms
+sshfs with compression and cache options                  | 3 min 35 sec 78 ms  | 2 min 57 sec 79 ms
 nfs with cache *(fsc,nocto)*                              | 3 min 44 sec 86 ms  | 2 min 03 sec 11 ms
 GlusterFS with defaults                                   | 4 min 00 sec 79 ms  | 3 min 11 sec 04 ms
 samba with cache *(fsc,cache=loose)*                      | 16 min 36 sec 68 ms | 15 min 08 sec 92 ms
