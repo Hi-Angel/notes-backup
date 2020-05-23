@@ -1,10 +1,9 @@
-# NFS vs SMB vs SSHFS
+# NFS vs SMB vs SSHFS vs GlusterFS
 
-sshfs is simple to setup, and it supports compression while nfs and samba don't.
-
-Both NFS and SMB got me terrible experience. No compression support, complicated to set up, and logs are useless when something goes wrong *(yes, with verbose levels enabled)*.
-
-Bad for all three of them: neither seem to be good at caching, trying to work with git remotely results in long hangs every time even though you'd expect it to have cached the files *(and it was tested on a machine with over than 100GB of RAM)*.
+* sshfs is simple setup, supports compression.
+* GlusterFS is also simple to set up, supports compression. Separate kudos to GlusterFS for actually useful logs, unlike SMB and NFS. The bad thing though, OOTB sharing an arbitrary directory on your host by mounting it inside "shared volume" works read-only. Write attempts would throw `Stale file handle`. Idk if it can be worked around, after measuring performance I couldn't care to debug it.
+* Both NFS and SMB got me terrible experience. No compression support, complicated to set up, and logs are useless when something goes wrong *(yes, with verbose levels enabled)*.
+* Bad for all four of them: neither is good at caching, trying to work with git remotely results in long hangs every time even though you'd expect client to have cached the files *(and it was tested on a machine with over than 100GB of RAM)*.
 
 ## Performance
 
@@ -12,25 +11,30 @@ Versions used for testing:
 
 * Server: Archlinux as of 17.05.2020 *(so all sw is latest released as of the date)*
 * Client: Ubuntu 18.04 *(so the client sw is old)*
+* glusterfs is an exception: on Archlinux 7.4 version was used and on Ubuntu 7.6
 
-Results of timing a python script in the shared dir, which basically loads lots of files inside the share:
+For GlusterFS no cache was used simply because as of writing the words, `man mount.glusterfs` doesn't mention anything that seems interesting regarding these tests. I left out compression too because testing NFS shows quite good results even without compression.
 
-FS                                       | test 1  | test 2
----------------------------------------- | ------  | -----
-sshfs with compression and cache options | 33 sec 014 ms  | 31sec 464 ms
-nfs with cache *(fsc,nocto)*             | 29 sec 382 ms  | 4 sec 485 ms
+Results of timing a python script in the shared dir, which basically loads lots of files inside the share. No local test in this table because script requires quite specific environment to work.
+
+FS                                       | test 1             | test 2
+---------------------------------------- | ------             | -----
+sshfs with compression and cache options | 33 sec 014 ms      | 31sec 464 ms
+nfs with cache *(fsc,nocto)*             | 29 sec 382 ms      | 4 sec 485 ms
+GlusterFS with defaults                  | 37 sec 919 ms      | 42 sec 667 ms
 samba with cache *(fsc,cache=loose)*     | 1 min 21 sec 49 ms | 1 min 19 sec 95 ms
 
 Results of running `time git status` *(or actually `time git status && time git status`)* in the same shares *(after shares got remounted, so no cache remained from the prev. test)*. Worth noting, the share has lots of files permissions modified, i.e. there was a lot of content in the command output.
 
-FS                                       | test 1   | test 2
----------------------------------------- | -------- | -----
-sshfs with compression and cache options | 3 min 50 sec 72 ms  | 3 min 50 sec 72 ms
-nfs with cache *(fsc,nocto)*             | 3 min 44 sec 86 ms  | 2 min 03 sec 11 ms
-samba with cache *(fsc,cache=loose)*     | 16 min 36 sec 68 ms | 15 min 08 sec 92 ms
-Running locally after `echo 3 > /proc/sys/vm/drop_caches`              | 1 sec 457 ms        | 0 sec 066 ms
+FS                                                        | test 1              | test 2
+----------------------------------------                  | --------            | -----
+sshfs with compression and cache options                  | 3 min 50 sec 72 ms  | 3 min 50 sec 72 ms
+nfs with cache *(fsc,nocto)*                              | 3 min 44 sec 86 ms  | 2 min 03 sec 11 ms
+GlusterFS with defaults                                   | 4 min 00 sec 79 ms  | 3 min 11 sec 04 ms
+samba with cache *(fsc,cache=loose)*                      | 16 min 36 sec 68 ms | 15 min 08 sec 92 ms
+Running locally after `echo 3 > /proc/sys/vm/drop_caches` | 1 sec 457 ms        | 0 sec 066 ms
 
-So, what gives. SMB has so bad performance, that even if you sum up performance of SSHFS and NFS, SMB still gonna lose. Both SMB and SSHFS are bad at caching. And NFS has at least caching working and is the winner.
+So, what gives. SMB has so bad performance, that even if you sum up performance of SSHFS and NFS, SMB still gonna lose. Both SMB, SSHFS, and GlusterFS are bad at caching. And NFS has at least caching working and is the winner.
 
 # NFS
 
@@ -115,4 +119,22 @@ The sshfs call might be of interest though:
 
 ```
 sshfs -o allow_other,kernel_cache,cache=yes,compression=yes constantine@myserver:/home/foo/bar mnt_dir
+```
+
+# GlusterFS
+
+The only obstacle in configuration I stumbled upon is that it binds itself on the network address you mention in `…volume create…` command, so if you got multiple IPs and a client tries to connect by using a different one, it won't succeed.
+
+Server:
+
+```
+mkdir -p /gfsvolume/gv0
+gluster volume create my_vol transport tcp server_ip:/gfsvolume/gv0 force
+gluster volume start my_vol
+```
+
+Client:
+
+```
+mount -t glusterfs server_ip:/my_vol /mnt/gfsvol
 ```
