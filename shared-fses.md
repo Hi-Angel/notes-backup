@@ -1,7 +1,7 @@
 # NFS vs SMB vs SSHFS vs GlusterFS
 
 * sshfs is simple setup, supports compression.
-* GlusterFS is also simple to set up, supports compression. Separate kudos to GlusterFS for actually useful logs, unlike SMB and NFS. The bad thing though, OOTB sharing an arbitrary directory on your host by mounting it inside "shared volume" works read-only. Write attempts would throw `Stale file handle`. Idk if it can be worked around, after measuring performance I couldn't care to debug it.
+* GlusterFS is also simple to set up, supports compression. Separate kudos to GlusterFS for actually useful logs, unlike SMB and NFS. The bad thing though, OOTB sharing an arbitrary directory on your host by mounting it inside "shared volume" works read-only. Write attempts would throw `Stale file handle`. Idk if it can be worked around, after measuring performance I didn't care to debug it.
 * Both NFS and SMB got me terrible experience. No compression support, complicated to set up, and logs are useless when something goes wrong *(yes, with verbose levels enabled)*.
 * Bad for all four of them: neither is good at caching, trying to work with git remotely results in long hangs every time even though you'd expect client to have cached the files *(and it was tested on a machine with over than 100GB of RAM)*.
 
