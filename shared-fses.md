@@ -12,6 +12,7 @@ Versions used for testing:
 * Server: Archlinux as of 17.05.2020 *(so all sw is latest released as of the date)*
 * Client: Ubuntu 18.04 *(so the client sw is old)*
 * glusterfs is an exception: on Archlinux 7.4 version was used and on Ubuntu 7.6
+* nfs "client" from Focal repositories was added to the mix. It is a weird unit: it has the same ancient version 1.3.4 from 2016 year as Ubuntu 18.04, but either its dependencies were updated, or I don't know… Either way, it shows notably better speed.
 
 For GlusterFS no cache was used simply because as of writing the words, `man mount.glusterfs` doesn't mention anything that seems interesting regarding these tests. I left out compression too because testing NFS shows quite good results even without compression.
 
@@ -21,6 +22,7 @@ FS                                       | test 1             | test 2
 ---------------------------------------- | ------             | -----
 sshfs with compression and cache options | 33 sec 014 ms      | 31sec 464 ms
 nfs with cache *(fsc,nocto)*             | 29 sec 382 ms      | 4 sec 485 ms
+nfs with cache *(fsc,nocto)* from Focal  | 5 sec 512 ms       | 0 sec 034 ms
 GlusterFS with defaults                  | 37 sec 919 ms      | 42 sec 667 ms
 samba with cache *(fsc,cache=loose)*     | 1 min 21 sec 49 ms | 1 min 19 sec 95 ms
 
@@ -30,6 +32,7 @@ FS                                                        | test 1              
 ----------------------------------------                  | --------            | -----
 sshfs with compression and cache options                  | 3 min 35 sec 78 ms  | 2 min 57 sec 79 ms
 nfs with cache *(fsc,nocto)*                              | 3 min 44 sec 86 ms  | 2 min 03 sec 11 ms
+nfs with cache *(fsc,nocto)* from Focal                   | 2 min 30 sec 72 ms  | 55 sec 848 ms
 GlusterFS with defaults                                   | 4 min 00 sec 79 ms  | 3 min 11 sec 04 ms
 samba with cache *(fsc,cache=loose)*                      | 16 min 36 sec 68 ms | 15 min 08 sec 92 ms
 Running locally after `echo 3 > /proc/sys/vm/drop_caches` | 1 sec 457 ms        | 0 sec 066 ms
