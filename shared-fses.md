@@ -8,6 +8,11 @@ Bad for all three of them: neither seem to be good at caching, trying to work wi
 
 ## Performance
 
+Versions used for testing:
+
+* Server: Archlinux as of 17.05.2020 *(so all sw is latest released as of the date)*
+* Client: Ubuntu 18.04 *(so the client sw is old)*
+
 Results of timing a python script in the shared dir, which basically loads lots of files inside the share:
 
 FS                                       | test 1  | test 2
