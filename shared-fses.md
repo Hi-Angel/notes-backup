@@ -12,7 +12,7 @@ Versions used for testing:
 * Server: Archlinux as of 17.05.2020 *(so all sw is latest released as of the date)*
 * Client: Ubuntu 18.04 *(so the client sw is old)*
 * glusterfs is an exception: on Archlinux 7.4 version was used and on Ubuntu 7.6
-* nfs "client" from Focal repositories was added to the mix. It is a weird unit: it has the same ancient version 1.3.4 from 2016 year as Ubuntu 18.04, but either its dependencies were updated, or I don't know… Either way, it shows notably better speed.
+* nfs "client" from Focal repositories was added to the mix. It is a weird unit: it has the same ancient version 1.3.4 from 2016 year as Ubuntu 18.04, but either its dependencies were updated, or I don't know… Either way, it is notably faster.
 
 For GlusterFS no cache was used simply because as of writing the words, `man mount.glusterfs` doesn't mention anything that seems interesting regarding these tests. I left out compression too because testing NFS shows quite good results even without compression.
 
