@@ -25,3 +25,7 @@ mybuild:
 ```
 
 The `master` I didn't test, but on MRs it does get run.
+
+## Tricks
+
+* *run a job as another user*: gitlab-runner creates a user `gitlab-runner`, which is used for building by default. You can add this user to `sudo` group, and execute `visudo` to add `gitlab-runner ALL=(ALL) NOPASSWD: ALL` line. This gonna allow to runner to run specific commands with `sudo` without a password.
