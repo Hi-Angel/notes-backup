@@ -5,7 +5,7 @@ It helps to insert a `-d Preprocessor` option before config filename to see what
 # Typical problems
 
 * Missing docs
-  * "common configuration": check is whether the file has a `@file` doc-string somewhere at top.
+  * "common configuration": check whether the file has a `@file` doc-string somewhere at top.
   * "with a plugin": the plugin likely filters out some important pieces of text, so use `-d Preprocessor`
 
 # Writing a plugin
