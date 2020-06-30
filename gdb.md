@@ -63,3 +63,78 @@ Here, `gdb.COMMAND_STATUS` and other types are only influencing documentation.
 Ultimately, you need to enable module that allows you to connect from gdb with `target remote` command. With the kernel there's a driver for debugging over a serial port. There's also off-tree driver `gdboe` *(gdb over ethernet)*, which I used. Enabling it is simple: `insmod kgdboe.ko device_name=enp0s25 udp_port=3333`. It even prints in dmesg how to connect from gdb to it. However when I connected gdb, the system hanged. Idk why.
 
 There's also multiple configs that may need to be enabled to be able to debug over gdb.
+
+# Pretty printers
+
+Given a `struct MyStruct{const char* a; int b};:`, its pretty printer is:
+
+```
+class MyStructPrinter:
+    def __init__(self, val):
+        self.val = val
+
+    # it's the actual printing
+    def to_string(self):
+        return f'MyStruct\n\ta = {self.val["a"]}\n\tb = {self.val["b"]}'
+
+def register_printers(val):
+    return MyStructPrinter(val) if str(val.type)=='MyStruct'\
+        else None
+
+gdb.pretty_printers.append(register_printers)
+```
+
+FTR: the `val['foo']` is a Python object, it has various functions and fields.
+
+---------
+
+If you want to recurse into struct fields, there's automation too. Function `children(self)` should return a list of pairs `{"field name (arbitrary string)", field_address}`, and then gdb will descend into these and apply printers.
+
+It's a bit complicated though. You need to manually check if gdb is able to descend into the field. Specifically to check if the field is a null pointer or not.
+
+Example:
+
+test.c:
+
+```C
+#include <stdio.h>
+
+struct MyStruct;
+
+struct MyStruct {
+    const char* a;
+    int b;
+    struct MyStruct *m;
+};
+
+int main() {
+    struct MyStruct p = {"world", 2, 0};
+    struct MyStruct m = {"hey", 1, &p};
+    puts(m.a);
+}
+```
+
+and the pretty printer:
+
+```python
+class MyStructPrinter:
+    def __init__(self, val):
+        self.val = val
+
+    # it's the actual printing
+    def to_string(self):
+        return f'MyStruct\n\ta = {self.val["a"]}\n\tb = {self.val["b"]}'
+
+    # this function returns a list of pairs, where first element if an arbitrary
+    # string to be printed as the field name, and the second one is
+    def children(self):
+        return [('m', self.val['m'].dereference())] \
+            if self.val['m'] != 0 \
+            else []
+
+def register_printers(val):
+    return MyStructPrinter(val) if str(val.type).endswith('MyStruct')\
+        else None
+
+# gdb.pretty_printers.append(register_printers)
+```
