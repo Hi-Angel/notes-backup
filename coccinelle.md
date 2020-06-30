@@ -16,6 +16,18 @@ if (<+...foo(...)...+>) {
 }
 ```
 
+# Examples
+
+Replace any match of `!strlen()` with `strempty()` *(note the missing semicolons)*:
+
+```
+@ rule1 @
+expression E;
+@@
+-   !strlen(E)
++   strempty(E)
+```
+
 # Troubleshooting
 
 As of now coccinelle is not very good in reporting errors, almost everything you can imagine results in "parse error". Some mistakes I was stumbling upon:
