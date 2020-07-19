@@ -4,7 +4,8 @@ Emacs loads that into a buffer, and parses whole buffer every time searching for
 
 # Misc
 
-Vanilla Emacs defines minor-modes through `easy-mmode` package. `smerge-mode` is one example, its `smerge-next`, `smerge-prev` are defined though `easy-mmode` mode.
+* Vanilla Emacs defines minor-modes through `easy-mmode` package. `smerge-mode` is one example, its `smerge-next`, `smerge-prev` are defined though `easy-mmode` mode.
+* Pasting into incremental search <kbd>C</kbd>-<kbd>s</kbd> from clipboard: press <kbd>Enter</kbd>, which gonna make it non-incremental, then insert with a hotkey as you would in a buffer.
 
 # Contributing
 
