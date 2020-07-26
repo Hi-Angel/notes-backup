@@ -66,6 +66,10 @@ Then on client:
 sudo mount -t nfs -o proto=tcp,fsc,nocto myserver:/ nfs-test/
 ```
 
+# Misc
+
+* later I occasionally found that `exportfs` has a verbose option that prints a lot of stuff on exports. It may have helped, it's hard to tell in retrospective.
+
 # SMB
 
 ## Setup
