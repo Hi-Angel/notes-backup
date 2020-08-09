@@ -113,6 +113,12 @@ Determines offsets of points of the primitive in the buffer data *(so you need b
 
 https://learnopengl.com/code_viewer_gh.php?code=src/1.getting_started/2.1.hello_triangle/hello_triangle.cpp
 
+# Debuggers
+
+## Apitrace
+
+Records graphics calls along with shaders, so that it can be reproduced later. One usage I noted is recording a glitchy game and then later `replay`ing on different drivers to figure out if the glitches is a driver problem or the game one.
+
 # todo
 ## Mesa Alternate Frame Rendering
 
