@@ -166,6 +166,27 @@ CRUSH algo is like a trained ANN, except that we never know what changing a weig
 
 "pseudo-random reproducible function" being a hash of values.
 
+# OverlayFS
+
+Allows to mount a dir in such a way, so all changes to it will be lost. Per docs there're two layers, the lower and upper one, see `mount` paragraph.
+
+## mount/umount
+
+`umount` is easy: just call `umount overlay`. Will work disregarding your location, which may imply there's no easy way to have more than a single overlayfs mount.
+
+Creation per some docs is `mount -t overlay overlay -o lowerdir=/lower,upperdir=/upper,workdir=/work /merged`. Attempt at breakdown:
+
+1. `-t overlay`: type overlay obviously
+2. `overlay`: not sure, but judging from `man mount` it may be some device name. The fact that unmount is done with `umount overlay` kinda confirms this.
+3. `lowerdir`: read-only dir, which will be shown over at `merged` dir.
+4. `upperdir`: read-write dir, where changes will actually go. Usually a `/tmp`, but may be some block device if you want changes to persist on reboot.
+5. `workdir`: an empty directory, Idk what's that for.
+6. `/merged`: a directory in which you can view and change files at `lowerdir` *(they will appear as changed in this dir, but will not actually be)*
+
+## Root OverlayFS
+
+It seems to be pretty complex. On Ubuntu at least there's a package `overlayroot` which need to be configured after its installation, best to use something like this.
+
 # References
 
 1. https://serverfault.com/questions/339128/what-are-the-different-widely-used-raid-levels-and-when-should-i-consider-them
