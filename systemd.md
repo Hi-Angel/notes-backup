@@ -18,4 +18,4 @@ Gateway=192.168.0.0/24
 ## Caveats
 
 * Config should end with `.network` postfix, otherwise networkd gonna just ignore the file.
-* it does seem to apply config on restart. So far when it didn't, it were some problems with the config, like the missing extension as in prev. example.
+* it randomly *(what seems like it)* applies or not new settings on restart. That looks like a bug.
