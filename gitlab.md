@@ -11,7 +11,7 @@ When on the main project page, on the left panel there should be an entry called
 Actions are defined at `.gitlab-ci.yml` at the root of the project.
 * *runner* is the entity that runs actions from `.gitlab-ci.yml`. It needs to be configured, and can be lots of different things. *Shared runner* is a runner that serves multiple projects.
 
-gitlab runners are separate from the repository executables, that needs to run on a separate server, and then to register them inside a gitlab interface.
+gitlab runners are separate from the repository executables, that needs to run on a separate server, and then to register them inside a gitlab interface. Once a `gitlab-runner` installed, execute `gitlab-runner register`. Most of the stuff it asks for is from `Settings → CI/CD → Runners` tab. As the executor type use `shell` if unsure.
 
 In general, following gitlab docs for setting up CI worked for me. The only question I stumbled upon was after I got it up and running, which is "how do I make CI only run on merge_requests?". The answer is:
 
