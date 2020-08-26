@@ -70,6 +70,7 @@ sudo mount -t nfs -o proto=tcp,fsc,nocto myserver:/ nfs-test/
 
 * later I occasionally found that `exportfs` has a verbose option that prints a lot of stuff on exports. It may have helped, it's hard to tell in retrospective.
 * exportfs has no syntax to put multiple clients in a row without duplicating their access options. Also, if you occasionally put a space in between the client and its description, it not gonna work. This is terrible. Thank god, at least exportfs prints an unhelpful error message *(something about missing `sync` option)*, so you know something went wrong. Not as bad as with samba, I admit *(how low my expectations have become, geez…)*.
+* I once had empty directories appearing until I removed another directory inside exports that I had nothing mounted over.
 
 # SMB
 
