@@ -107,6 +107,12 @@ An analog to Solaris `dtrace`. Syntax and options are different though, so scrip
 * `bpftrace` supports passing arguments to the script on command line. To print the first one, use `printf("%s", str($1));`. It's funny, that `$1` by default is an integer, i.e. you can print it with `%d` and you can not do it with `%s`. But applying a `str()` to it magically converts it from an integer to string. No idea.
 * **Missing prints**: are usually caused by lack of `\n` at printf call. bpftrace has printfs newline-buffered, so it won't appear until either ^C or newline.
 
+## Examples
+
+* Trace all processes created in the system: `sudo bpftrace -e 'tracepoint:syscalls:sys_enter_exec*{ printf("pid: %d, comm: %s, args: ", pid, comm); join(args->argv); }'`
+* Trace all threads created in the system: `sudo bpftrace -e 'kprobe:_do_fork{ printf("pid = %d, comm = %s\n", pid, comm); }'`
+* Trace all `connect()` calls made in the system: `sudo bpftrace -e 'tracepoint:syscalls:sys_enter_connect{ printf("pid = %d, comm = %s\n", pid, comm); }'`
+
 ## References
 
 1. Crush course: https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md
