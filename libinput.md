@@ -104,3 +104,7 @@ Analogous to existing assumptions e.g. that a human can't move left-right-left w
 The jump being driven by `ABS_Y` evemu event. Not the `ABS_MT_POSITION_Y`, which I can successfully remove from the testcase without influencing it; whilst removing `ABS_Y` results in record not doing anything at all.
 
 Increasing timestamp to 30ms didn't help.
+
+# SAMSUNG laptop cursor jumps bug, issue #80
+
+I managed to reduce the testcase, and after debugging for a bit, I figured the jump translates to 4mm on the touchpad. So, libinput rightfully does not discard jump, because 4mm is a size human finger can move to quickly. The question arises then: how does the "mm" translates to movement on the screen? Because from the movement POV it's a lot.
