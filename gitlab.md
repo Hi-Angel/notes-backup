@@ -29,3 +29,5 @@ The `master` I didn't test, but on MRs it does get run.
 ## Tricks
 
 * *run a job as another user*: gitlab-runner creates a user `gitlab-runner`, which is used for building by default. You can add this user to `sudo` group, and execute `visudo` to add `gitlab-runner ALL=(ALL) NOPASSWD: ALL` line. This gonna allow to runner to run specific commands with `sudo` without a password.
+* to see runner stats *(besides using a command line option)* you can put to `config.toml` a `listen_address = "[::]:9252"` *(it's a global option)*, then go to `http://ip-of-gitlab-runner/metrics`. Things to note: `https` don't seem to work, and make sure to type the `/metrics` subdir. The top-level page for some reason is 404.
+  However trying to use them while debugging a problem with runner never finishing *(which somehow turned out to be because some process left running; which is bizzare since it was on a ssh session closed many steps ago)*, I haven't found the stats to be useful at all. They're too general.
