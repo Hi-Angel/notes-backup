@@ -116,3 +116,7 @@ An analog to Solaris `dtrace`. Syntax and options are different though, so scrip
 ## References
 
 1. Crush course: https://github.com/iovisor/bpftrace/blob/master/docs/reference_guide.md
+
+# strace
+
+Example `strace -fe "openat,open" -T ls`. `-f` is for "follow forks", `-e` limits tracing to specific calls, `-T` shows time calls took in seconds resolution.
