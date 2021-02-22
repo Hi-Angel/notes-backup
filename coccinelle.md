@@ -1,3 +1,9 @@
+A terrible utility for C code refactoring. It was supposed to be a "smart C-code converter", into which you would throw requests like "inside every function foo(), swap fst and snd args", and then it will do as requested and handle complex stuff on the way, like indentation, nested constructions, etc. Well, that it does, and does very well. But there's a big problem, which cancels out completely these benefits of Coccinelle: 85% of SmPL code *(i.e. the code which explains what refactoring you want Cocci to do)* that you throw into it will not work, and you will never know why. Sometimes it will fail with vague errors that require you to reduce the SmPL-code to a working testcase, and then build up from there hoping you will catch the moment it starts complaining, so you'll know what caused it *(hopefully)*. Other times it gives no errors whatsoever, it simply doesn't do any replacement. Useless errors [are an architectural problem](https://github.com/coccinelle/coccinelle/issues/242#issuecomment-746646109), with which apparently nothing else can be done aside of rewriting Coccinelle from scratch.
+
+So, most often you're better off writing a python script with `pyparsing` module. Though it probably won't handle unusual complicated code-constructions, but those rarely represent more than a few percents of the whole code-conversion, so you better off fix them by hand. Coccinelle is just not worth your time.
+
+With that said, some of the stuff I found while trying to make it work is below.
+
 # Misc
 
 * Running is as simple as `spatch -sp_file my_rules.cocci -in_place foo.c`
@@ -30,7 +36,7 @@ expression E;
 
 # Troubleshooting
 
-As of now coccinelle is not very good in reporting errors, almost everything you can imagine results in "parse error". Some mistakes I was stumbling upon:
+Coccinelle is terrible at reporting errors, so expect debugging to be mostly a guesswork. Some mistakes I was stumbling upon:
 
 * the `-` and `+` is not at the beginning of a line *(e.g. as a result of playing around with the file)*
 * the `...` are not valid in a number of contexts.
