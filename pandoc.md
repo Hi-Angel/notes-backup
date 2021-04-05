@@ -34,3 +34,5 @@ And preamble is:
   \colorbox{bgcolor}{\oldtexttt{#1}}
   }
 ```
+
+You can also use csv for styling, and then create an html with `pandoc -c /tmp/github-pandoc.css -V colorlinks -V urlcolor=NavyBlue -s ./document.md -o document.html`. `pdf` later then can be created with a browser by "printing to a file". NOTE: the css file has to be included with absolute path, otherwise browser won't find it.
