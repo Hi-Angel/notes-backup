@@ -1,6 +1,10 @@
 # misc
 
 * a project URL has a owner's name before it. The owner can be either a user or a group.
+* a pipeline triggerer can be found by querying `GITLAB_USER_NAME` variable. Yeah, it is confusing, but if you read description it becomes clear what this does. Also, someone on IRC said:
+    ```
+    the trigger run in the context of the token. by gitlab syntax it's the user that cause it. but API is the user that made the API token. this can be found in `GITLAB_USER_NAME`
+    ```
 
 Apparently, it's possible to point to a docker image with syntax `image: fedora:latest`.
 
