@@ -86,6 +86,22 @@ Quote: `Systemtap works by converting systemtap scripts into C and building a ke
 
 It works by building a kernel module. It is an out-of-tree code, so whether it will build for a newer kernel depends. Note: the module is being built on the first run.
 
+## live-patch
+
+Useful in debugging and development. Works by building a module, which replaces specified function(s) in the kernel *(or its modules I suppose)* to your changed version(s). Requires `CONFIG_LIVEPATCH=y` kernel config set, otherwise it's gonna fail to build with unhelpful compilation errors about missing types.
+
+In my experience, it is convenient to use. Kernel has [`livepatch-sample.c`](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/samples/livepatch/livepatch-sample.c) and here's also a Makefile taken [from this great article](https://ruffell.nz/programming/writeups/2020/04/20/everything-you-wanted-to-know-about-kernel-livepatch-in-ubuntu.html) *(recommended reading)*.
+
+```
+obj-m := livepatch-sample.o
+KDIR := /lib/modules/$(shell uname -r)/build
+PWD := $(shell pwd)
+default:
+	$(MAKE) -C $(KDIR) M=$(PWD) modules
+clean:
+	$(MAKE) -C $(KDIR) M=$(PWD) clean
+```
+
 # Misc
 
 * while profiling/debugging you may find one of these `ret_from_intr`, `ret_from_exception`, `ret_from_sys_call`, `and` `ret_from_fork`. [There's some description on how they work](https://www.oreilly.com/library/view/understanding-the-linux/0596002130/ch04s08.html), but not much on what they are. I think here's what happens: while a process gets executed, various events may happen. Most usually that is a timer interrupt. At this point kernel scheduler accepts execution. These functions are basically entry points into the scheduler.
