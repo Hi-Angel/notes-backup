@@ -1,3 +1,7 @@
+# Stacks
+
+Per [this article](https://lwn.net/Articles/852112/), bpftrace lacks ability to map stack frames to functions if a sw was built without frame-pointers.
+
 # Profiling
 
 There're ebpf-based scripts for profiling called `bcc-tools` https://github.com/iovisor/bcc/ There's `-f` switch so their output can be passed to `perf` flamegraph.
