@@ -217,3 +217,9 @@ Devices differentiated by at least 3 registers: vid, pid, class. Additionally so
 # PCIe
 
 From sw POV there's no difference against plain PCI. Worth noting though MSI, but it was present in later standards of PCI either.
+
+# Thunderbolt
+
+Encapsulates PCIe, DP, and USB inside a single interface. These protocols are "tunnelled" over thunderbolt.
+
+NHI (native host interface) is a name of Thunderbolt controller on Apple systems. At least on Apple systems, on resume from suspend, NHI needs to [re-establish PCIe tunnels before PCIe ports are resumed](https://www.spinics.net/lists/linux-usb/msg199555.html).
