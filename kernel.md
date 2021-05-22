@@ -106,10 +106,14 @@ clean:
 
 Allows building external modules.
 
-Notes:
+## Notes
 
 * if you manually build a kernel and install it with `make modules_install && make install`, then make sure that everything DKMS-related is disabled upon `make install`. The problem *(into which I didn't dig)* reproducible at least on Fedora is that `make install` tries to build a DKMS module, and then cleans the whole modules directory, so you basically have to rebuild the kernel all over. It also seems to fail at the end. I seen this reproducible with 2 different modules *(`broadcom-wl-dkms` and `facetimehd`)*, so unlikely it's a bug in packages.
   "How do I disable DKMS" — well, look at `/lib/modules/$(uname -r for newly built kernel)/build/`, it should be a symlink to the kernel build directory *(that is after `modules_install`)*. Remove the link and put a dir, onto which `mount -o ro,bind` the same kernel build directory. Then do `make install`. The dkms will fail, but installation won't. Afterwards, return the symlink back and somehow force the DKMS rebuild *(by reinstalling relevant packages, or in whatever other way)*. It should succeed with no problems now.
+
+## Misc
+
+* `build` dir in `/lib/modules/$(uname -r)/build` is usually a symlink to a linux-headers package/dir.
 
 # Misc
 
