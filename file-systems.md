@@ -36,17 +36,33 @@ Logical Volume Management — allows for representing multiple disks as a single
 
 Layers used in order from the most primitive:
 
-1. **physical volumes**, prefix `pv...` — block devices used for higher level.
+1. **physical volumes**, prefix `pv...` — block devices that LVM is making use of. May be a block device as well as a partition, and loopback device, etc. LVM stores a header into it.
 2. **volume groups**, prefix `gv...` — storage pools of **physical volumes** that abstract characteristics of underlying devices.
-3. **logical volumes**, prefix `lv...` or `lvm...` — slices of a **volume group**, it's like partitions.
+3. **logical volumes**, prefix `lv...` or `lvm...` — slices of a **volume group**, it's like partitions. Creation example: `lvcreate -L 100M -T vol_group/logical_volume` if thin, `lvcreate -L100M -n logical_volume vol_group` otherwise.
 
-## Example of creation
+Displaying can be done with `*display` commands, e.g. `lvdisplay`. The path `/dev/foo/bar` that it displays may not exist if LV status is "not available". For it to appear the logical volume needs to be activated with `lvchange -ay /dev/foo/bar`
 
-```
-pvcreate /dev/sd{g,h,i,j,k,m,o,p,r,v}1           # mark disks
-vgcreate vol_group /dev/sd{g,h,i,j,k,m,o,p,r,v}1 # create a volume group
-lvcreate -L500G -n disk1 vol_group               # create a disk. It will be at /dev/vol_group/disk1
-```
+## Snapshots
+
+Can't do snapshots of snapshots. Cloning a snapshot is also not currently possible. On IRC people recommend using a `dd` or mounting the partition and copying the content with `rsync`.
+
+Snapshotting is confusing: in LVM you have usual pools, you have thin pool with usual volumes, and then also thin pools with thin volumes… And the snapshotting commands are slightly different for all of them. From what I gather, a "usual snapshot" *(a `lvcreate --size 10G -s --name my_disksnap vol_group/my_disk`)* has to be used for the latter, and a "thin snapshot" *(command `lvcreate -s vol_group/my_disk --type thin`)* for the former.
+
+## Examples:
+
+* Creation:
+    ```
+    pvcreate /dev/sd{g,h,i,j,k,m,o,p,r,v}1           # mark disks
+    vgcreate vol_group /dev/sd{g,h,i,j,k,m,o,p,r,v}1 # create a volume group
+    lvcreate -L500G -n disk1 vol_group               # create a disk. It will be at /dev/vol_group/disk1
+    ```
+* adding a marked disk to a volume group: `vgextend my_vol_group /dev/sda1`
+
+## RAIDs
+
+* Creation: `lvcreate --type raidα -L1G -n my_lv my_vol_group` where raidα is a RAID type.
+* RAID status: `lvs -o name,lv_health_status`. Info for various statuses and what to do on those cases may be found in `man lvmraid`.
+* Show disks currently used by RAID *(in particular)*: `pvdisplay -m`.
 
 # ZFS
 
@@ -187,6 +203,10 @@ Creation per some docs is `mount -t overlay overlay -o lowerdir=/lower,upperdir=
 ## Root OverlayFS
 
 It seems to be pretty complex. On Ubuntu at least there's a package `overlayroot` which need to be configured after its installation, best to use something like this.
+
+# General concepts
+
+* Scrubbing: a full rescan of a RAID array, may be done to e.g. check consistency of the data.
 
 # References
 
