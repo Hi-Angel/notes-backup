@@ -64,6 +64,11 @@ Snapshotting is confusing: in LVM you have usual pools, you have thin pool with 
 * RAID status: `lvs -o name,lv_health_status`. Info for various statuses and what to do on those cases may be found in `man lvmraid`.
 * Show disks currently used by RAID *(in particular)*: `pvdisplay -m`.
 
+## Misc
+
+* LVM can be made to ignore a device in operations by adding a filter to `/etc/lvm/lvm.conf`. Syntax of the filter is usually mentioned there, just search for `filter` word in comments in the file.
+* LVM propagates TRIM/Discard calls on an LV to the underlying physical devices. Worth noting, it is unrelated to `issue_discards` lvm.conf option, which is rather about LVM TRIMing devices after an LV was removed/reduced. In fact, devs doesn't recommend to enable `issue_discards` since it makes one unable to restore data from a removed LV. But at least Debian and Ubuntu enable it anyway.
+
 # ZFS
 
 There's a separate file `zfs.md` on ZFS
