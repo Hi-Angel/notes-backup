@@ -1,6 +1,19 @@
+# Configuration
+
+Following [this article](https://blog.it-kb.ru/2018/03/12/configure-the-server-with-qlogic-fc-hba-on-debian-linux-9-and-scst-fc-target-as-storage-for-csv-volumes-in-the-hyper-v-cluster-for-highly-available-virtual-machines/), you basically:
+
+1. Make sure `for i in scst{,_vdisk,_disk,_user} qla2xxx_scst qla2x00tgt; do modprobe $i; done` won't give any errors *(whether in terminal or in dmesg)*. For good measure, replace `modprobe` with `echo`, and then copy the output into `/etc/modules`, so it would be loaded on boot.
+2. Use `scstadmin -list_target`, `scstadmin -list_handler`, `scstadmin -list_target` to see what you've got. None of these lists should be empty.
+3. Create a `/etc/scst.conf` file, where you set options for `HANDLER` and `TARGET_DRIVER`. An example can be seen in `man scst.conf`.
+   Note: if you configure `TARGET_DRIVER qla2x00t`, then inside it, in sub-paragraph `TARGET 00:11:…`, where the `00:11:…` is a WWN of FC ports, which can be looked up at `/sys/class/fc_host/host*/port_name`. These params can also be seen at `systool -c fc_host -v` of `sysfsutils` package.
+4. Execute `scstadmin -conf /etc/scst.conf`
+
+On errors in dmesg, whenever you see stuff like `sqatgt: Missing parameter foo`, the `foo some_value` has to be added in the `scst.conf`. `scstadmin` will write those into `mgmt` file, but you shouldn't do it manually, there's `scstadmin` for writing there with the right syntax.
+
 # Misc
 
 * LUN *(Logical Unit Numbers)*: a device, which can be read/written from/to.
+* **SCST handler** is kinda like an SCST plugin to handle particular type of devices. E.g. to read from block device there's one plugin, from a file system another, and for cdrom there's yet another one. `handler`s are configured in `scst.conf` with a HANDLER section *(see `man scst.conf` for example)*.
 * **SCSI initiator**: an endpoint *(e.g. a computer)* that initiates a session against the target
 * **SCSI target**: an endpoint that accepts a session from initiators, and provides them with LUNs.
 * configuring is done by writing a config file and executing `scstadmin -config myconfig`.
