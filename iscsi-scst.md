@@ -18,6 +18,11 @@ On errors in dmesg, whenever you see stuff like `sqatgt: Missing parameter foo`,
 * **SCSI target**: an endpoint that accepts a session from initiators, and provides them with LUNs.
 * configuring is done by writing a config file and executing `scstadmin -config myconfig`.
   Internally `scstadmin` configures by writing stuff into various files under `/sys/kernel/scst_tgt`. Stuff similar to the following: `echo "add_target my_target" > /sys/kernel/scst_tgt/targets/iscsi/mgmt`.
+* **no `initiator` configuration is required**. While setting up target, you also pass a WWN or IQN or whatever identifier of initiator, and then upon enabling target it will connect to initiator and you shall see a new block device in `lsblk`.
+
+## Typical problems
+
+* **missing target files *(ones with WWN)* at `/sys/kernel/scst_tgt/targets/qla2x00t/`**: check that `/sys/module/qla2xxx_scst/parameters/qlini_mode` is `disabled`. If isn't, add a line `options qla2xxx_scst qlini_mode="disabled"` under a `/etc/modprobe.d` dir and reload the `qla2xxx_scst` driver.
 
 ## Debugging
 
