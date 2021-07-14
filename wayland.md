@@ -69,3 +69,15 @@ Basic communication is implemented at `libwayland-server.c`/`libwayland-client.c
 * http://www.jlekstrand.net/jason/projects/wayland/language-bindings-guide/ nice overview of how the xml sticks together with the final code.
 * http://sircmpwn.github.io/2017/06/10/Introduction-to-Wayland.html wayland from a POV of client.
 * `wlr_screenshooter.c:wlr_screenshooter_create`: an example of a compositor *(wlroots specifically)* adding an interface object to `wl_registry`.
+
+# Bugs research
+
+## i965 and sw drivers crash Divinity Original Sin
+
+* not reproducible on pure X11
+* not reproducible on iris, radeonsi.
+* reproducible on both Gnome and Sway
+* reproducible with older Mesa `20.3` as well *(a version with which the game worked AFAIR)*
+* reproducible on i965 and with `LIBGL_ALWAYS_SOFTWARE=1` *(whatever sw driver it makes use of on Fedora and Arch)*.
+* Bisection: last XWayland working version is 1.20.11. First known broken is: 21.1.1
+* reported https://bugzilla.redhat.com/show_bug.cgi?id=1981118 there's a patch to fix this
