@@ -35,11 +35,13 @@ To check font-lock-face set on the symbol/word under cursor use `describe-text-p
 
 font-lock is managed by `font-lock-keywords` list, which can store regexps as well as actual functions that do scan and stuff. Color-identifies is using that to scan a buffer.
 
-## symbol-overlay mode highlights an off-the-caret word for rust-mode
+## symbol-overlay mode highlights wrong text
 
-Turned out, the reason is that `(racer-eldoc)` changes the `(point)`, and deep the stack calls a `(accept-process-output)` to wait for docs at point, and then while on it, an idle timer gets triggered, and calls `overlay-mode` hook. The bug is in Emacs: the timer calls it with the same environment as the rust-mode function. Like, if you trigger a debugger, you'll literally see the stack with `accept-process-output` and then the `overlay-mode-foo` on top of it. As result, `overlay-mode` gets a different `(point)` than the actual.
+For rust-mode turned out, the reason is that `(racer-eldoc)` changes the `(point)`, and deep the stack calls a `(accept-process-output)` to wait for docs at point, and then while on it, an idle timer gets triggered, and calls `overlay-mode` hook. The bug is in Emacs: the timer calls it with the same environment as the rust-mode function. Like, if you trigger a debugger, you'll literally see the stack with `accept-process-output` and then the `overlay-mode-foo` on top of it. As result, `overlay-mode` gets a different `(point)` than the actual.
 
 Not motivated enough to make a testcase for a bugreport though. In part because I'm sure nobody gonna fix it: Emacs project is opposed to multithreading because their design is completely broken, and this stacktrace thingy in async call is a part of it. And I doubt GNU project can handle it.
+
+For `lsp-mode` though I didn't quite get it. Adding prints to the beginning and end of `symbol-overlay-put-one` shows correct point location and the correct symbol name. It is unclear what could be causing it. Doing `(setq lsp-enable-symbol-highlighting nil)` seems to work around it. I'm wondering if it's a problem not in symbol-overlay but in lsp-mode. Either way, it sure some race-condition, similar to the situation with `racer-eldoc`.
 
 # Done:
 
