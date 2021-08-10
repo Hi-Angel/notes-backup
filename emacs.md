@@ -41,7 +41,13 @@ For rust-mode turned out, the reason is that `(racer-eldoc)` changes the `(point
 
 Not motivated enough to make a testcase for a bugreport though. In part because I'm sure nobody gonna fix it: Emacs project is opposed to multithreading because their design is completely broken, and this stacktrace thingy in async call is a part of it. And I doubt GNU project can handle it.
 
-For `lsp-mode` though I didn't quite get it. Adding prints to the beginning and end of `symbol-overlay-put-one` shows correct point location and the correct symbol name. It is unclear what could be causing it. Doing `(setq lsp-enable-symbol-highlighting nil)` *(being checked in `lsp--document-highlight` function)*seems to work around it. Occasionally, after having disabled `lsp-enable-symbol-highlighting` in runtime the overlay got stuck, and it turned out the face is `lsp-face-highlight-textual`. So in this case it is lsp-mode in fault, not `symbol-overlay`.
+Note that lsp-mode also has its highlighting function, which looks identical to symbol-overlay except its shown even if `symbol-overlay` is disabled in the buffer, and it occasionally has unrelated problem with a similar pattern, see below.
+
+## lsp-mode highlights wrong text
+
+I'm unclear yet what could be causing it, but it may be a bug in lsp-server *(`clangd`)* or lsp-mode. Doing `(setq lsp-enable-symbol-highlighting nil)` *(being checked in `lsp--document-highlight` function)* works around it. When inside `lsp--document-highlight-callback` function I print the `highlights` argument, I see it has the wrong line, and even the wrong boundary *(I guess when setting highlight, lsp-mode crops it down a bit)*.
+
+If I ever going to debug it further, gotta check where the `highlights` argument is coming from. FTR: the function is called from `lsp--document-highlight` *(the `lsp-request-async` call in it)*.
 
 # Done:
 
