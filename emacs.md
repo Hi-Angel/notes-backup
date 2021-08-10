@@ -41,7 +41,7 @@ For rust-mode turned out, the reason is that `(racer-eldoc)` changes the `(point
 
 Not motivated enough to make a testcase for a bugreport though. In part because I'm sure nobody gonna fix it: Emacs project is opposed to multithreading because their design is completely broken, and this stacktrace thingy in async call is a part of it. And I doubt GNU project can handle it.
 
-For `lsp-mode` though I didn't quite get it. Adding prints to the beginning and end of `symbol-overlay-put-one` shows correct point location and the correct symbol name. It is unclear what could be causing it. Doing `(setq lsp-enable-symbol-highlighting nil)` seems to work around it. I'm wondering if it's a problem not in symbol-overlay but in lsp-mode. Either way, it sure some race-condition, similar to the situation with `racer-eldoc`.
+For `lsp-mode` though I didn't quite get it. Adding prints to the beginning and end of `symbol-overlay-put-one` shows correct point location and the correct symbol name. It is unclear what could be causing it. Doing `(setq lsp-enable-symbol-highlighting nil)` *(being checked in `lsp--document-highlight` function)*seems to work around it. Occasionally, after having disabled `lsp-enable-symbol-highlighting` in runtime the overlay got stuck, and it turned out the face is `lsp-face-highlight-textual`. So in this case it is lsp-mode in fault, not `symbol-overlay`.
 
 # Done:
 
