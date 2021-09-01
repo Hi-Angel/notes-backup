@@ -14,8 +14,6 @@
 * May be color-identifiers mode don't need a timeout after all? After all, syntax highlight works immediately.
 *  *DEPRECATION: Duplicated values in array option "cpp_link_args" is deprecated. This will become a hard error in the future.* — wtf? Check if it gonna break CFLAGS and CXXFLAGS
 * Lexical scope cause useless warnings in byte-compilation. Report that after making sure everything indeed works.
-* Remove `global-highlight-symbol-mode`, and instead highlight whatever is selected *(without regexp)*.
-* Make deletion/completion of keywords in one tap
 * found, how to make emacs consume bunch of memory and hang. In xserver project, open `glamor/glamor_render.c` file, and try to use semantic to go to definition of `PictOpSaturate`. Emacs will quickly consume lots of memory, and then if you press C-g to stop it, it gonna hang.
 * veeery slow, on vala files, profiler:
     ```
