@@ -12,6 +12,16 @@ To make sure terminal keys work properly, add this to `~/.docker/config.json`
         "detachKeys": "ctrl-g,g"
     }
 
+## General configuration
+
+It's tricky. It has various deprecated configs that may or may not work depending on the init system. The config that always works is `/etc/docker/daemon.json` *(create it if it didn't exist)*. Then, if you want to add an option `-X` but don't know how to do that via config file, just search [this page](https://docs.docker.com/engine/reference/commandline/dockerd/#daemon-configuration-file) for keywords from `dockerd --help` description. Example: I want to add `-g` option. Help says "data-root". So I search the page, and find there's exact key with this name. So I create `daemon.json` file as:
+
+```
+{
+    "data-root": "/my/path"
+}
+```
+
 ## Running containers
 
 * `docker run -it fedora:latest` to make docker download *(if needed)* the `fedora:latest` container, and run it interactively.
