@@ -1,8 +1,22 @@
 # Automate partitioning a disk
 
+## `sgdisk`
+
 * erase partition table `sgdisk -Z disk`
 * print partition table `sgdisk -p disk`
 * create partition 1 of size 50k: `sgdisk --new 1::+50K disk`
+
+## sfdisk
+
+* create a GPT partition table with one partition of size 500M and the 2nd partition taking the rest of available space
+    ```
+    sfdisk image.img <<EOF
+    label: gpt
+
+    EFI-partition: size=+500M
+    +
+    EOF
+    ```
 
 # Remove a disk
 
