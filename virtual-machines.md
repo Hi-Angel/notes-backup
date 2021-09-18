@@ -2,8 +2,6 @@
 
 It's based on this article https://iximiuz.com/en/posts/from-docker-container-to-bootable-linux-disk-image/
 
-First of all, the container needs to have kernel and a bootloader installed, here I assume it's done and the bootloader is Grub.
-
 1. Create the image `truncate 5G testfile`
 2. Create a partitions with a script
     ```
@@ -21,7 +19,25 @@ First of all, the container needs to have kernel and a bootloader installed, her
     mount_dir=$(udisksctl mount -b ${loop_path}p1 | grep -oP " at \K/.+")    # rootlessly mount the dir
     sudo tar -xzvf flash.tar.gz -C  ${mount_dir}                             # unpack the OS
     udisksctl unmount -b ${loop_path}p1                                      # rootlessly unmount
-    sudo grub-install --target=i386-pc ${loop_path}                          # install bootloader
+    …                          # install bootloader, see next paragraph
     udisksctl loop-delete -b ${loop_path}                                    # rootlessly remove loop
     qemu-system-x86_64 -drive file=bds.img,index=0,media=disk,format=raw     # start a VM
     ```
+
+## Installing bootloader
+
+While `grub` might seem like obvious choice, but in reality the `grub-install` is a terrible command *(detailed elsewhere in notes)*, and is a terrible choice for a VM. What worked for me was `syslinux` bootloader with its `extlinux --install` command. Note: while `extlinux` manual says it works with ext2, ext3 — this is not true, it works with many modern FSes as well. I used it with XFS in particular.
+
+Example of using it as part of actions above:
+
+```
+sudo extlinux --install ./mnt
+sudo mkdir mnt/boot/syslinux/
+cat <<EOF | sudo tee mnt/boot/syslinux/syslinux.cfg
+DEFAULT linux
+  SAY Now booting the kernel from SYSLINUX...
+ LABEL linux
+  KERNEL /vmlinuz
+  APPEND ro root=/dev/sda1 initrd=/initrd.img
+EOF
+```
