@@ -1,3 +1,7 @@
+# Misc
+
+* **do not use `grub-install` without chroot**, unless you're installing a bootloader for the current system, that is. It is a buggy terrible command, which will do tons of useless renames on your current system, and it also will try to detect your current partitions. It completely does not care what disk you're installing bootloader for, it will use your currently loaded disk to figure out *(if you're lucky)* modules to use, thus later you might get a `unknown filesystem` errors from grub. The only way to work around it is to chroot into the system you're installing bootloader for *(so ignore it in case you are already running the system you will be booting)*, and then call `grub-install` from there.
+
 # Prompt
 
 Prompt gives autocompletion. Partitions are seen like `(hd1,…)` stuff like that, use <kbd>TAB</kbd> to see a list.
