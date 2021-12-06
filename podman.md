@@ -16,5 +16,3 @@ The two `/etc/sub{u,g}id` files need to have a line like `constantine:165536:655
     ```
     podman commit $(podman ps | perl -lane 'print @F[-1] if /foo/') foo
     ```
-
-# Possible issues
