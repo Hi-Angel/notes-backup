@@ -8,10 +8,13 @@ The two `/etc/sub{u,g}id` files need to have a line like `constantine:165536:655
 
 # Examples
 
-Run `ubuntu:18.04` with the directory `foo` mounted inside the container
-
-```
-podman run -v ~/Projects/foo:/home/user/Projects/foo -it ubuntu:18.04
-```
+* Run `ubuntu:18.04` with the directory `foo` mounted inside the container
+    ```
+    podman run --rm -v ~/Projects/foo:/home/user/Projects/foo -it ubuntu:18.04
+    ```
+* Commit currently running `foo` as `foo`
+    ```
+    podman commit $(podman ps | perl -lane 'print @F[-1] if /foo/') foo
+    ```
 
 # Possible issues
