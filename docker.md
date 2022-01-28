@@ -31,6 +31,15 @@ It's tricky. It has various deprecated configs that may or may not work dependin
 
 Whatever you do inside container does not get saved after you quit. While container is running, you can do `docker ps -l` to get its id, and then do `docker commit ID new-image-name` to save it. If you already quit, you still can restore it by using `start` and `attach`, see [this answer](https://stackoverflow.com/a/19616598/2388257)
 
+## Storing to remote
+
+1. Login with `docker login`
+2. Associate image with a remote:
+    ```
+    docker tag local_image_name docker.io/user_name/remote_repo_name
+    ```
+3. Then push it: `docker push user_name/remote_repo_name`
+
 # Dockerfile
 
 A list of options and commands used to build an image. An example:
