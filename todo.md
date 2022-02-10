@@ -80,14 +80,6 @@
 * fortnite, it's "epic games", but doesn't have Linux version
 * overwatch, MS's game, it's not free though.
 
-## Mutter
-
-### Given `grp_led:scroll`, scroll LED doesn't change when switching language
-
-Found there's `meta_seat_impl_sync_leds_in_impl` that should sync LEDs. Tried inserting it into `input_thread()` and `set_keyboard_layout_index()`, to no avail. Found out though that when shortcut for changing layout is set with xkb-options rather than in mutter, LED works correctly.
-
-In general, I got a feeling like there's somewhere lack of synchronization with LEDs.
-
 # done
 
 > * try to port all the `alloc.c` commits to remacs — possibly, it might fix the memory leak error. It turned out, Emacs being watched under valgrind by other peoples as well, and those unitialized values at alloc.c were guarded by macroses sort of `#IF VALGRIND_DEFINED`. But one have to explicitly configure in the valgrind support.
@@ -108,3 +100,13 @@ Done. Instead of docs it's added into a separate directory though.
 Wine project rejected the patch with a note that it doesn't provide any measurable improvement.
 
 [1]: https://stackoverflow.com/questions/2612447/pinpointing-conditional-jump-or-move-depends-on-uninitialized-values-valgrin
+
+## Mutter
+
+### Given `grp_led:scroll`, scroll LED doesn't change when switching language
+
+> Found there's `meta_seat_impl_sync_leds_in_impl` that should sync LEDs. Tried inserting it into `input_thread()` and `set_keyboard_layout_index()`, to no avail. Found out though that when shortcut for changing layout is set with xkb-options rather than in mutter, LED works correctly.
+>
+> In general, I got a feeling like there's somewhere lack of synchronization with LEDs.
+
+Fixed in Gnome 42 https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/2279 Main obstacle was that I wasn't aware that gnome doesn't use `mutter` binary. It uses instead a libmutter library.
