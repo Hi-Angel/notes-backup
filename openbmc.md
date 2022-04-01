@@ -1,4 +1,4 @@
-Open source collection of utilities that allows controlling state of a remote server.
+Open source collection of utilities that allows controlling state of a remote server. That is IPMI.
 
 # Misc commands
 
