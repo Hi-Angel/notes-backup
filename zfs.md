@@ -44,6 +44,7 @@ apt remove $(dpkg -l | perl -lane 'print @F[1] if /^ii/ and /.*0.8.0-999.*/')
 * Getting id of a dataset: `/lib/udev/zvol_id /dev/zd0`. Example output: `mypool/mydataset2`.
 * Getting `/dev/zd*` device *(at least if the dataset represents a block device)*: `ls -l /dev/zvol/mypool/mydataset`
 * `dd: error writing '/dev/zd0': No space left on device` — that error can appear if you ran `dd` *(or similar command)* too early. Per my understanding, after pool and volume has been created, there's a short time before `zd0` is configured. You need to wait, say, a second. I've seen this happening on 0.8.3. IMO this is a bug as commands creating a volume shouldn't return if `zd0` wasn't configured yet, but I don't have motivation in reporting it right now.
+* pool load: `zpool iostat -v 1`, shows IO load on individual disks of the pool.
 
 # Installing
 
