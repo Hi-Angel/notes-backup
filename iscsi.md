@@ -13,11 +13,11 @@ For permanent connect there're settings to be set up. Otherwise, it can be done 
 
 # Connecting a Windows client with BAUM BDS
 
-1. Create a pool, volume.
-2. Go to `Protocols → iSCSI`, enable the service, create a LUN for the volume.
+1. Server: create a pool, volume.
+2. Server: go to `Protocols → iSCSI`, enable the service, create a LUN for the volume.
 3. Create a client with IQN
-   * on Windows machine, open `Management panel → Initiator settings`, and click `Configuration` tab. There should be a field `initiator name` with IQN of the machine.
-   * on the server, go to `Access → Clients and Groups`, create a client, and as an IQN enter the one we got from the Windows machine.
-4. In the server, go to `Protocols → iSCSI`, open the drop-down menu `iSCSI Target`, then you should see 2 IQNs. They will be used in the next step.
-5. On the Windows client, in the `Initiator settings`, go to tab `Endpoints`, and enter previously acquired IQNs into the text field "Object" and press `Quick connection` button. Do that for both IQNs separately.
-6. *(optional)* open `Computer management → Disks management`, scroll at the lower half-screen the list of disks to the bottom, and find the new disk that should've appeared. Right-click its icon on the left, and press `Initialize`.
+   * Client: open `Management panel → Initiator settings`, and click `Configuration` tab. There should be a field `initiator name` with IQN of the machine.
+   * Server, go to `Access → Clients and Groups`, create a client, and as an IQN enter the one we got from the Windows machine.
+4. Server: bind iscsi service to the IP addresses you gonna connect through.
+5. Client, in the `Initiator settings`, go to tab `Endpoints` the IP addresses of the server. That should open a prompt with IQNs available, choose one, press ok.
+6. *(optional)* Client: open `Computer management → Disks management` *(or Run `diskmgmt.msc`)*, scroll at the lower half-screen the list of disks to the bottom, and find the new disk that should've appeared. Right-click its icon on the left, and press `Initialize`.
