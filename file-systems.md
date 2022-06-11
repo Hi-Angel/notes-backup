@@ -57,6 +57,7 @@ Snapshotting is confusing: in LVM you have usual pools, you have thin pool with 
     lvcreate -L500G -n disk1 vol_group               # create a disk. It will be at /dev/vol_group/disk1
     ```
 * adding a marked disk to a volume group: `vgextend my_vol_group /dev/sda1`
+* importing a vol_group: either a `vgchange -ay vol_group` or `vgimport vol_group`
 
 ## RAIDs
 
