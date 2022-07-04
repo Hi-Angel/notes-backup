@@ -46,6 +46,16 @@ apt remove $(dpkg -l | perl -lane 'print @F[1] if /^ii/ and /.*0.8.0-999.*/')
 * `dd: error writing '/dev/zd0': No space left on device` — that error can appear if you ran `dd` *(or similar command)* too early. Per my understanding, after pool and volume has been created, there's a short time before `zd0` is configured. You need to wait, say, a second. I've seen this happening on 0.8.3. IMO this is a bug as commands creating a volume shouldn't return if `zd0` wasn't configured yet, but I don't have motivation in reporting it right now.
 * pool load: `zpool iostat -v 1`, shows IO load on individual disks of the pool.
 
+# Sizes
+
+Sizes might be confusing, so here's a little cheatsheet.
+
+* `reservation` on a dataset is an allocation of space from the pool that is guaranteed to be available to the dataset.
+* `refquota`: limits the amount of space that the dataset can consume. This hard limit does not include space that is consumed by snapshots and clones.
+* `refreservation` reserves space for the dataset that does not include space consumed by snapshots and clones, i.e. for data-only and its metadata. If refreservation is set, a snapshot is only allowed if enough free pool space exists outside of this reservation to accommodate the current number of referenced bytes in the dataset
+
+Useful links https://www.mceith.com/blog/?p=153
+
 # Installing
 
 You can create packages, but there's no single command to only create all packages you may need. It either creates too many or too little.
