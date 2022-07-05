@@ -50,9 +50,19 @@ apt remove $(dpkg -l | perl -lane 'print @F[1] if /^ii/ and /.*0.8.0-999.*/')
 
 Sizes might be confusing, so here's a little cheatsheet.
 
+* `free` and `alloc` on `zpool list`: amount of free/used space on a pool. Almost useless, because it doesn't quite do what you'd expect it to. For example, if you set `reservation` or similar on a volume, technically reserved space becomes used from the pool POV. However, `free` and `alloc` ignore such properties completely. It's like amount of actual space used, something like that. So, use `AVAIL` of `zfs list` instead, unless you know what you're doing.
+  `free` is an amount of free space, while `CAP` is the percentage of used space.
+* `alloc` acc. to docs seems to be the `free + alloc = size`, but am unsure.
+* `zfs list` columns:
+    * `avail`: amount of free space on pool/volume/dset. May be more than `volsize`. It reflects `refquota`, parity, and other various reservations. Example: if you have `pool/vol1` and `pool/vol2` and set `refreservation` on vol1, then `pool` and `pool/vol2` will have `AVAIL` less, while `pool/vol1` will have it unchanged, since it's still has access to all of the pool space in addition to what you just reserved.
+    * `avail`: amount of used space on pool/volume/dset. May be more than `volsize`, e.g. if `reservation` on a volume is set to value larger than volsize.
+    * `refer`: the amount of data accessible by the dataset, which may or may not be shared with other datasets in the pool.
+    * `used`: space that dset/vol took from a pool. E.g. if one of reservation properties is set, it will be added up to the `used` field.
 * `reservation` on a dataset is an allocation of space from the pool that is guaranteed to be available to the dataset.
 * `refquota`: limits the amount of space that the dataset can consume. This hard limit does not include space that is consumed by snapshots and clones.
-* `refreservation` reserves space for the dataset that does not include space consumed by snapshots and clones, i.e. for data-only and its metadata. If refreservation is set, a snapshot is only allowed if enough free pool space exists outside of this reservation to accommodate the current number of referenced bytes in the dataset
+* `refreservation` reserves space for the dataset that does not include space consumed by snapshots and clones, i.e. for data-only and its metadata.
+  If refreservation is set, a snapshot is only allowed if enough free pool space exists outside of this reservation to accommodate the current number of referenced bytes in the dataset. IOW, `AVAIL` should be at least the size of `REFER`. Apparently the reason is: once you create a snapshot, overwriting bytes shared in the volume and snap will result in searching for new available space. Thus by simply overwriting pre-existing bytes you will increase space used. That may easily exhaust available space even though we weren't writing new data to the volume with `refreservation`. That obviously contradicts the promise that setting `refreservation` makes, so that's probably why it requires available space to be equal or more than the `REFER`.
+    * `usedbyrefreservation` documented as "amount of space used by a refreservation set on this dataset, which would be freed if the refreservation was removed". You probably will read it wrong, because actually when `REFER` increases, it decreases. That doesn't contradict the documentation. `REFER`nced bytes are taken from refreservation, and as `REFER` increases there's less and less space that may get freed by removing `reservation`.
 
 Useful links https://www.mceith.com/blog/?p=153
 
