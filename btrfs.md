@@ -25,6 +25,10 @@ The next to last line shows counters. They can also be retrieved with `btrfs dev
 * `corrupt`: `corruption_errs`, counts found checksum mismatches
 * `gen`: `generation_errs`, https://unix.stackexchange.com/questions/285813/what-are-btrfs-generation-errs
 
+## Retrieving a file with broken checksum
+
+This is the most annoying part. Apparently, one can't restore a file on a mounted system. The command will be something like `btrfs restore /dev/sda4 /`; use `-D` for dry-run.
+
 # Misc
 
 * Creating a RAID: `mkfs.btrfs -m raid5 -d raid5 /dev/sd{g,h,i,j,k,m,o,p,r,v}1 -f`. Then to start using it you have to run `mount` command on *any* of the devices, like this `mount -t btrfs /dev/sdg1 /tmp/btrfs-mnt`.
