@@ -26,4 +26,6 @@ Due to its similarity to `docker`, most of the stuff mentioned in `docker.md` ap
 
 # Caveats
 
-* Fedora has some lame setup where volume mounts won't work with podman *(specifically, you'll get "Permission denied" on accessing the mount)*. To fix hat add a `:z` to the end of a mount, i.e. change `-v /foo:/bar` to `-v /foo:/bar:z`. From what I've read, it seems might mess up some user ids inside the container, so that's nothing more than a hack. I presume, disabling some SELinux setup *(or disabling SELinux completely)* is a better way of dealing with that. See also: https://www.redhat.com/sysadmin/user-namespaces-selinux-rootless-containers
+* Fedora has some lame setup where volume mounts won't work with podman *(specifically, you'll get "Permission denied" on accessing the mount)*. There are two ways to fix that:
+  1. Better one: have a `SELINUX=permissive` line in the `/etc/selinux/config` file.
+  2. Worse one: add a `:z` to the end of a mount, i.e. change `-v /foo:/bar` to `-v /foo:/bar:z`. It sometimes works, sometimes doesn't. `setctl` call on fails will fail. Also from what I've read, it seems might mess up some user ids inside the container, so that's nothing more than a hack. Setting `selinux` to `permissive` *(or even disabling selinux whatsoever)* is a better way to deal with this.
