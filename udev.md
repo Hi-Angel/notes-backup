@@ -4,7 +4,8 @@ See `man 7 udev`.
 
 # Misc
 
-Rules like `KERNEL` or `SUBSYSTEM` needs to be filled according to the output of `udevadm info --attribute-walk /dev/mydev`. That usually not a full path like you can see in e.g. `udevadm monitor` output.
+* Rules like `KERNEL` or `SUBSYSTEM` needs to be filled according to the output of `udevadm info --attribute-walk /dev/mydev`. That usually not a full path like you can see in e.g. `udevadm monitor` output.
+* udev sets various free-form properties on devices to be later used by applications. E.g. it may set `UDISKS_IGNORE` variable which indicates a suggestion for file-browsers to hide the disk. The variables can be seen with `udevadm info /dev/sdX`
 
 # Debugging
 
