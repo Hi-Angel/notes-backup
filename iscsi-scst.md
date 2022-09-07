@@ -19,6 +19,7 @@ On errors in dmesg, whenever you see stuff like `sqatgt: Missing parameter foo`,
 * configuring is done by writing a config file and executing `scstadmin -config myconfig`.
   Internally `scstadmin` configures by writing stuff into various files under `/sys/kernel/scst_tgt`. Stuff similar to the following: `echo "add_target my_target" > /sys/kernel/scst_tgt/targets/iscsi/mgmt`.
 * **no `initiator` configuration is required**. While setting up target, you also pass a WWN or IQN or whatever identifier of initiator, and then upon enabling target it will connect to initiator and you shall see a new block device in `lsblk`.
+* scst-created disks can be seen in `lsscsi` output
 
 ## Typical problems
 
