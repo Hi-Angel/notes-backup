@@ -48,4 +48,10 @@ Basically, works like following: a sequence of bits, e.g. `1111` being represent
 
 # Combinatorics
 
-Number of permutations of n is `n!` Number of *k permutations of n* is `n! / (n-k)!`.
+* Number of permutations of n is `n!`
+* Number of *k permutations of n* is `n! / (n-k)!`.
+
+# Probability theory
+
+* when one probability leads to another, which leads to third, they are all multiplied
+* when one probability leads to two different that both are of interest, the two are summed up
