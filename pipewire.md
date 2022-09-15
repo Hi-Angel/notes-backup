@@ -21,6 +21,8 @@ Later, ports of each modules can be connected with others or with applications b
 
 # Changing properties in runtime
 
+Weirdly, `pw-cli dump` has properties `properties` and properties `params`. I've only found a way to set the latter, not the former.
+
 `wpctl status` shows a shorter list of objects *(apps, devices, etc)*, a `pw-cli list-remotes` may be more detailed. From either output you need the number, that's the object ID. Let's say the ID is `75`
 
 Then, to list params use `pw-cli dump 75`, and look for section titled `params:`. Chose one you're interested in, let's say it's `Spa:Enum:ParamId:Props`.
