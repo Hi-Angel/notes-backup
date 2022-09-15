@@ -6,6 +6,7 @@
 
 * `sink` — speakers, headphones
 * `source` — a microphone
+* session manager — manages runtime of the media graph and properties, like volume, etc.
 
 # Modules
 
@@ -17,6 +18,18 @@ Modules loaded and unloaded with `pactl`. Worth noting that unloading a module b
 * Create a virtual source: `pactl load-module module-null-sink media.class=Audio/Source/Virtual sink_name=my-source channel_map=front-left,front-right`. To use it later you can link a real microphone `capture` to `input`s of the virtual micro, and then to actually listen to the sound use `capture`s of the virtual micro.
 
 Later, ports of each modules can be connected with others or with applications by either using graphical frontend *(for example `qpwgraph`)*, or with `pw-link`. Use `pw-link -o` and `pw-link -i` to see available nodes.
+
+# Changing properties in runtime
+
+`wpctl status` shows a shorter list of objects *(apps, devices, etc)*, a `pw-cli list-remotes` may be more detailed. From either output you need the number, that's the object ID. Let's say the ID is `75`
+
+Then, to list params use `pw-cli dump 75`, and look for section titled `params:`. Chose one you're interested in, let's say it's `Spa:Enum:ParamId:Props`.
+
+Then, to list props use `pw-cli enum-params 75 Spa:Enum:ParamId:Props`
+
+Then, examples of a property modification *(use JSON)*:
+* `pw-cli set-param 75 Spa:Enum:ParamId:Props '{"Spa:Pod:Object:Param:Props:channelVolumes" : [0.031, 0]}'`
+* `pw-cli set-param 75 Spa:Enum:ParamId:Props '{"Spa:Pod:Object:Param:Props:softMute" : true}'`
 
 # Researching issues
 
