@@ -67,3 +67,8 @@ Later to bring it back you need to delete the device *(write `1` to `/sys/block/
 Then for `multipath` to find device newly appeared execute `multipath -v2` *(`-v2` is just verbose output)*
 
 [1]: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html-single/configuring_device_mapper_multipath/index
+
+# Misc
+
+* each device has a WWID *(World Wide Identifier)*, which is guaranteed to be globally unique and unchanging.
+* usually, `multipathd` scans devices and writes them into `/etc/multipath/wwids`. Depending on `find_multipaths` value, `multipathd` may not update file, so e.g. `multipath -l` will only show devices that are already there *(default behavior BTW)*.
