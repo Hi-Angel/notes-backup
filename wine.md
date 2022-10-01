@@ -4,4 +4,4 @@ It is possible to create a build of wine, and then to run wine right from the bu
 
 # Misc
 
-* **running WINE from a bulid dir**: it will provide a `./wine → tools/winewrapper` symlink that is a shell-script wrapper setting up the necessary env. variables and running wine. In case you really want it, you may do it all manually with a `LD_LIBRARY_PATH=libs/wine WINELOADER=loader/wine loader/wine /tmp/my.exe`
+* **running WINE from a bulid dir**: it will provide a `./wine → tools/winewrapper` symlink that is a shell-script wrapper setting up the necessary env. variables and running wine. If you really want, you may do that manually with a `LD_LIBRARY_PATH=libs/wine WINELOADER=loader/wine loader/wine /tmp/my.exe`
