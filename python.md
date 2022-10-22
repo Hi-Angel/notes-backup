@@ -25,7 +25,7 @@ dir/myfile.py
 
 The `myfile.py` should import the myimport as `import dir.myimport`. That utilizes PEP420, and should work in modern python3. This absolute import is truly relative *(to `main.py`)*, and you may call it as `./main.py`, `/tmp/main.py`, etc, the import always just works.
 
-Mypy has by default PEP420 disabled, you need to enable it with `namespace_packages = True` option.
+Mypy has by default PEP420 disabled, you need to enable it with `namespace_packages = True` and `explicit_package_bases = True` options.
 
 ## Trivia
 
