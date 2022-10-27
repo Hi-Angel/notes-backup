@@ -31,7 +31,10 @@ Dir to save record is `_RR_TRACE_DIR` *(from what I saw in the source, you can't
 * `rr record app app_args` to record
 * `rr replay` to play the last record *(one pointed by `latest-trace` symlink)*
 
-Cool stuff you can do: run record till the point, where you know, some value is wrong. Then watchpoint it `wa -l some_value`, and run reverse-execution until the watchpoint gets hit: `rc`.
+Cool stuff you can do:
+
+* run record till the point, where you know, some value is wrong. Then watchpoint it `wa -l some_value`, and run reverse-execution until the watchpoint gets hit: `rc`.
+* sometimes watchpoints may cause more confusion, even combined with reverse-execution. Instead you can exploit another feature: every `rr replay` has same memory addresses. So you can set a bunch of breakpoints in suspicious places, and a `commands` to each one that e.g. only stops when variable has specific memory address.
 
 # Sanitizer
 
