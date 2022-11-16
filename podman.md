@@ -11,11 +11,6 @@ Due to its similarity to `docker`, most of the stuff mentioned in `docker.md` ap
     [engine]
     detach_keys=""
     ```
-4. Add to `~/.config/containers/containers.conf` also this section to make sure ownership *(uid/gid)* on bind-mounted directories is passed as is:
-    ```
-    [containers]
-    userns = "keep-id"
-    ```
 
 # Examples
 
