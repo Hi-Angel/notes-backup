@@ -26,4 +26,4 @@ modules:
 
 Then to build the flatpak package:
 
-    flatpak-builder /path/to/manifest /destination/directory
+    flatpak-builder /destination/directory /path/to/manifest
