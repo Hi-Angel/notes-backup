@@ -47,6 +47,7 @@ What to do next varies for file systems. [There's an answer](https://superuser.c
 
 * block size is usually 512 bytes. AFAIR it was hardcoded. Anyway, it can be gotten with `blockdev --report /dev/sdX`
 * `gdisk` shows offsets in sectors, and the sector size is usually 512. As a hint that this is the case note whether first partitions starts at `2048` offset. `2048 * 512 = 1MB`.
+* the amount of disk IO may be monitored through means of `/proc/diskstats`, by checking its content before and after doing some IO. The content isn't human-readable, but [this script](https://github.com/Hi-Angel/scripts/blob/master/cmp-diskstats.py) may help. Worth noting though, it seems to not work with `brd` module emulating disks in RAM. The read/write count always stays zero for it, probably worth reporting a bug.
 
 # RAID misc
 
