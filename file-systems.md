@@ -67,6 +67,8 @@ Snapshotting is confusing: in LVM you have usual pools, you have thin pool with 
 
 ## Misc
 
+* adding disks: done separately for group and volume — e.g. `vgextend vol_group /path/to/dev` and `lvextend -l +100%FREE /dev/vol_group/vol` accordingly.
+* `pvdisplay -m`: check what devices VGs consist of
 * LVM can be made to ignore a device in operations by adding a filter to `/etc/lvm/lvm.conf`. Syntax of the filter is usually mentioned there, just search for `filter` word in comments in the file.
 * LVM propagates TRIM/Discard calls on an LV to the underlying physical devices. Worth noting, it is unrelated to `issue_discards` lvm.conf option, which is rather about LVM TRIMing devices after an LV was removed/reduced. In fact, devs doesn't recommend to enable `issue_discards` since it makes one unable to restore data from a removed LV. But at least Debian and Ubuntu enable it anyway.
 * if a device with a VG disappeared and re-appeared *(e.g. an usb-stick was taken off/on)*, the VG health status gonna be `error`. I don't know if there's less intrusive way to fix the status, but one that works for me is deactivating, then activating the VG.
