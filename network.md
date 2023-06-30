@@ -4,6 +4,18 @@ Network adapters often support offload to process the network more quickly. The 
 
 To see the support use `ethtool -k interface | grep offload`. And switching the state is possible with `-K`.
 
+# UDP multicast
+
+Multicast is basically when many computers share same IP *(and seems to be only possible with UDP but not TCP due to complications with handshakes and stuff)*. E.g. if you send a message to IP `224.0.55.55` and port `1234`, it will go to each computer that used `bind()` to the port 1234 and the IP *(or alternatively bind allows for `INADDR_ANY`)*, and then joined the group with `224.0.55.55`.
+
+A device joining group `224.0.55.55` sends a IGMP request that notifies the switch that any traffic for the IP should be routed here as well. If "LOOPBACK" socket option is set *(default)*, the device will receive traffic it sent too.
+
+Gotcha: IGMP will not be sent through every network interface of the device, but through only one. In absence of multicast-specific routes it will likely be the default interface. `ip` command is multicast aware, so to find the destination interface you can execute `ip route get 224.0.55.55`. An application can override that with `IP_MULTICAST_IF` and `SO_BINDTODEVICE` socket options. As a separate note, `bind()`ing to a local IP doesn't work the expected way with multicast, but the mentioned options do.
+
+`iperf` also has options for testing multicast, e.g. server `iperf -s -u -B 224.0.55.55 -i 1` and client `iperf -c 224.0.55.55 -u -T 32 -t 3 -i 1`.
+
+IPs are usually taken from the multicast ranges `[224.…] … [239.…]`.
+
 # Misc
 
 * establish mapping between devices in `ip addr` and `lspci`: `lshw -c net -businfo`.
