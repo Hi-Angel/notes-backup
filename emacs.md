@@ -11,7 +11,28 @@ Emacs loads that into a buffer, and parses whole buffer every time searching for
 
 This is hard. They're using some custom changelog format which you definitely not gonna want to do by hand. You may use hotkey `C-x 4 a` to produce changelog entried from currently uncommited changes, and then copy it to a commit.
 
+# SMIE
+
+## TODO questions:
+
+* `smie-bnf->prec2`:
+  * how do you define "any text"?
+  * how do you define that after a backslash text may continue on new line?
+* how to integrate with imenu?
+
+## what to mention in the article
+
+* the `offset` that `smie-rules-function` should return isn't always an offset, depending on `kind` param it may be a `t/nil`.
+* purpose of a parser needs to be considered: in this case it's indentation, so indentation function needs to be defined that decides what to do depending on the parser output. **keywords** are terminals in the grammar.
+* lexer may use parser to ask for context.
+* syntax table may be used to show matching pairs of parentheses
+* `smie-forward-token` callback will not be called at `(point)` you asked for indentation, but instead in a completely arbitrary position.
+
 # Tasks
+
+## Make projectile file listing in `$HOME` less dramatic
+
+* it shows a buffer with `fatal: not a git repository (or any of the parent directories): .git`. It's because projectile-files-via-ext-command prints err to buffer, Idk yet how to work around it.
 
 ## Unrecognized entry in undo list undo-tree-canary
 
