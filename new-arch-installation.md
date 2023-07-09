@@ -4,7 +4,8 @@
 * Mount the 2 partitions; enable zstd compression on btrfs.
 * use `arch-chroot` to enter the chroot
 * Edit `/etc/fstab` for UUIDs and compression *(it's generated these days, see [this page](https://wiki.archlinux.org/title/Installation_guide))*
-* install with `pactrap` the base packages *(see the mentioned page, basically just kernel)* and `plasma i3 xorg-server git wget gdb konsole sudo pipewire-pulse feh picom`
+* install with `pactrap` the base packages *(see the mentioned page, basically just kernel)* and `plasma i3 xorg-server git wget gdb konsole sudo pipewire-pulse feh picom hunspell-{ru,en_us} man mold moreutils ttf-ubuntu-font-family xorg-xinput --needed base-devel`
+* edit FLAGS in `/etc/makepkg.conf` to `-march=native -O3 -pipe -fmerge-all-constants -flto`
 * install bootloader, but **not systemd-boot**. In my experience it's not detected by systems, better go with the old pal Grub.
 * copy i3 config
 * reboot
