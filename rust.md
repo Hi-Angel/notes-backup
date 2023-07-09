@@ -1,3 +1,7 @@
+# Installing
+
+* `rustup`: `rustup toolchain install beta`
+
 # ownership
 
 ## Basics and moving
