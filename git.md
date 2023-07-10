@@ -1,3 +1,17 @@
+# Debugging credential problems
+
+Usually these related to communication between `ssh` and `git`. If you run the offending `git` command with `GIT_TRACE=true` set, you'll likely see an ssh command it tries to run. Then you can try running the `ssh` command manually but with a `-vvvv` added option to see what `ssh` has to say about the situation. `ssh` debugging logs are usually clear and on point.
+
+# Using separate key for specific host
+
+Given a `example.com` domain and a key pair `~/.ssh/my-key` and `~/.ssh/my-key.pub`, create a `~/.ssh/config` file:
+
+```
+Host example.com
+    IdentityFile ~/.ssh/my-key
+    IdentitiesOnly yes
+```
+
 # Misc
 
 * `HEAD~n` syntax: works reliably only in absence of merge commits. If those are present, then it only counts the merge commit, entirely ignoring the commits that were brought by it.
