@@ -5,8 +5,8 @@
 * install with `pactrap` the base packages *(see [this page](https://wiki.archlinux.org/title/Installation_guide), basically just kernel)*
 * use `arch-chroot` to enter the chroot
 * Edit `/etc/fstab` for UUIDs and compression *(it's generated these days, see [this page](https://wiki.archlinux.org/title/Installation_guide))*
-* install `--needed plasma i3 xorg-server git wget gdb konsole sudo pipewire-pulse feh picom hunspell-{ru,en_us} man mold moreutils ttf-ubuntu-font-family xorg-xinput spectacle noto-fonts-emoji gnome-keyring libsecret seahorse libnma cmake extra-cmake-modules man-pages cups system-config-printer libreoffice-fresh meson base-devel`
 * install bootloader, but **not systemd-boot**. In my experience it's not detected by systems, better go with the old pal Grub.
+* `pacman -S --needed plasma i3 xorg-server git wget gdb konsole sudo pipewire-pulse feh picom hunspell-{ru,en_us} man mold moreutils ttf-ubuntu-font-family xorg-xinput spectacle noto-fonts-emoji gnome-keyring libsecret seahorse libnma cmake extra-cmake-modules man-pages cups system-config-printer libreoffice-fresh meson base-devel`
 * `systemctl enable cups.socket NetworkManager`
 * create a user, set a password. As the user account:
     * copy my configs/dotfiles
