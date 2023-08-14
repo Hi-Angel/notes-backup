@@ -97,6 +97,16 @@ else
     store_at 0 ptr_arr_elem
 ```
 
+## Leak sanitizer
+
+Works as follows: records every allocation/free, then before the end of the process scans entire process memory for pointers to recorded memory. Reports memory without pointers to it as leaked.
+
+### Misc
+
+* silently doesn't work under debugger. Including hooks like `__lsan_do_recoverable_leak_check` *(calling which may result in weird behavior such as exiting the process)*.
+* leak detection may be run manually by calling `__lsan_do_recoverable_leak_check()` or `__lsan_do_leak_check()`, but note that the latter is confusing. It does not shut down the process, but instead it makes it so any further calls to leak checks *(including one that sanitizer will always do at the end of the process)* will no longer work. Better use `__lsan_do_recoverable_leak_check()`.
+* "out-of-scope" leaks are mostly undetected. That is, if a pointer is still in memory but no longer reachable, it won't be reported. The only exception is if "out-of-scope" pointer is inside a function the code returned from and `detect_stack_use_after_return=1` set *(default since GCC-13)*.
+
 # bpftrace
 
 ## Glossary
