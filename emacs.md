@@ -6,6 +6,7 @@ Emacs loads that into a buffer, and parses whole buffer every time searching for
 
 * Vanilla Emacs defines minor-modes through `easy-mmode` package. `smerge-mode` is one example, its `smerge-next`, `smerge-prev` are defined though `easy-mmode` mode.
 * Pasting into incremental search <kbd>C</kbd>-<kbd>s</kbd> from clipboard: press <kbd>Enter</kbd>, which gonna make it non-incremental, then insert with a hotkey as you would in a buffer.
+* to script regexp-replacing: use `-batch -l mycode.el` or `-batch --eval '(progn …)'`, and then either `replace-regexp` to replace all occurrences or `(when (re-search-forward "ORIG") (replace-match "NEW"))` to control amount/instances of replaces.
 
 # Contributing
 
