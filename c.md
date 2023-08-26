@@ -1,5 +1,7 @@
 # Misc
 
+* A regexp for a pointer arg for batch-replacement purposes: `["/_a-zA-Z>-]+`
+
 # Time measuring macros to quickly insert in a code
 
 ```
