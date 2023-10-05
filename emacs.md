@@ -12,6 +12,67 @@ Emacs loads that into a buffer, and parses whole buffer every time searching for
 
 This is hard. They're using some custom changelog format which you definitely not gonna want to do by hand. You may use hotkey `C-x 4 a` to produce changelog entried from currently uncommited changes, and then copy it to a commit.
 
+# Plugin in a native language (aka "dynamic module")
+
+Steps:
+
+1. Define a `plugin_is_GPL_compatible` symbol *(required for .so to get loaded)*
+2. Define a function `foo` that does something
+3. In `emacs_module_init` init plugin function:
+   1. Register `foo` as a known function in Emacs. The odd thing here is that you can't define the function name just yet.
+   2. Create a symbol that will become the function name later
+   3. Tie the two together with `defalias`
+
+Example:
+
+```c
+#include <emacs-module.h>
+
+volatile int plugin_is_GPL_compatible; // necessary for plugin to get loaded
+
+static int register_function(emacs_env *env, const emacs_value func, const char *function_name) {
+    const emacs_value symbol = env->intern (env, function_name);
+    if (!func || !symbol)
+        return 1;
+    emacs_value args[] = {symbol, func};
+    env->funcall(env, env->intern(env, "defalias"), sizeof(args) / sizeof(emacs_value), args);
+    return 0;
+}
+
+static emacs_value hello_world(emacs_env *env, ptrdiff_t nargs, emacs_value args[], void *data) {
+    (void)nargs;
+    (void)args;
+    (void)data;
+
+    const char hello_string[] = "Hello, World!";
+    emacs_value message = env->make_string(env, hello_string, sizeof(hello_string));
+    env->funcall(env, env->intern(env, "message"), 1, &message);
+
+    return env->intern(env, "nil");
+}
+
+int emacs_module_init(struct emacs_runtime *ert) {
+    emacs_env *env = ert->get_environment(ert);
+    emacs_value func = env->make_function(env, 0, 0, hello_world,
+                                          "Print Hello, World!", NULL);
+    return register_function(env, func, "hello");
+}
+```
+
+To make use of it later add the `.so` directory to `'load-path`, `load "module-filename"` *(the `.so` ending is optional)* and then you can call functions. Example that works combined with the code above:
+
+```bash
+$ gcc -shared -o hello.so hello.c -g3 -O0
+$ emacs --batch --eval "(progn (add-to-list 'load-path \"$(pwd)/\") (load \"hello.so\") (hello))"
+Loading module.so (module)...
+Hello, World
+```
+
+## Misc
+
+* `free`ing values returned from `funcall()` and whatnot is not needed. The values may be garbage-collected once the C code returns. Which in turn implies: may you want to keep some value between calls from LISP to your function, you have to do it some other way. I am not sure, but `make/free_global_ref()` might be an API to make `emacs_value` stick. And of course you can just save a `emacs_value` content in a `malloc`ed C structure or call `setq` as you'd usually do in LISP code.
+* calling ELisp code from native-lang plugin is possible with `eval` function — but note that you can't call `(eval "(foo)")` because `eval`ing a string would yield nothing useful even though won't fail either. Something along the lines of `env->intern(env, "(foo)")` might be needed.
+
 # SMIE
 
 ## TODO questions:
