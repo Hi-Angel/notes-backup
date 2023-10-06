@@ -28,7 +28,7 @@ Example:
 ```c
 #include <emacs-module.h>
 
-volatile int plugin_is_GPL_compatible; // necessary for plugin to get loaded
+const volatile bool plugin_is_GPL_compatible; // necessary for plugin to get loaded
 
 static int register_function(emacs_env *env, const emacs_value func, const char *function_name) {
     const emacs_value symbol = env->intern (env, function_name);
