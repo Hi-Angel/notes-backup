@@ -15,3 +15,4 @@
 * edit FLAGS in `/etc/makepkg.conf` to `-march=native -O3 -pipe -fmerge-all-constants -flto`
 * reboot
 * log into Gnome and launch some app that requires storing a password to keyring and store something *(presumably, a `secret-tool store --label="MyApp" myapp myusername` may work)*. This is needed for keyring to get properly initialized, otherwise it won't work in other DEs.
+* disable the utterly stupid default limiting amount of wrong password attempts `sudo sh -c 'echo "deny = 0" >> /etc/security/faillock.conf'`
