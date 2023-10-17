@@ -22,6 +22,7 @@ IPs are usually taken from the multicast ranges `[224.…] … [239.…]`.
 * seeing incoming connections queue on a listening socket *(so called `backlog`)*: `ss -alp` may show them as `Recv-Q` column. It may be one more than the `Send-Q` field, which shows the maximum number of clients that can be accepted. All of that determined through experimentation with a simple tcp server and a bunch of netcat instances connecting to it. After it gets full *(e.g. equal to backlog parameter of `listen()`)*, new connections will get `connection refused`.
 * find out network connections of a process: `lsof -i -ap $PID`
     * match them up with FDs: there should be `FD` field, just ignore the `u` letter at the end. Alternatively: first `ls -l /proc/$PID/fd`, then compare the XXXX in `socket:[XXXX]` with DEVICE column in the 1st command.
+* `performance`: see `qperf.md`
 
 # vlan
 
