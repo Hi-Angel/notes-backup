@@ -1,0 +1,41 @@
+Fiber Channel aka FC.
+
+# Setting up on a NAS
+
+The following is an example of setting up on an arbitrary unnamed NAS just to get the picture.
+
+### Sharing to Windows VM inside a ESXi host
+
+1. Inside NAS web interface create a client and add the client WWPN.
+
+    Gotta chose client WWPNs from a list of "accessible on fabric". It will be the WWPNs that are listed e.g. in ESXi in host setting *(chose a host name in the tree on the left)*, and the tab *(on the right)* `Configure → Storage Adapters`, there will be a table/list where a "Fibre Channel" should be mentioned.
+2. Create a pool/volume and assign to it a LUN.
+3. Give the client access to the LUN.
+4. Go to ESXi, chose the compute cluster that contains VMs in the tree on the left. Then chose tab `Configure`, and then sub-tab `Storage Devices`. The LUN should've appeared in the list there. If it didn't a ESXi reboot may be required.
+5. Chose a VM to share the disk to, go to its settings, click `Add new device → RDM device`. Chose the LUN as the device.
+6. In Windows guest VM open `diskmgmt`, and mark the disk. More or less as follows:
+   1. Open `powershell`, execute `diskpart`, then `list disk`. It shows disk indices. Suppose the disk is `2`. Then execute `select disk 2`, `online disk`, `attributes disk clear readonly`, `create partition primary`. In case you have many disks, these commands may be put to a `1.txt` file each on a separate line and executed as `diskpart /s 1.txt`.
+
+   It is possible with the following `test.ps1` powershell script for disks `[1..9]` *(inclusive)* — but note that it won't abort upon error, so test it with one disk beforehand:
+
+   ```powershell
+   1..9 | ForEach-Object {
+       echo "
+           sel disk $_
+           online disk
+           attributes disk clear readonly
+           create partition primary
+       " | diskpart
+   }
+   ```
+
+   2. *(optional)* assign a letter to the disk and format to NTFS with `select vol 3`, `assign`, `format fs=ntfs quick` commands similarly. It has to be done separately from the actions with partitions because the `vol` index *(can be seen with `list vol`)* may differ. As a script *(the warning mentioned in point 1 applies)*:
+   ```powershell
+   1..9 | ForEach-Object {
+       echo "
+           sel vol $_
+           assign
+           format fs=ntfs quick
+       " | diskpart
+   }
+   ```
