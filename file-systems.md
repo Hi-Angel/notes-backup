@@ -87,6 +87,12 @@ There's a separate file `btrfs.md` on BTRFS
 
 Example of creating a RAID (raid5 in this case): `mdadm --create --verbose /dev/md1 --level=5 --raid-devices=10 /dev/sd{g,h,i,j,k,m,o,p,r,v}1 --size=500G`. Note: since RAID does not know for sure where data resides, it will need to fill whole disks with parity data. Depending on disks this may take long time, the progress can be seen at `/proc/mdstat`. Along that time RAID will be slow. "Rebuilding" can be skipped with `--assume-clean`, but that will result in invalid data. For benchmarks that may not matter, in these cases option is there.
 
+## Misc
+
+* `RAID status`: `mdadm --detail /dev/mdX` and `cat /proc/mdstat`
+* `Add a disk to a RAID`: to re-add previously removed or failed device: `mdadm --re-add /dev/md0 missing` or `mdadm --re-add /dev/md0 faulty` or `mdadm --re-add /dev/md0 /dev/sdY1` or to add it anew `mdadm --add /dev/mdX /dev/sdY1`
+* If resync started, then even in the event of a power failure, after booting the system resync will continue from where it last left off.
+
 # SMART tools
 
 Report a disk health.
