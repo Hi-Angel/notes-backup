@@ -91,7 +91,7 @@ Example of creating a RAID (raid5 in this case): `mdadm --create --verbose /dev/
 
 * `RAID status`: `mdadm --detail /dev/mdX` and `cat /proc/mdstat`
 * `Add a disk to a RAID`: to re-add previously removed or failed device: `mdadm --re-add /dev/md0 missing` or `mdadm --re-add /dev/md0 faulty` or `mdadm --re-add /dev/md0 /dev/sdY1` or to add it anew `mdadm --add /dev/mdX /dev/sdY1`
-* If resync started, then even in the event of a power failure, after booting the system resync will continue from where it last left off.
+* If resync started, power failure happened, after booting the system resync will start anew. It may be faster though *(so if you didn't notice resync restart, you might conclude it continued)*.
 
 # SMART tools
 
