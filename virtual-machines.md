@@ -41,3 +41,10 @@ DEFAULT linux
   APPEND ro root=/dev/sda1 initrd=/initrd.img
 EOF
 ```
+
+# QEMU
+
+## Misc
+
+* Hypervisor: Proxmox
+* Network: do not use `bridge` in production as it makes NIC go to promiscuous mode, and then kernel sorts out the packets, which results in lots of copying and CPU usage. Instead either use `SR-IOV` *(NIC-dependent mode which requires the NIC to support it)* or `macvtap` *(it's about assigning multiple MAC addresses to a NIC and then using unicast filtering)*
