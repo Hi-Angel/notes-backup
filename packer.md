@@ -1,5 +1,9 @@
 Allows automating a system installation from ISO and other sources. Supports many plugins, in particular for Proxmox and vCenter.
 
+The first interesting that runs is `builder` that uses `boot_command` and other properties to create a machine.
+
+Then `communicator` runs that tries to connect to the freshly created machine. It is possible to disable communicator completely by setting `communicator = "none"`.
+
 # Glossary
 
 * `machine image` in docs basically refers to the resulting system after the installation has completed.
@@ -83,6 +87,7 @@ source "vsphere-iso" "bastionserver" {
     "<enter>"
   ]
 
+  # here "ssh" communicator is used, but we can also set e.g. "none"
   ssh_username = "******"
   ssh_password = var.ssh_password
   ssh_pty = true
