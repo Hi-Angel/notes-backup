@@ -9,7 +9,7 @@ Basic steps:
 1. On the panel at the bottom, add a source, which can be a "window", "screen", "camera", etc.
 2. Check audio on the next rectangle. You cam mute it if you won't want any sound by clicking the audio icon.
 3. Click `Settings` on the far right rectangle of the panel, and configure "Output" for location/format of the output file.
-4. Click `Start Recording` *(you can also assign shortcuts to it in `Settings → Hotkeys`)*
+4. Click `Start Recording` *(you can also assign shortcuts to it in `Settings → Hotkeys`. I usually set start/stop pair to <kbd>F1</kbd>)*
 
 ## Misc
 
