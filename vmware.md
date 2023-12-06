@@ -21,7 +21,13 @@ In certain circumstances after a VM was removed there might be a directory with 
 
 ## Sharing a disk between VMs (aka active/active, active/passive)
 
-The first VM would be created as usual. Then for other VMs, in settings/`Add new device` instead of "Hard disk" gotta chose a "Existing Hard disk", and chose a datastore path to an existing disk.
+The first VM would be created as usual. Then for other VMs, in settings/`Add new device` instead of "Hard disk" gotta chose a "Existing Hard disk", and chose a datastore path to an existing disk. Also set *(both in the original and "existing" disks; ESXi might not allow changing them for "original" though so you'd have to re-create)*:
+
+* `Type` → `Thick Provision Eager Zeroed`
+* `Sharing` → `Multi-writer` 
+* `Disk Mode` → `Independnet - Persistent`
+
+In absence of these 3 options various problems gonna arise, such as unable to power on the VM with `Failed to lock the file`. These options have been used for years in a company, so once I realized it doesn't work without them, I didn't dig further.
 
 # API
 
