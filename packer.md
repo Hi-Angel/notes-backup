@@ -14,7 +14,9 @@ Then `communicator` runs that tries to connect to the freshly created machine. I
 
 # HCL2 lang
 
-Syntax:
+An example can be seen in the `Builder` section further below.
+
+## Syntax:
 
 ```hcl
 <BLOCK TYPE> "<BLOCK LABEL>" "<BLOCK LABEL>" {
@@ -26,11 +28,31 @@ Syntax:
 
 Types supported: string, number, bool, list, map. There's also `null` identifier that is applicable to all types and has special behavior.
 
+## Variables
+
+Stuff inside hcl/json config may be modified by using `variables`. Example:
+
+```
+variable "firmware" {
+  type        = string
+  description = "Firmware type"
+}
+
+
+source "proxmox-iso" "fedora" {
+  firmware             = var.firmware
+[…]
+```
+
+It then can be passed from the command line with `-var varname=value` or as env. variable `PKR_VAR_varname=value`.
+
 # Debugging
 
-[There's a good section on that in official docs](https://developer.hashicorp.com/packer/docs/debugging).
+* setting `PACKER_LOG` env. var enables debugging prints and shows every keypress in `boot_command` as it's being typed.
+* [There's a good section on that in official docs](https://developer.hashicorp.com/packer/docs/debugging).
+* a `-debug` option makes `packer` pause before running the next `step` of the plugin. The "steps" are defined in a plugin code as a variable of type `[]multistep.Step`. Each `step` implements a function `Run` that gets run.
 
-## Builder
+# Builder
 
 In HCL it's defined in `source`. Its syntax is `source "my_builder_type" "my_id" {…}`, and then it can be referenced from `build` block as `"source.my_builder_type.my_id"`.
 
@@ -87,7 +109,7 @@ source "vsphere-iso" "bastionserver" {
     "<enter>"
   ]
 
-  # here "ssh" communicator is used, but we can also set e.g. "none"
+  # here "ssh" communicator is used, but we can also set `communicator = "none"`
   ssh_username = "******"
   ssh_password = var.ssh_password
   ssh_pty = true
