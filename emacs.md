@@ -73,6 +73,16 @@ Hello, World
 * `free`ing values returned from `funcall()` and whatnot is not needed. The values may be garbage-collected once the C code returns. Which in turn implies: may you want to keep some value between calls from LISP to your function, you have to do it some other way. I am not sure, but `make/free_global_ref()` might be an API to make `emacs_value` stick. And of course you can just save a `emacs_value` content in a `malloc`ed C structure or call `setq` as you'd usually do in LISP code.
 * calling ELisp code from native-lang plugin is possible with `eval` function — but note that you can't call `(eval "(foo)")` because `eval`ing a string would yield nothing useful even though won't fail either. Something along the lines of `env->intern(env, "(foo)")` might be needed.
 
+# emacspeak
+
+A code navigation for visually impaired or blind.
+
+Assuming it's not in the distro packages, you build `servers/native-espeak` and the main makefile, then start emacs with `./run`, and then evaluate `(load-file "lisp/emacspeak-setup.el")`.
+
+The `native-espeak` is a built-in pronouncing program, but it can be replaced with something else.
+
+By default <kbd>C-e</kbd> is used as a prefix for emacspeak commands, and then </kbd>C-e C-e</kbd> executes "goto end of line".
+
 # SMIE
 
 ## TODO questions:
