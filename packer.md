@@ -46,6 +46,8 @@ source "proxmox-iso" "fedora" {
 
 It then can be passed from the command line with `-var varname=value` or as env. variable `PKR_VAR_varname=value`.
 
+It can also be used inside strings, including `boot_command` with bash-like syntax, e.g. `"some text ${var.varname} some other text"`.
+
 # Debugging
 
 * setting `PACKER_LOG` env. var enables debugging prints and shows every keypress in `boot_command` as it's being typed.
