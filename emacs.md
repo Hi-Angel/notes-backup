@@ -83,6 +83,11 @@ The `native-espeak` is a built-in pronouncing program, but it can be replaced wi
 
 By default <kbd>C-e</kbd> is used as a prefix for emacspeak commands, and then </kbd>C-e C-e</kbd> executes "goto end of line".
 
+## Misc
+
+* Speech rate: change `espeak-default-speech-rate`. Important: it has to be set before emacspeak is started, otherwise it won't have any effect.
+* Speak a forward word: `C-e w`
+
 # SMIE
 
 ## TODO questions:
