@@ -33,3 +33,4 @@ $ go mod tidy          # this downloads all necessary deps
 * there's a nice pattern of functions returning a tuple *(though Go doesn't use this term)* of error and a "good value". However, it is impossible to declare a type of the components inside the tuple inside the assignment. You can do that on a separate line, which is of course verbose. So people simply don't do that, and as result reading a Go code is a guessing game, because you have no idea what types are involved. If you read it locally, you can fetch all modules and use "go to definition" to see the types *(which is long for a new project but at least works)*. But you're reading it from a web-browser you are out of luck.
 * `len` returns `int`. Sic. Where did they see length taking negative value? 🤷‍♂️
 * instead of managing scopes like in Rust or C++ Go has a garbage collector
+* using the absolute value function looks like this: `int(math.Abs(float64(-7)))`. Amazing.
