@@ -30,6 +30,10 @@ The first VM would be created as usual. Then for other VMs, in settings/`Add new
 
 In absence of these 3 options various problems gonna arise, such as unable to power on the VM with `Failed to lock the file`. These options have been used for years in a company, so once I realized it doesn't work without them, I didn't dig further.
 
+## Boot logs
+
+Located on a ESXi that contains the VM at `/vmfs/volumes/ds_name/*.log`, where `ds_name` is the datastore name that contains the VM.
+
 # API
 
 There's `pyvmomi`, `govmomi`, etc. An example of a `pyvmomi` that lists VMs and their resource pools:
@@ -53,3 +57,23 @@ if __name__ == '__main__':
         if isinstance(vm, vim.VirtualMachine):
             print(f'{vm.name} {vm.resourcePool}')
 ```
+
+# Vsphere cons
+
+* vague and useless errors. One example "insufficient resources" upon starting up a VM, which has only one reason documented: lack of RAM. So you go check your RAM, you find that everything's alright, you conclude it's a bug in vsphere/ESXi. Well, it turns out there may be other reasons as well, such as passthrough of a SR-IOV NIC while a limit is reached, but vsphere won't tell you anything besides the two words "insufficient resources", both in the logs and via API.
+
+# ESXi
+
+## Passing through devices
+
+As of 6.7 it's only possible directly via ESXi host interface, but not via vCenter that manages these hosts. So if you are in vCenter, you gotta leave it and open the URL of the ESXi you're interested in.
+
+Open `Host → Manage → Hardware`, there should be a hardware devices list. You can enable either `SR-IOV` or `Passthrough` for those that don't have a "Not available" entry.
+
+Afterwards, open a VM, "edit" it and chose a `Add other device → PCI device`. If the device didn't appear in the list, that might imply a ESXi reboot is needed. In such cases you should the message about it earlier, right after enabling passthrough due to ESXi changing "Disabled" to something like "Enabled/Reboot needed".
+
+Some *(or maybe all, Idk)* hardware *(e.g. JBODs)* requires the VM that devices were passed to, to reserve all RAM. ESXi shall tell you that as well. ESXi will refuse to boot VM unless you do that.
+
+### Passing through disks
+
+Special case *(note, this applies to ESXi not to vSphere)*: "Edit" the VM, click `Add hard disk → New raw disk`, there should be a list of hardware disks present.
