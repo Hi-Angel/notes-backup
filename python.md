@@ -30,3 +30,8 @@ Mypy has by default PEP420 disabled, you need to enable it with `namespace_packa
 ## Trivia
 
 * paths to evaluate "absolute" imports against are stored in `sys.path` *(`import sys`)*, which can be modified at runtime. It's a list that has one special element `''`, an empty string, which means "use the location of the script as one of directories for absolute imports".
+
+# Misc
+
+* `pytest` is better be called explicitly in the file that invokes test, rather than by a user on command line. The reason is that `pytest` binary name varies on different systems, it may be `pytest3` or something else… It's better to just call `pytest.main()` from the testing file explicitly.
+  * example of calling it on the current file: `exit(pytest.main(argv))`. This way `argv[0]` gets passed as the script name, so pytest would run tests defined in the same file. Plus any additional args such as `-vv`, etc, will be passed to pytest as well.
