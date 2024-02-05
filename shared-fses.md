@@ -57,6 +57,7 @@ Suppose you want to share `/home/myuser`. First do on server:
     /export/myuser myclient/24(rw,nohide,insecure,no_subtree_check,async,all_squash,anonuid=1000,anongid=1000)
 
     ```
+    …where `myclient` is an IP. So e.g. `/export 1.1.1.1/32(rw,fsid,…`.
 4. Run `sudo exportfs -a`
 5. Start `sudo systemctl start nfs-server`
 
