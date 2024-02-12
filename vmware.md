@@ -1,4 +1,4 @@
-# vCenter Misc
+# vCenter
 
 Some things are not intuitive, so warrant a place in notes.
 
@@ -62,6 +62,13 @@ if __name__ == '__main__':
 
 * vague and useless errors. One example "insufficient resources" upon starting up a VM, which has only one reason documented: lack of RAM. So you go check your RAM, you find that everything's alright, you conclude it's a bug in vsphere/ESXi. Well, it turns out there may be other reasons as well, such as passthrough of a SR-IOV NIC while a limit is reached, but vsphere won't tell you anything besides the two words "insufficient resources", both in the logs and via API.
 
+# ESXi cons
+
+* terminal:
+  * lacks many standard utilities like `lsblk`
+  * what's available is implemented via `busybox` *(expect jumping through the hoops whenever you have to use terminal)*
+  * history gets lost on reboot
+
 # ESXi
 
 ## Passing through devices
@@ -76,4 +83,9 @@ Some *(or maybe all, Idk)* hardware *(e.g. JBODs)* requires the VM that devices 
 
 ### Passing through disks
 
-Special case *(note, this applies to ESXi not to vSphere)*: "Edit" the VM, click `Add hard disk → New raw disk`, there should be a list of hardware disks present.
+Special case *(note, this applies to ESXi not to vSphere)*: depending on some circumstances, there may be two variants:
+
+* "Edit" the VM, click `Add hard disk → New raw disk`, there should be a list of hardware disks present.
+* This requires tinkering:
+  1. Follow [this steps](https://kb.vmware.com/s/article/1017530) to create a disk binding that takes shape of a locally stored file.
+  2. "Edit" the VM, click `Add hard disk → Existing hard disk`, chose the file created in the prev. step. The pass-through should work, so e.g. `smartctl` returns the correct data.
