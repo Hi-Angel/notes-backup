@@ -81,6 +81,11 @@ if __name__ == '__main__':
 
 # ESXi
 
+## Misc
+
+* `Changing management IP address`: go do `Networking → VMKernel NICs` and edit the address.
+* Maintenance mode: getting `esxcli system maintenanceMode get`, changing `esxcli system maintenanceMode set --enable false`. It also optionally supports `--server=` arg.
+
 ## Passing through devices
 
 As of 6.7 it's only possible directly via ESXi host interface, but not via vCenter that manages these hosts. So if you are in vCenter, you gotta leave it and open the URL of the ESXi you're interested in.
