@@ -2,6 +2,16 @@
 
 Some things are not intuitive, so warrant a place in notes.
 
+## Installation
+
+1. Install at least one ESXi, because vCenter is installed over it.
+2. Run a GTK app from the vCenter ISO file, and as part of setting up you write the ESXi IP address and password.
+
+    Among steps the only one worth mentioning is setting up "SSO". It will be used as part of the username to log into vCenter. So if your domain was chosen to be `foo.local`, then the username will be `administrator@foo.local`.
+3. Prev. step has only created a VM with vCenter on the ESXi, but no ESXi is managed just yet. Now you open the vCenter address *(if you use DHCP, you can look it up by opening the vCenter VM console in the ESXi, address should appear there)*. Then in vCenter:
+   1. Click its IP address and chose `New Datacenter…`. Follow steps to create it.
+   2. For every ESXi you want to add: Click the datacenter → `Add Host…`. As part of steps point out the ESXi address.
+
 ## Adding a new network
 
 1. Click a node out of the cluster *(e.g. 1.1.1.1)*
