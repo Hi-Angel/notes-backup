@@ -90,6 +90,20 @@ By default <kbd>C-e</kbd> is used as a prefix for emacspeak commands, and then <
 
 # SMIE
 
+Rules are described with `(smie-prec2->grammar (smie-bnf->prec2 … ))`; the `smie-bnf->prec2` has some limitations, see its docs.
+
+Indentation offset is decided upon with a function like `(defun foo-smie-rules (kind token)` which determines what indentation to apply at point.
+
+These are connected as part of mode definition as `(smie-setup foo-grammar #'foo-smie-rules)`
+
+## Misc
+
+* Grammar doesn't have to describe everything, only the tokens that start/end regions of different indentation. IOW, if a file only consists of entries requiring zero indentation, in terms of grammar SMIE doesn't have to even know it's there. In such case, "indenting" the line will not call `foo-smie-rules` at all, because there's nothing to indent.
+
+## Debugging
+
+There's a `(smie-config-show-indent)` function that shows current indentation `token` and `kind`
+
 ## TODO questions:
 
 * `smie-bnf->prec2`:
