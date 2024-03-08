@@ -12,6 +12,7 @@
     * copy my configs/dotfiles
     * `gio mime x-scheme-handler/http org.qutebrowser.qutebrowser.desktop && gio mime x-scheme-handler/https org.qutebrowser.qutebrowser.desktop`
     * `systemctl enable --user pipewire.socket`
+* `echo user_allow_other >> /etc/fuse.conf`
 * edit FLAGS in `/etc/makepkg.conf` to `-march=native -O3 -pipe -fmerge-all-constants -flto`
 * reboot
 * log into Gnome and launch some app that requires storing a password to keyring and store something *(presumably, a `secret-tool store --label="MyApp" myapp myusername` may work)*. This is needed for keyring to get properly initialized, otherwise it won't work in other DEs.
