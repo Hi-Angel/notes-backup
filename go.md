@@ -35,4 +35,4 @@ $ go mod tidy          # this downloads all necessary deps
 * instead of managing scopes like in Rust or C++, Go has a garbage collector
 * getting the absolute value looks like this: `int(math.Abs(float64(-7)))`. Amazing.
 * you can't allocate an `n`-sized array where all elements equal to some `X`. Instead you first allocate it with `make()`, then you initialize every element in a loop.
-* `warning: ignoring go.mod in system temp root /tmp`: this is a warning you'll receive if you create a Go project in `/tmp`. That's one of the most frequent things to do: creating a project in `/tmp` to for bugreport-purposes and Go doesn't allow it. Great.
+* `warning: ignoring go.mod in system temp root /tmp`: this is an error *(yes, it's not a warning because it bails out trying to do what it's been told to)* you'll receive if you create a Go project in `/tmp`. That's one of the most frequent things to do: creating a project in `/tmp` to for bugreport-purposes and Go doesn't allow it. Great.
