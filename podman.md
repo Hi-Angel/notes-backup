@@ -18,6 +18,13 @@ Due to its similarity to `docker`, most of the stuff mentioned in `docker.md` ap
     ```
     podman run --rm -v ~/Projects/foo:/home/user/Projects/foo -it ubuntu:18.04
     ```
+* Run `bash` inside `img` instead of some default script that the author has set, achieved by clearing the "entrypoint":
+    ```
+    podman run --rm --entrypoint= -it img /bin/bash
+    ```
+
+    alternatively, launch a container as usual and then run separately `podman exec -it container_name /bin/bash`.
+
 * Commit currently running `foo` as `foo`
     ```
     podman commit $(podman ps | perl -lane 'print @F[-1] if /foo/') foo
