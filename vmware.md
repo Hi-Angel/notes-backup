@@ -68,6 +68,14 @@ if __name__ == '__main__':
             print(f'{vm.name} {vm.resourcePool}')
 ```
 
+# Misc
+
+* Networking
+    * `virtual switch` is a network device that refers to a physical one.
+    * `distributed switch` same as `virtual switch`, except it's only creatable from vCenter and it basically allows to deduplicate some work by choosing both ESXi that gonna be on the network at once.
+    * `port group` is a thing to be created over a `switch` and basically is a virtual network where IPs are unique.
+        Basically, you can have multiple `group`s over a `switch` over a physical network, so basically you end up multiple VMs who potentially use the same IP talking to each other on the same physical network — and you get no IP conflicts because vSphere transparently handles low-level IP reassignment to avoid conflicts.
+
 # Vsphere cons
 
 * vague and useless errors. One example "insufficient resources" upon starting up a VM, which has only one reason documented: lack of RAM. So you go check your RAM, you find that everything's alright, you conclude it's a bug in vsphere/ESXi. Well, it turns out there may be other reasons as well, such as passthrough of a SR-IOV NIC while a limit is reached, but vsphere won't tell you anything besides the two words "insufficient resources", both in the logs and via API.
