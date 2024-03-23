@@ -16,6 +16,7 @@ Basic steps:
 * To crop a window hold <kbd>Alt</kbd> and resize the image of the window over the canvas.
 * To reset resizes on a "source" click it and chose `Transform → Edit Transform`
 * `To fit canvas to a source`, right-click the source and chose "Resize output (source size)"
+* VAAPI rendering in `Settings → Output` is hidden for some reason unless you change the tab format at the top from `Simple` to `Advanced`.
 
 ## Gotchas
 
