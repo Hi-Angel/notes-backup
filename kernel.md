@@ -1,3 +1,37 @@
+# General
+
+* kernel types in general:
+  * monolithic: drivers are in the kernel.
+  * microkernel: drivers are userspace. The only components *required* to be in kernel are memory allocation, CPU scheduler and IPC. Ex.: Mach, QNX, Redox.
+  * exokernel: allows almost direct access app → hw, only making sure there's no resources conflict *(and perhaps some basic security)*. The app then can either implement the device management on its own or use available library abstractions instead.
+* kernelspace uses both physical *(aka logical)* and virtual memory. Mostly the latter.
+  * `kmalloc` and friends accept GFP flag to describe the purpose, in particular whether the memory can be reclaimed *(aka swapped out)*
+* NUMA implies different mem banks attached to different CPU.
+* a process information *(memory, opened FDs, in-fly signals)* being kept in `task_struct`
+* most syscalls *(e.g. read)* may be interrupted by sending a signal to the process, e.g. `SIGUSR1`.
+  * The order of events: 1. signal comes, 2. syscall interrupted, 3. the process signal handler executed, 4. if process still alive, syscall returns a `EINTR`.
+  * in a rare occasion a syscall may be "uninterruptable" *(so nothing including a SIGKILL can make it return)* or "killable" *(like "uninterruptable" but can be killed)*.
+* `fork()` is implemented via `clone` syscall. In-kernel it copies `task_struct` and `thread_info`, allocates PID and overwrites some struct fields as necessary. Potentially copies some data per `clones`'s flag.
+* threads are implemented via `clone` as well. From kernel POV threads are just processes without the COW stuff.
+* `zombie` is a process whose `task_struct` wasn't removed yet.
+  * if parent is dead, per `man 2 wait`, the zombie usually gets reassigned to `init`, which periodically uses something similar to `waidpid(-1)` to get rid of zombies. Alternatively, it gets re-assigned to a subreaper process as set by `prctl`.
+
+  Some sources claim that zombie gets reassigned to a grandparent or even to a sibling, but it's not the documented behavior, so probably a mistake.
+* process scheduler allocates share of CPU time and enables interactivity by running a process that has slept immediately after it wakes up, thus preempting the long running process that has consumed much larger CPU time share.
+* syscalls are done by using either an interrupt *(e.g. int128 on x86)* or a an instruction *(e.g. `systenter` on x86)*.
+* `exceptions` *(as opposed to `interrupts`)*: there are 2 types: 1. hw exceptions that happen due to an illegal activity *(e.g. MMU detecting an illegal access)*, 2. OS exceptions, caused by a task, e.g. "divide-by-zero" or similarly accessing invalid memory. Kernel handling for exceptions and interrupts is similar.
+* `IRQ` is a number assigned to an interrupt. Can be assigned dynamically or statically.
+* kernel processing of an interrupt is divided to top/bottom halves, where top half is the absolutely critical and fast processing *(such as acknowledging the interrupt)* that runs immediately, and bottom half is non-critical time-consuming work *(such as copying network data)* that runs ± "when convenient".
+* `/proc/interrupts` enlists information on the available IRQs
+* Device types: while there're two `block` and `char`, but char ones may have quite complicated API *(such as camera device)* and better be accessed via a special lib. Devs are usually located in `/dev` but don't have to. They may be in `/sys` for example.
+* `module_init()` is a function initializing various resources and in case the module is compiled-in it's run on boot. OTOH `module_exit()` doesn't run if a module is compiled into the kernel.
+* **device model** represents a tree of devices. It serves multiple purposes, one interesting example is powering down devices, which you need to do starting with a leaf, so e.g. 1. usb mouse, 2. usb controller, PCI bus.
+
+    In kernel a device is typically represented by `kobject`, often embedded into another struct. kbojects support reference counting, so each time some code obtains a reference the count is increased. Most often though they're manipulated upon by driver subsystem rather than the driver.
+
+    The kobjects hierarchy is exported to sysfs to facilitate debugging *(among other reasons)*. Though it's not done automatically upon kobject initialization and instead happens explicitly with `kobject_add()`.
+* devices may send events *(e.g. "disk full", "low battery", etc)*, which is done via netlink, where the source will be the device sysfs path. Which is facilitated by devices being represented by `kobject`s.
+
 # Installing one module
 
 Use something like
@@ -119,5 +153,6 @@ Allows building external modules.
 
 # Misc
 
-* while profiling/debugging you may find one of these `ret_from_intr`, `ret_from_exception`, `ret_from_sys_call`, `and` `ret_from_fork`. [There's some description on how they work](https://www.oreilly.com/library/view/understanding-the-linux/0596002130/ch04s08.html), but not much on what they are. I think here's what happens: while a process gets executed, various events may happen. Most usually that is a timer interrupt. At this point kernel scheduler accepts execution. These functions are basically entry points into the scheduler.
+* while profiling/debugging you may find one of these `ret_from_intr`, `ret_from_exception`, `ret_from_sys_call`, and `ret_from_fork`. [There's some description on how they work](https://www.oreilly.com/library/view/understanding-the-linux/0596002130/ch04s08.html), but not much on what they are. I think here's what happens: while a process gets executed, various events may happen. Most usually that is a timer interrupt. At this point kernel scheduler accepts execution. These functions are basically entry points into the scheduler.
 * debian packages can be built from the kernel using `bindeb-pkg` makefile target *(and some others)*
+* `kprobe` vs `tracepoint`: `kprobe`s is any place in the kernel, up to a machine instruction within a function *(`bpftace` allows that)*. `tracepoint`s on the other hand are defined statically/explicitly in the code. So basically, new tracepoints can't be added without modifying the source, but kprobes can be any location and does not require kernel to be rebuilt.
