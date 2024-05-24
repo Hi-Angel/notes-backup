@@ -6,11 +6,16 @@ Due to its similarity to `docker`, most of the stuff mentioned in `docker.md` ap
 
 1. Create a `/etc/subgid` and `/etc/subuid` files with the following line *(substitute username with your user name)*: `username:100000:65536`. The 2nd column seems to be arbitrary, but tutorials prefer for it to start at least with 100k. For 3rd column, a 2¹⁶ is usually recommended.
 2. Run `podman system migrate`
-3. Create a `~/.config/containers/containers.conf` file *(to avoid problems with readline hotkey C-p)* with
+3. Create a `~/.config/containers/containers.conf` file with the following content: *(to )* with
     ```
     [engine]
-    detach_keys=""
+    detach_keys = ""
+
+    [containers]
+    log_driver = "none"
     ```
+
+    Here, the `detach_keys` avoids problems with readline hotkey <kbd>C</kbd>-<kbd>p</kbd>, `log_driver` works around terrible default of logging everything you ever do in journal.
 
 # Examples
 
