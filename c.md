@@ -1,6 +1,7 @@
 # Misc
 
 * A regexp for a pointer arg for batch-replacement purposes: `["/_a-zA-Z>-]+`
+* `poll` vs `epoll`: return from `poll` requires to do `O(n)` scan to find the FDs that got triggered, whereas `epoll` gives them right away at `O(1)`.
 
 # Time measuring macros to quickly insert in a code
 
