@@ -1,12 +1,14 @@
+Pipewire itself basically just processes the graph: manages nodes, redirects data from one to another. But the nodes creation and in particular monitoring for devices is done by client processes. E.g. ALSA devices monitoring is done by "session manager".
+
 # Misc
 
 * in the code, it seems "port" is a `route`. Whenever they print a port, they use `route::name` Not sure the reverse is true, but if you wanna change some logic for dealing with ports *(like handling of headphones plugging in/out in `pipewire-media-session`)*, look for routes.
 
 # Terminology
 
-* `sink` — speakers, headphones
-* `source` — a microphone
-* session manager — manages runtime of the media graph and properties, like volume, etc.
+* `sink`: speakers, headphones
+* `source`: a microphone
+* session manager: manages runtime of the media graph and properties, like volume, etc. It is also responsible for monitoring for new ALSA devices and connecting different nodes in the PW graph.
 
 # Modules
 
