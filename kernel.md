@@ -22,8 +22,8 @@
 * `exceptions` *(as opposed to `interrupts`)*: there are 2 types: 1. hw exceptions that happen due to an illegal activity *(e.g. MMU detecting an illegal access)*, 2. OS exceptions, caused by a task, e.g. "divide-by-zero" or similarly accessing invalid memory. Kernel handling for exceptions and interrupts is similar.
 * `IRQ` is a number assigned to an interrupt. Can be assigned dynamically or statically.
 * kernel processing of an interrupt is divided to top/bottom halves, where top half is the absolutely critical and fast processing *(such as acknowledging the interrupt)* that runs immediately, and bottom half is non-critical time-consuming work *(such as copying network data)* that runs ± "when convenient".
-* `/proc/interrupts` enlists information on the available IRQs
-* Device types: while there're two `block` and `char`, but char ones may have quite complicated API *(such as camera device)* and better be accessed via a special lib. Devs are usually located in `/dev` but don't have to. They may be in `/sys` for example.
+* `/proc/interrupts` enlists info on the available IRQs and their devices.
+* Device types: while there're two `block` and `char`, but char ones may have quite complicated API *(such as camera device)* and better be accessed via a special lib. char devs are usually manipulated with `ioctl()` rather than actually written to. Devs are typically located in `/dev` but don't have to. They may be in `/sys` for example.
 * `module_init()` is a function initializing various resources and in case the module is compiled-in it's run on boot. OTOH `module_exit()` doesn't run if a module is compiled into the kernel.
 * **device model** represents a tree of devices. It serves multiple purposes, one interesting example is powering down devices, which you need to do starting with a leaf, so e.g. 1. usb mouse, 2. usb controller, PCI bus.
 
@@ -31,6 +31,10 @@
 
     The kobjects hierarchy is exported to sysfs to facilitate debugging *(among other reasons)*. Though it's not done automatically upon kobject initialization and instead happens explicitly with `kobject_add()`.
 * devices may send events *(e.g. "disk full", "low battery", etc)*, which is done via netlink, where the source will be the device sysfs path. Which is facilitated by devices being represented by `kobject`s.
+* `DRM`
+  * Main GPU devices like `/dev/dri/card1` have a `master`, which is assigned by a `SET_MASTER` ioctl. The master then may "lease" some device resources to other clients.
+  * There are "render nodes" like `/dev/dri/renderX` that allow for unprivileged access with no authentication and are useful for render-only purposes *(e.g. off-screen rendering)*.
+  * KMS from userspace POV is basically initializing a `struct drm_mode_atomic` and issuing a `DRM_IOCTL_MODE_ATOMIC` ioctl.
 
 # Installing one module
 
