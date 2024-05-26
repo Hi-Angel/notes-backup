@@ -4,10 +4,26 @@
   * monolithic: drivers are in the kernel.
   * microkernel: drivers are userspace. The only components *required* to be in kernel are memory allocation, CPU scheduler and IPC. Ex.: Mach, QNX, Redox.
   * exokernel: allows almost direct access app → hw, only making sure there's no resources conflict *(and perhaps some basic security)*. The app then can either implement the device management on its own or use available library abstractions instead.
+
+## Memory
+
 * kernelspace uses both physical *(aka logical)* and virtual memory. Mostly the latter.
   * `kmalloc` and friends accept GFP flag to describe the purpose, in particular whether the memory can be reclaimed *(aka swapped out)*
 * NUMA implies different mem banks attached to different CPU.
 * a process information *(memory, opened FDs, in-fly signals)* being kept in `task_struct`
+* virtual memory:
+  * `Page Table`: a structure to convert virtual → physical addresses. Per process.
+  * `PTE`, `Page Table Entry`: a single address mapping in the PT.
+  * `TLB`, `Translation Lookaside Buffer`: caches recently used mappings, a part of MMU. It's cleared on process context switch *(unless a CPU supports binding every TLB entry to a PID, e.g. with `PCID` on x86 or `domains` on ARM)*.
+  * "page fault": a TLB miss. The mapping may or may not exist, that's up to the kernel to work out. The physical address may not have been allocated yet or was swapped out.
+  * **How**: if TLB lacks a mapping, i.e. a TLB/cache miss, there will be a "page walk", a look up of the mapping in the PT. If it's found, it's written to the TLB because CPU can only access mapping via it, then the faulted instruction restarted.
+* `MMIO`, `Memory Mapped IO`: a virtual memory mapped to a device. On the device side it may be contiguous or be represented by registers. Main point: the CPU reads/writes the memory, as opposed to DMA where the device does that.
+* `PMIO`, `Port Mapped IO`: no virtual mem is involved, instead special instructions like `in` and `out` are used for access.
+* `DMA`: a RAM accessible for reading/writing by a device. The main difference to `MMIO` is CPU does no control besides the initial setup.
+* `IOMMU`: due to DMA posing a security problem of hacker-owned device being able to read entire memory, `IOMMU` was created for restricting the device access.
+
+## Other
+
 * most syscalls *(e.g. read)* may be interrupted by sending a signal to the process, e.g. `SIGUSR1`.
   * The order of events: 1. signal comes, 2. syscall interrupted, 3. the process signal handler executed, 4. if process still alive, syscall returns a `EINTR`.
   * in a rare occasion a syscall may be "uninterruptable" *(so nothing including a SIGKILL can make it return)* or "killable" *(like "uninterruptable" but can be killed)*.
@@ -35,6 +51,7 @@
   * Main GPU devices like `/dev/dri/card1` have a `master`, which is assigned by a `SET_MASTER` ioctl. The master then may "lease" some device resources to other clients.
   * There are "render nodes" like `/dev/dri/renderX` that allow for unprivileged access with no authentication and are useful for render-only purposes *(e.g. off-screen rendering)*.
   * KMS from userspace POV is basically initializing a `struct drm_mode_atomic` and issuing a `DRM_IOCTL_MODE_ATOMIC` ioctl.
+* `ACPI` vs `Device Tree`: both provide description of non-enumerable devices and their configuration details. But ACPI additionally abstracts out some knobs, such as power management, power profiles.
 
 # Installing one module
 
