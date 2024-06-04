@@ -55,6 +55,8 @@ A formal language for proving correctness of concurrent designs with many condit
     ```
 
     Invariants are most useful with quantifiers *(like ∀, ∃, etc.)*
+
+    **Important**: if an invariant ignored/doesn't work, that means you have to go to `Model Overview` tab, find `Invariants` widget and "Add" the invariant name there. Doesn't seem to be any way around that problem currently.
 * Nondeterminism: allows testing multiple inputs each of which can potentially happen:
   * `with`: inside block below the `roll` can be any of the 6 values, so the checker will try all 6:
         ```
@@ -99,13 +101,15 @@ A formal language for proving correctness of concurrent designs with many condit
     …
     call my_procedure(a, b);
     ```
+* struct type *(and hashmap)*: declaration `my_struct == [ field1 |-> 1, field2 |-> {}]`, access: `my_struct.field1`. It is actually a hashmap and another way to access it is `my_struct["field1"]`
 
 ## Starting a PlusCal model
 
 1. `File → Open Spec → Add New Spec` and enter a path ending with a file with `.tla` extension.
 2. Type the algo in between the `---- …` and `==== …` lines.
-3. `TLC Model Checker → New Model`
-4. In tab `model overview` edit `What's the behavior spec` to chose `Temporal formula` from the drop-down list, and then put `Spec` to the textbox right below.
-4. Run `TLC Model Checker → Run model`
+3. If you use PlusCal, gen the TLA+ by pressing <kbd>Ctrl</kbd>+<kbd>t</kbd>
+4. `TLC Model Checker → New Model`
+5. In tab `model overview` edit `What's the behavior spec` to chose `Temporal formula` from the drop-down list, and then put `Spec` to the textbox right below.
+6. Run `TLC Model Checker → Run model`
 
 For simple evaluation purposes you can write an expression `Eval == <whatever code goes>`, and then in the model the `Evaluate Constant Expression` window type lone word `Eval` and press F11.
