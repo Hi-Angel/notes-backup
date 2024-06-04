@@ -28,6 +28,8 @@ $ go mod tidy          # this downloads all necessary deps
 
 ## Cons
 
+The overall feeling is that it's a 90s language that for some reason got released in 2009.
+
 * constants are basically non-existent. You can only ever declare `const` expressions that are evaluated at compile time. To make things worse, Go doesn't seem to support something like `constexpr`, so you can't make a function that should be evaluated at compile time.
 * ternary do not exist. Which together with previous point forces programmers to write mutable code *(unless you're up to making a separate function for a one-liner that branches on `if`-condition)*.
 * there's a nice pattern of functions returning a tuple *(though Go doesn't use this term)* of error and a "good value". However, it is impossible to declare a type of the components inside the tuple inside the assignment. You can do that on a separate line, which is of course verbose. So people simply don't do that, and as result reading a Go code is a guessing game, because you have no idea what types are involved. If you read it locally, you can fetch all modules and use "go to definition" to see the types *(which is long for a new project but at least works)*. But if you're reading it from a web-browser you are out of luck.
@@ -35,4 +37,4 @@ $ go mod tidy          # this downloads all necessary deps
 * instead of managing scopes like in Rust or C++, Go has a garbage collector
 * getting the absolute value looks like this: `int(math.Abs(float64(-7)))`. Amazing.
 * you can't allocate an `n`-sized array where all elements equal to some `X`. Instead you first allocate it with `make()`, then you initialize every element in a loop.
-* `warning: ignoring go.mod in system temp root /tmp`: this is an error *(yes, it's not a warning because it bails out trying to do what it's been told to)* you'll receive if you create a Go project in `/tmp`. That's one of the most frequent things to do: creating a project in `/tmp` to for bugreport-purposes and Go doesn't allow it. Great.
+* `warning: ignoring go.mod in system temp root /tmp`: this is an error *(yes, it's not a warning because it bails out trying to do what it's been told to)* you'll receive if you create a Go project in `/tmp`. That's one of the most frequent things to do: creating a project in `/tmp` for bugreport-purposes and Go doesn't allow that. Great.
