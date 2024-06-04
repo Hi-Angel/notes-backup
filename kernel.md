@@ -14,8 +14,9 @@
 * virtual memory:
   * `Page Table`: a structure to convert virtual → physical addresses. Per process.
   * `PTE`, `Page Table Entry`: a single address mapping in the PT.
-  * `TLB`, `Translation Lookaside Buffer`: caches recently used mappings, a part of MMU. It's cleared on process context switch *(unless a CPU supports binding every TLB entry to a PID, e.g. with `PCID` on x86 or `domains` on ARM)*.
-  * "page fault": a TLB miss. The mapping may or may not exist, that's up to the kernel to work out. The physical address may not have been allocated yet or was swapped out.
+  * `TLB`, `Translation Lookaside Buffer`: caches recently used mappings, a part of MMU. It's cleared on process context switch *(unless a CPU supports binding every TLB entry to a PID, e.g. with `PCID` on x86 or `domains` on ARM)*. CPU can only access memory via TLB, so access involves copying a PTE to TLB.
+  * "TLB miss": a PTE was not found in TLB, so the CPU goes fetching the mapping to TLB prior to restarting the access. It's different from a "page fault".
+  * "page fault": when after a TLB miss the mapping was also not found in PT. It's a valid situation as he physical address may not have been allocated yet or was swapped out.
   * **How**: if TLB lacks a mapping, i.e. a TLB/cache miss, there will be a "page walk", a look up of the mapping in the PT. If it's found, it's written to the TLB because CPU can only access mapping via it, then the faulted instruction restarted.
 * `MMIO`, `Memory Mapped IO`: a virtual memory mapped to a device. On the device side it may be contiguous or be represented by registers. Main point: the CPU reads/writes the memory, as opposed to DMA where the device does that.
 * `PMIO`, `Port Mapped IO`: no virtual mem is involved, instead special instructions like `in` and `out` are used for access.
@@ -46,12 +47,15 @@
     In kernel a device is typically represented by `kobject`, often embedded into another struct. kbojects support reference counting, so each time some code obtains a reference the count is increased. Most often though they're manipulated upon by driver subsystem rather than the driver.
 
     The kobjects hierarchy is exported to sysfs to facilitate debugging *(among other reasons)*. Though it's not done automatically upon kobject initialization and instead happens explicitly with `kobject_add()`.
+
+     DT enlists drivers compatible with the device via `compatible` keyword.
+  * Overlay: an API that allows a driver to modify the DT in runtime. Nodes added should result in the device created, and removing a node should get device de-registered.
 * devices may send events *(e.g. "disk full", "low battery", etc)*, which is done via netlink, where the source will be the device sysfs path. Which is facilitated by devices being represented by `kobject`s.
 * `DRM`
   * Main GPU devices like `/dev/dri/card1` have a `master`, which is assigned by a `SET_MASTER` ioctl. The master then may "lease" some device resources to other clients.
   * There are "render nodes" like `/dev/dri/renderX` that allow for unprivileged access with no authentication and are useful for render-only purposes *(e.g. off-screen rendering)*.
   * KMS from userspace POV is basically initializing a `struct drm_mode_atomic` and issuing a `DRM_IOCTL_MODE_ATOMIC` ioctl.
-* `ACPI` vs `Device Tree`: both provide description of non-enumerable devices and their configuration details. But ACPI additionally abstracts out some knobs, such as power management, power profiles.
+* `ACPI` vs `Device Tree`: both provide description of non-enumerable devices and their configuration details. But ACPI additionally abstracts out some knobs, such as power management, power profiles. Also, ACPI is stored in BIOS mem.
 
 # Installing one module
 
