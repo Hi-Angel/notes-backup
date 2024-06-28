@@ -102,6 +102,7 @@ A formal language for proving correctness of concurrent designs with many condit
     call my_procedure(a, b);
     ```
 * struct type *(and hashmap)*: declaration `my_struct == [ field1 |-> 1, field2 |-> {}]`, access: `my_struct.field1`. It is actually a hashmap and another way to access it is `my_struct["field1"]`
+* ternary: `foo := IF a THEN b ELSE c`
 
 ## Starting a PlusCal model
 
