@@ -40,7 +40,7 @@ Layers used in order from the most primitive:
 2. **volume groups**, prefix `gv...` — storage pools of **physical volumes** that abstract characteristics of underlying devices.
 3. **logical volumes**, prefix `lv...` or `lvm...` — slices of a **volume group**, it's like partitions. Creation example: `lvcreate -L 100M -T vol_group/logical_volume` if thin, `lvcreate -L100M -n logical_volume vol_group` otherwise.
 
-Displaying can be done with `*display` commands, e.g. `lvdisplay`. The path `/dev/foo/bar` that it displays may not exist if LV status is "not available". For it to appear the logical volume needs to be activated with `lvchange -ay /dev/foo/bar`
+Displaying can be done with `pvdisplay`, `vgdisplay`, `lvdisplay` and `pvs`, `vgs`, `lvs`. The shorter ones usually print info in a more convenient way. The path `/dev/foo/bar` that it displays may not exist if LV status is "not available". For it to appear the logical volume needs to be activated with `lvchange -ay /dev/foo/bar`
 
 ## Snapshots
 
@@ -67,6 +67,8 @@ Snapshotting is confusing: in LVM you have usual pools, you have thin pool with 
 
 ## Misc
 
+* exporting/importing: `vgexport vg` and `vgimport vg`.
+  * `activate`ing has to be done after importing a VG: `vgchange -ay vg`, and deactivating before exporting: `vgchange -an vg`.
 * adding disks: done separately for group and volume — e.g. `vgextend vol_group /path/to/dev` and `lvextend -l +100%FREE /dev/vol_group/vol` accordingly.
 * `pvdisplay -m`: check what devices VGs consist of
 * LVM can be made to ignore a device in operations by adding a filter to `/etc/lvm/lvm.conf`. Syntax of the filter is usually mentioned there, just search for `filter` word in comments in the file.
@@ -74,6 +76,7 @@ Snapshotting is confusing: in LVM you have usual pools, you have thin pool with 
 * if a device with a VG disappeared and re-appeared *(e.g. an usb-stick was taken off/on)*, the VG health status gonna be `error`. I don't know if there's less intrusive way to fix the status, but one that works for me is deactivating, then activating the VG.
 * printing specific properties and filtering: use `pvs` and `lvs` with `-o` and `-S` args. Example of printing devices that belong to `my_vg` volume group: `pvs --rows -S "vg_name=my_vg" -o name`.
 * `Device /dev/foo not found.` upon running `pvcreate` may mean that the device path is filtered out by `/etc/lvm/lvm.conf`, section `devices { … scan = [permitted_device_paths] …}`
+* Display raid-types: `lvs -ao +layout`. The `layout` field should enlist the raid type, but how exactly it works is quite complicated, as it may belong to one of some internal volumes, hence the need in `-a` parameter.
 
 # ZFS
 
