@@ -139,8 +139,15 @@ def register_printers(val):
 # gdb.pretty_printers.append(register_printers)
 ```
 
+# Kernel
+
+## Cold debugging
+
+Debugging info seems to be distributed as separate binary files which can be loaded as `gdb /my/debug/vmlinuz` or `gdb /my/debug/module.ko`. Once loaded, you can translate offsets to lines, see below.
+
 # Misc
 
 * `build-id` is an id that can be viewed in `file ./executable` output. It is a hash of arbitrary sections of the executable. When debug-info file is separate from the executable, BuildID for both of them is supposed to match.
     * expected filename of the debuginfo file can be seen with `readelf -x.gnu_debuglink ./executable`. There're various dirs where it's expected to be, one of them is the location of executable.
     * worth noting that you can't point out to a debug info file inside gdb. Or rather, you can, but it will result in bad information such as question marks on the stack. For debug information to work out gdb must find it itself, so you gotta jump around with file naming etc.
+* "Binary offset to lines": given an offset like `foo+0x777`, you can get a line with `i line *(foo+0x777)`.

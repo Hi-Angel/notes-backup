@@ -181,3 +181,7 @@ Allows building external modules.
 * while profiling/debugging you may find one of these `ret_from_intr`, `ret_from_exception`, `ret_from_sys_call`, and `ret_from_fork`. [There's some description on how they work](https://www.oreilly.com/library/view/understanding-the-linux/0596002130/ch04s08.html), but not much on what they are. I think here's what happens: while a process gets executed, various events may happen. Most usually that is a timer interrupt. At this point kernel scheduler accepts execution. These functions are basically entry points into the scheduler.
 * debian packages can be built from the kernel using `bindeb-pkg` makefile target *(and some others)*
 * `kprobe` vs `tracepoint`: `kprobe`s is any place in the kernel, up to a machine instruction within a function *(`bpftace` allows that)*. `tracepoint`s on the other hand are defined statically/explicitly in the code. So basically, new tracepoints can't be added without modifying the source, but kprobes can be any location and does not require kernel to be rebuilt.
+
+# gdb
+
+See [gdb.md](gdb.md) file.
