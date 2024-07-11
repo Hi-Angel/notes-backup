@@ -18,9 +18,10 @@
     EOF
     ```
 
-# Remove a disk
+# Remove/restore a disk
 
-`echo 1 > /sys/block/sdX/device/delete`
+* `echo 1 > /sys/block/sdX/device/delete`
+* `for host in $(ls /sys/class/scsi_host/); do  echo "- - -" > /sys/class/scsi_host/${host}/scan; done`
 
 # Working with blktrace
 
