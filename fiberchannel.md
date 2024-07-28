@@ -40,3 +40,9 @@ The following is an example of setting up on an arbitrary unnamed NAS just to ge
        " | diskpart
    }
    ```
+
+# Misc
+
+* Optimal and non-optimal paths: a "non-optimal" e.g. "alua-mirror" may get triggered when optimal one is not accessible for some reason. It adds a level of network indirection *(e.g. by passing load through interconnect)*.
+
+  A client always has access to both optimal and non-optimal paths, so technically a client may start using a non-optimal one at any point.
