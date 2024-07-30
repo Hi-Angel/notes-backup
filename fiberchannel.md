@@ -1,8 +1,10 @@
-Fiber Channel aka FC.
+Fiber Channel aka FC. In software it's handled by two competing modules: LIO *(for Linux in-tree)* and SCST *(for Linux out-of-tree)*.
+
+From the outside an FC device is identified by WWPN. On the inside there's no block device *(for SCST at least)*, instead there's a sysfs directory that describes SCST device properties, and then client data go to whatever non-SCST block device is configured as the underlying storage.
 
 # Setting up on a NAS
 
-The following is an example of setting up on an arbitrary unnamed NAS just to get the picture.
+The following is an example of setting up an arbitrary unnamed NAS just to get the picture.
 
 ### Sharing to Windows VM inside a ESXi host
 
@@ -41,8 +43,14 @@ The following is an example of setting up on an arbitrary unnamed NAS just to ge
    }
    ```
 
+# SCST sysfs paths
+
+* `/sys/kernel/scst_tgt/devices/<vol_name>` path to the configuration of a single device. As described at the top, there's no "scst block device", instead a device is an abstract concept identified by various settings in the sysfs dir.
+* `/sys/kernel/scst_tgt/devices/<vol_name>/filename` the path to the target block-device, i.e. location for SCST to read/write the data. The device is typically unrelated to SCST otherwise.
+* `/sys/kernel/scst_tgt/devices/<vol_name>/active` whether the SCST dev is active.
+
 # Misc
 
-* Optimal and non-optimal paths: a "non-optimal" e.g. "alua-mirror" may get triggered when optimal one is not accessible for some reason. It adds a level of network indirection *(e.g. by passing load through interconnect)*.
+* Optimal and non-optimal paths: a "non-optimal" e.g. "alua-mirror" may get triggered when optimal one is not accessible for some reason. It adds a level of network indirection *(e.g. by passing load through interconnect)*. This ALUA mirror is usually using iscsi protocol *(not FB)*.
 
   A client always has access to both optimal and non-optimal paths, so technically a client may start using a non-optimal one at any point.
