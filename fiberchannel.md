@@ -12,6 +12,8 @@ The following is an example of setting up an arbitrary unnamed NAS just to get t
 2. Inside NAS web interface create a client and add the client WWPN.
 
     Gotta chose client WWPNs from a list of "accessible on fabric". It will be the WWPNs that are listed e.g. in ESXi in host setting *(chose a host name in the tree on the left)*, and the tab *(on the right)* `Configure → Storage Adapters`, there will be a table/list where a "Fibre Channel" should be mentioned.
+
+    To see WWPNs available on a Windows client execute in Powershell `Get-InitiatorPort`
 3. Create a pool/volume and assign to it a LUN.
 4. Give the client access to the LUN.
 5. Go to ESXi, chose the compute cluster that contains VMs in the tree on the left. Then chose tab `Configure`, and then sub-tab `Storage Devices`. The LUN should've appeared in the list there. If it didn't a ESXi reboot may be required.
