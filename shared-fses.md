@@ -83,7 +83,7 @@ While setup looks simple, I was trying for a long time to overcome `permission d
 
 Afterwards I had a weird situation *(for both tmp and home shares)* where I could see and read files, they had correct permissions, and in various combinations of setup I tried they had the correct users too. But I never could change files, it was giving `permission denied` me. In the end I noted: if you mounted trough `sudo` you can change files as root but not as a usual user, despite files permissions having a common username/group. Anyway, this is the best I got with motivation at hand. This setup, that kind of works, is the following:
 
-On the server `smb.conf` *(applying configuration requires `sudo systemctl restart smb nmb`)*:
+On the server `/etc/samba/smb.conf` *(applying configuration requires `sudo systemctl restart smb nmb`)*:
 
 ```
 [global]
