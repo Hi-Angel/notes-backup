@@ -14,7 +14,8 @@ my_txtbox = document.getElementById('some_text_box');
 my_txtbox.value = 'my pre-filled value';
 ```
 
-`@match` is a URL for the script to run in, supports globbing with `*`.
+* `@match` is a URL for the script to run in, supports globbing with `*`.
+* `@require https://foo.bar…` using a GreaseMonkey script from that URL. Useful to avoid coding stuff that already exists in libraries, such as `waitForKeyElements()` that waits for an element to appear then executes a lambda on it.
 
 # Debugging
 
