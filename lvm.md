@@ -30,6 +30,13 @@ Snapshotting is confusing: in LVM you have usual pools, you have thin pool with 
 * Creation: `lvcreate --type raidα -L1G -n my_lv my_vol_group` where raidα is a RAID type.
 * RAID status: `lvs -o name,lv_health_status`. Info for various statuses and what to do on those cases may be found in `man lvmraid`.
 * Show disks currently used by RAID *(in particular)*: `pvdisplay -m`.
+## Compression and dedup (VDO)
+
+Requires kernel ≥ 6.9.
+
+Creation: `pvcreate <devs>`, `vgcreate vg <devs>`, `lvcreate --type vdo -L 5G -V 3G --compression y --deduplication n vg/lv_vdo`. Under the default settings the block device should then appear at `/dev/vg/lvol0`.
+
+Current usage may be monitored with command `vdostats --human-readable`. If by any chance the `Use%` column would get to 100%, writing to the device would result in `ENOSPC`. It should be noted though that depending on the pool and volume sizes, the `Used` column may get increased once `Use%` is ≈85-87%.
 
 ## Misc
 
