@@ -23,6 +23,7 @@ IPs are usually taken from the multicast ranges `[224.…] … [239.…]`.
 * find out network connections of a process: `lsof -i -ap $PID`
     * match them up with FDs: there should be `FD` field, just ignore the `u` letter at the end. Alternatively: first `ls -l /proc/$PID/fd`, then compare the XXXX in `socket:[XXXX]` with DEVICE column in the 1st command.
 * `performance`: see `qperf.md`
+* testing bandwidth, latency, different protocols: see [qperf.md](qperf.md).
 
 # vlan
 
