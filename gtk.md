@@ -1,4 +1,21 @@
-# test app with a text widget
+# WEB frontend in GTK
+
+Can be done with "broadway" server shipped with GTK. Works by running e.g. server as `gtk4-broadwayd -p 8085` and then app as `GDK_BACKEND=broadway gnome-calculator`. I tested it with standard apps like `gnome-editor` and `gnome-calculator`.
+
+Note:
+
+* an app is displayed as a draggable window with a bar at the top. It should be possible to modify an app to get rid of the header and to be always maximized, but I didn't test that.
+* As of 29 Aug 2024 its "broadway" state is experimental, quoting IRC:
+
+> ```
+> [14:21:32] <mclasen> a good reminder that we should document broadway more clearly as an experiment
+> [14:26:10] <mclasen> it was written as a one-off experiment, and is not actively developed
+> [14:26:37] <mclasen> it works and supported the gtk 4.0 features, but it is falling behind newer developments
+> [14:37:14] <ebassi> […]: what mclasen said. Broadway is an experiment
+> [14:37:25] <ebassi> if you want to use it, you get to fix it
+> ```
+
+# test app with a text widget (tested with gtk3)
 
 test.cpp:
 
