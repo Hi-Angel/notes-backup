@@ -79,3 +79,16 @@ int main(int argc, char **argv) {
     return app.exec();
 }
 ```
+
+# QtCreator WebAssembly/emsdk configuration
+
+1. Download `emsdk`. Note that `emscripten` isn't it. `emsdk` contains similarly named script, which will do the installation as follows:
+   1. `emsdk install latest`
+   2. `emsdk activate latest`
+2. QtCreator: go to `Help → About Plugins…` and activate webassembly plugin.
+3. QtCreator: go to `Edit → Prefrences → Devices` section, switch to `WebAssembly` tab, and add the path to `emsdk` root directory. Note that emask installation commands will download stuff to subdirs, but you ignore that and point at the root emsdk dir.
+4. TODO
+
+# Misc
+
+* Adding Qt versions: `Edit → Preferences → Kits`, tab `Qt Versions`, button `Add…`: it expects path to `qmake` executable. So e.g. on Archlinux there are `qmake` and `qmake6` binaries provided by `qt5-base` and `qt6-base` packages accordingly, that's what the package expects.
