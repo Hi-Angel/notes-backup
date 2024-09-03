@@ -1,5 +1,24 @@
 A converter between many formats.
 
+# Lua filter
+
+Pandoc supports passing the text through Lua filter with `--lua-filter=filter.lua`. It gets passed an internal AST, made out of staff like `Para` *(for Paragraph)*, `Space`, `BulletList`, etc. To see the AST use `--to=native` option, it's immensely useful for debugging the filter.
+
+To process specific type of elements you declare a function similarly named, e.g. `function Para` for `Para` types.
+
+Example of surrounding paragraphs containing the emoji with an html tag:
+
+```lua
+function Para(elem)
+   local text = pandoc.utils.stringify(elem)
+   if text:find("📝 ") then
+      return pandoc.Plain({pandoc.RawInline('html', '<span class="notes">')}
+                          .. elem.content
+                          .. {pandoc.RawInline('html', '</span>')})
+   end
+end
+```
+
 # Examples
 
 ## Converting a Markdown to PDF
