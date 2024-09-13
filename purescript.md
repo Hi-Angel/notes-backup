@@ -22,12 +22,31 @@ Partially gotten [from here](https://github.com/purescript/documentation/blob/ma
     show = genericShow
   ```
 * `return` replaced with `pure`
+* "Records" are not `data` and work somewhat differently. Records enclosed into braces and then their fields are referred to via a dot. But there's more to it. Given this example:
+  ```
+  foo = {a : 1, "b" : 2, "A" : 3, "A B" : 4}
+  ```
+  First two fields are referred to by `foo.a` and `foo.b` and are basically the same. But the other two can't be referred directly as such and instead this syntax is used `foo."A"`, `foo."A B"`.
 
 # Misc
 
 * tools:
-  * [currently list of tools](https://github.com/purescript/documentation/blob/master/ecosystem/Editor-and-tool-support.md#editor-support), may be useful because some tools are deprecated by others.
+  * [current list](https://github.com/purescript/documentation/blob/master/ecosystem/Editor-and-tool-support.md#editor-support), may be useful because some tools are deprecated by others.
   * `purs` the compiler
   * `spago` a build tool for PS, there are: stable non-developed *(Haskell-based)* and unstable actively developed *(PS-based)* versions.
   * `pulp` an older build tool for PS, was used together with `bower` before `spago`.
 * "array comprehension": `import Data.Array` and then use e.g. `1 .. 5`.
+* async API is provided by `Effect.Aff` and starts with `launchAff` which converts `Aff a → Effect a`.
+
+# HTTPurple misc
+
+* URL path/queries parsing is called "routing"
+  * routes are declared as a record passed to `mkRoute` function. The record content is basically constructing the URL. Example from the docs:
+  ```
+  route :: RouteDuplex' Route
+  route = mkRoute
+    { "Home": noArgs -- the root route /
+    , "Products": "categories" / string segment / "products" / string segment
+    , "Search": "search" ? { q: string, sorting: optional <<< string }
+    }
+  ```
