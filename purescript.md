@@ -5,6 +5,7 @@ Haskell-esque non-lazy web development lang that transpiles to javascript. Seems
 Partially gotten [from here](https://github.com/purescript/documentation/blob/master/language/Differences-from-Haskell.md)
 
 * Strict evaluation
+* inability to stuff declaration and assignment into the same line, i.e. this: `i :: Int = 1` is legal in Haskell but not in PS.
 * explicit forall, i.e. `foo :: a -> a` type annotation will result in error, it has to be `foo :: forall a . a -> a`. It supports `∀` though.
 * `String` and `Char` are UTF16 for some reason that goes back to JS.
 * `[a]` syntax not supported, it has to be `Array a` or similar.
@@ -40,6 +41,8 @@ Partially gotten [from here](https://github.com/purescript/documentation/blob/ma
 
 # HTTPurple misc
 
+A backend lib for processing http methods.
+
 * URL path/queries parsing is called "routing"
   * routes are declared as a record passed to `mkRoute` function. The record content is basically constructing the URL. Example from the docs:
   ```
@@ -50,3 +53,37 @@ Partially gotten [from here](https://github.com/purescript/documentation/blob/ma
     , "Search": "search" ? { q: string, sorting: optional <<< string }
     }
   ```
+
+# Halogen misc
+
+A library for UI in html + js.
+
+* HTML tags are created by calling a function that creates a tag and passing it two arrays: 1. properties for the tag 2. children. Example, if we want this HTML:
+  ```html
+  <div id="root">
+    <input placeholder="Name" />
+    <button class="btn-primary" type="submit">
+      Submit
+    </button>
+  </div>
+  ```
+
+  we code it like this:
+
+  ```haskell
+  import Halogen.HTML as HH
+  import Halogen.HTML.Properties as HP
+
+  html =
+    HH.div
+      [ HP.id "root" ]
+      [ HH.input
+          [ HP.placeholder "Name" ]
+      , HH.button
+          [ HP.classes [ HH.ClassName "btn-primary" ]
+          , HP.type_ HP.ButtonSubmit
+          ]
+          [ HH.text "Submit" ]
+      ]
+  ```
+* underscores: when HTML and PS keywords clash, Halogen adds an underscore in the name, e.g. `type_`. But then Halogen has also shortcut-functions ending with underscore for when you pass no properties, so instead of `div [] …` you can write `div_ …`
