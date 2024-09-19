@@ -38,6 +38,7 @@ Partially gotten [from here](https://github.com/purescript/documentation/blob/ma
   * `pulp` an older build tool for PS, was used together with `bower` before `spago`.
 * "array comprehension": `import Data.Array` and then use e.g. `1 .. 5`.
 * async API is provided by `Effect.Aff` and starts with `launchAff` which converts `Aff a → Effect a`.
+* `logShow` *(from `Effect.Class.Console`)*: to print from `Aff` to console. At least with HTTPurple it shows up in terminal as expected.
 
 # HTTPurple misc
 
