@@ -38,3 +38,4 @@ PureScript [has a separate file](purescript.md).
 * sidebar: `nav` with `ul` and `li`.
 * title-bar: `header` *(not to be confused with `h1`, etc)*.
 * grouping HTML elements for styling or other purposes: `div` tag.
+* `form` causes page reload upon sending GET or POST: there's a hack with creating  somewhere a tag `<iframe name="/dev/null" style="display:none;"></iframe>` and then using a `target="/dev/null"` as a form property.
