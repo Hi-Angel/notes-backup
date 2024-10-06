@@ -88,3 +88,42 @@ A library for UI in html + js.
       ]
   ```
 * underscores: when HTML and PS keywords clash, Halogen adds an underscore in the name, e.g. `type_`. But then Halogen has also shortcut-functions ending with underscore for when you pass no properties, so instead of `div [] …` you can write `div_ …`
+* caching: inside component `handleAction`, if `modify_ \state -> …` is called, the `state` is the cache. It will later be the input to `render`.
+
+## Parent-child messaging
+
+First, bad news: if you had read Halogen praises about how it's good in type-safety and well designed, well, this is where that ends. The messaging part is a bunch of useless abstractions where you can easily forget something and stuff silently breaks. For example, you can forget to insert the useless `receive = Just <<< Foo`, and everything will compile just fine but child won't be receiving inputs the parent sends it. Usually, with such huge abstractions you'd expect support for monkey-typing because there's too much to bear in mind, but for some funny reason Halogen is exactly the framework where it doesn't work. You have to study all those useless abstractions and make sure you got them right, or expect hours in debugging.
+
+Given two components *(things created by `mkComponent`)*, they can exchange kind of like signals with optional data. Here, the parent is the component that inserts the other one via `slot` function.
+
+`slot` inserts a component similarly to how a `HH.someTag` would insert a tag. Args: given a call `slot id subId component input mapChildOutputToParent`:
+
+* `id`: a unique slot name defined via type-level magic like `_button = Proxy :: Proxy "button"`. The text should match the name inside `type Slots = ( button :: ButtonSlot Unit )`, where this `Slots` type is being used in the parent's `render` and `handleAction` functions.
+
+  Purpose: it's given to `H.tell` function to send some signal/data to the slot.
+* `subid`: in case you'd like to render the component multiple times, you can distinguish them by `subid`. Pass `unit` if not interested.
+* `component`: the child created by `mkComponent`
+* `input`: data to be passed to child's `initialState`
+* `mapChildOutputToParent`: a function that takes child output and produces a parent "action", the one that `handleAction` takes as parameter. Typically it's just a parent-action data constructor that wraps the output.
+
+`slot_` is similar to `slot` but with the output omitted, for cases where the child doesn't produce anything a parent would be interested in.
+
+### Input
+
+Child must provide to `H.defaultEval` a field `receive = Just <<< Foo` where `Foo` is a data constructor `ChildInput -> ChildState`, and then the data constructor is handled as the parameter to `handleAction`. The `receive = …` is the key — you'd think `handleAction` should be enough, but apparently Halogen authors decided it should be confusing and error-prone, so they introduced this useless proxy-method that serves no purpose and you can easily forget to add it.
+
+With that out of the way, there are two ways to give an input to a child:
+
+1. Implicit *(bad)*: inside parent you call `H.modify_` to modify some state that inside `render` gets passed to the child. This is error-prone, because if compiler determines the state wasn't modified it won't trigger the child. This is a problem when you have no input for the child but just want to signal it. But it's also a problem for when there is an input but child does something besides. Imagine invoking a modal window for certain data. If a user dismissed the window, Halogen won't ever invoke it again till the data changes.
+2. Explicit *(good)*: parent calls `tell id subId QueryConstructor` where first two parameters are mentioned before and `QueryConstructor` is a constructor that may or may not pass some value, but the last mandatory argument you leave empty and then it's returned as `pure (Just next)`. Idk what it's for.
+
+   For this to work you need to declare a separate function `handleQuery`, similar to `handleAction`, but taking the `QueryConstructor` type instead. Apparently `handleAction` wasn't enough for the authors, so now you need to bear `handleQuery` in mind as well, because if you forget to declare it thinking about `handleAction`, stuff will just silently break. Example:
+
+  ```haskell
+  data ButtonQuery a = SetEnabled a
+  mycomponent = …
+    handleQuery :: forall a . ButtonQuery a -> H.HalogenM ButtonState ButtonAction () Unit m (Maybe a)
+    handleQuery (SetEnabled next) = do
+        …do something…
+        pure (Just next)
+  ```
