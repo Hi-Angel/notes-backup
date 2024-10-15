@@ -110,7 +110,7 @@ Given two components *(things created by `mkComponent`)*, they can exchange kind
 
 ### Input
 
-Child must provide to `H.defaultEval` a field `receive = Just <<< Foo` where `Foo` is a data constructor `ChildInput -> ChildState`, and then the data constructor is handled as the parameter to `handleAction`. The `receive = …` is the key — you'd think `handleAction` should be enough, but apparently Halogen authors decided it should be confusing and error-prone, so they introduced this useless proxy-method that serves no purpose and you can easily forget to add it.
+Child must provide to `H.defaultEval` a field `receive = Just <<< Foo` where `Foo` is a data constructor `ChildInput -> ChildState`, and then the data constructor is handled as the parameter to `handleAction`. The `receive = …` is the key — you'd think `handleAction` should be enough, but apparently Halogen authors decided it should be confusing and error-prone, so they introduced this useless proxy-method that serves no purpose and you can easily forget to add it. Though, it can be omitted when input is only provided via `tell` *(so e.g. you initialize the slot with `unit`)*.
 
 With that out of the way, there are two ways to give an input to a child:
 
