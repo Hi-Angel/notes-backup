@@ -31,6 +31,7 @@ Sections may refer to each another, which is used for config deduplication.
 
 # Gotchas
 
+* Don't confuse `jobs` and `jobs`! Already confused, are you? In Bacula the top-level thing represented by `Job {` config paragraph is called a job. And then if you ran a job multiple times, its history entries are called jobs as well! So when you see word "job" it may mean any of those concepts.
 * Increasing a pool size won't propagate to volumes till you exec `update volume` in console.
 * If you don't start postgresql before installing Bacula, then initial installation will get completely screwed up on the database side. Bacula says that to fix this you'd have to run some `dbconfig-common` after starting postgresql service, but Idk where this script *(or even if it's a single script or a group)*.
 
