@@ -29,6 +29,10 @@ Sections may refer to each another, which is used for config deduplication.
 * `Pool`: a group of "volumes".
   * A volume is a storage device like a disk or a tape and it may not be referred directly by a job.
 
+# Misc
+
+* "Restoring": done with `restore` command which uses "jobid" of the jobs log to restore from. But for some reason it also requires a `Job` with `Type = Restore` to be present, otherwise restore won't work. In particular, the `FileSet` directive is completely ignored *(but required to be present)*, and instead you'd have to manually chose which files you want to restore.
+
 # Gotchas
 
 * Don't confuse `jobs` and `jobs`! Already confused, are you? In Bacula the top-level thing represented by `Job {` config paragraph is called a job. And then if you ran a job multiple times, its history entries are called jobs as well! So when you see word "job" it may mean any of those concepts.
