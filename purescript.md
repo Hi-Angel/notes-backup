@@ -1,5 +1,7 @@
 Haskell-esque non-lazy web development lang that transpiles to javascript. Seems to be possible to develop for mobile as well.
 
+May be installed via npm: `npm -g install purescript spago`
+
 # Differences from Haskell
 
 Partially gotten [from here](https://github.com/purescript/documentation/blob/master/language/Differences-from-Haskell.md)
@@ -127,3 +129,36 @@ With that out of the way, there are two ways to give an input to a child:
         …do something…
         pure (Just next)
   ```
+
+# React
+
+Libs are ultimately an FFI-shim to a JS library, implying that if you ever get stuck beyond the basics, you can often search for solutions in JS-field and interpolate to PS. There're also examples [here](https://github.com/JordanMartinez/purescript-cookbook/tree/master/recipes), see dirs with "react" infix.
+
+There're two implementations: `react-basic-classic` and `react-basic-hooks`. The "classic" is a class-based implementation *(pun is noted)* that predates "hooks". Nowadays "hooks" are preferred.
+
+* atomic nodes *(a button, label, etc)* are represented by `JSX` type.
+* "component" is a single React-managed DOM-tree *(made of `JSX`es and handlers)*
+  * `Component` is the type, which is an alias to `Effect (props -> JSX)`. The `props` is an arg to be passed when instancing the component with `renderRoot`.
+  * Running `Component` is done by unwrapping from `Effect` and passing over to `renderRoot`.
+* "root" is a location for the first component to attach with `renderRoot`. Created by `createRoot`. There may be many roots.
+
+  Bear in mind, just nesting components doesn't require creating new roots.
+* Nesting components example *(a label inside a div)*:
+  ```haskell
+  labelComponent :: Component Unit
+  labelComponent = component "Label" \_ -> do
+    pure $ R.label_ [ R.text "Hello, world!" ]
+
+  divComponent :: Component Unit
+  divComponent = do
+    c :: (Unit -> JSX) <- labelComponent
+    component "Div" \_ -> do
+      pure $ R.div_ [c unit]
+  ```
+
+## …vs Halogen
+
+* much simpler
+* React has special `CSS` type, whereas Halogen has just a string instead.
+* Halogen doesn't allow to execute `Effect` before rendering the initial state. So you have to jump through the hoops by assigning useless "initial state" which gets immediately replaced by the actual state in `handleAction`&co. In React you just execute what you need in `Component` and then pass it over to the lambda that will be creating the component.
+* React elements *(`JSX`es)* are `Monoid`, Halogen's aren't. This simplifies conditionally rendering elements: instead of doing a `[many, children] <> if a then [anotherElem] else []` you just write `[many, children, guard anotherElem]`, where `guard` is the Monoid's. Much shorter, right!
