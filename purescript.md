@@ -162,3 +162,36 @@ There're two implementations: `react-basic-classic` and `react-basic-hooks`. The
 * React has special `CSS` type, whereas Halogen has just a string instead.
 * Halogen doesn't allow to execute `Effect` before rendering the initial state. So you have to jump through the hoops by assigning useless "initial state" which gets immediately replaced by the actual state in `handleAction`&co. In React you just execute what you need in `Component` and then pass it over to the lambda that will be creating the component.
 * React elements *(`JSX`es)* are `Monoid`, Halogen's aren't. This simplifies conditionally rendering elements: instead of doing a `[many, children] <> if a then [anotherElem] else []` you just write `[many, children, guard anotherElem]`, where `guard` is the Monoid's. Much shorter, right!
+
+# Testing
+
+* QuickCheck: for property-based testing, randomly generates tests that check given function properties.
+* Spec: a usual testing framework. Provides different runners, one is node-based `node-spec` package.
+
+## Spec
+
+Basic example:
+
+```haskell
+module Test.Main where
+
+import Prelude
+
+import Effect (Effect)
+import Test.Spec (Spec, it)
+import Test.Spec.Assertions (shouldEqual)
+import Test.Spec.Reporter (consoleReporter)
+import Test.Spec.Runner.Node (runSpecAndExitProcess)
+
+main :: Effect Unit
+main = runSpecAndExitProcess [consoleReporter] spec
+
+spec :: Spec Unit
+spec = do
+  it "adds 1 and 1" $ (1 + 1) `shouldEqual` 2
+  it "adds 2 and 2" $ (2 + 2) `shouldEqual` 4
+```
+
+The `it` inside `spec` function are the separate tests.
+
+There's also some `spec-discovery` for automatically discovering tests, but for me it wasn't finding some `output/cache-db.json/index.js` after following the docs and I didn't dig into that.
