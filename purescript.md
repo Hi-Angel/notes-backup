@@ -31,7 +31,7 @@ Partially gotten [from here](https://github.com/purescript/documentation/blob/ma
   ```
   First two fields are referred to by `foo.a` and `foo.b` and are basically the same. But the other two can't be referred directly as such and instead this syntax is used `foo."A"`, `foo."A B"`.
 
-# …VS TypeScript
+# …vs TypeScript
 
 * In TS `const` works arbitrary. It won't disallow you to assign into `const` object or an array.
 * In TS equality works arbitrary. Comparing objects of different classes ignores their types, and just looks up the fields. If they match, you'll get no type mismatch.
@@ -65,7 +65,9 @@ A backend lib for processing http methods.
     }
   ```
 
-# Halogen misc
+# Halogen
+
+*(note: don't use it, use React instead, see the comparison further below)*
 
 A library for UI in html + js.
 
@@ -166,7 +168,7 @@ There're two implementations: `react-basic-classic` and `react-basic-hooks`. The
 
 ## …vs Halogen
 
-* much simpler
+* Much simpler. You can read around for comparison, but in short: Halogen requires you to build inconvenient and error-prone abstractions; code reuse with Halogen is complicated. Making a generic component that accepts parameters and returns something back is so inconvenient that unless you come up with some crafty wrappers, you'll find easier to write a component each time anew than factor out existing ones to something generic.
 * React has special `CSS` type, whereas Halogen has just a string instead.
 * Halogen doesn't allow to execute `Effect` before rendering the initial state. So you have to jump through the hoops by assigning useless "initial state" which gets immediately replaced by the actual state in `handleAction`&co. In React you just execute what you need in `Component` and then pass it over to the lambda that will be creating the component.
 * React elements *(`JSX`es)* are `Monoid`, Halogen's aren't. This simplifies conditionally rendering elements: instead of doing a `[many, children] <> if a then [anotherElem] else []` you just write `[many, children, guard anotherElem]`, where `guard` is the Monoid's. Much shorter, right!
