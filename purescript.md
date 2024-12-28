@@ -171,7 +171,7 @@ There're two implementations: `react-basic-classic` and `react-basic-hooks`. The
 * Much simpler. You can read around for comparison, but in short: Halogen requires you to build inconvenient and error-prone abstractions; code reuse with Halogen is complicated. Making a generic component that accepts parameters and returns something back is so inconvenient that unless you come up with some crafty wrappers, you'll find easier to write a component each time anew than factor out existing ones to something generic.
 * React has special `CSS` type, whereas Halogen has just a string instead.
 * Halogen doesn't allow to execute `Effect` before rendering the initial state. So you have to jump through the hoops by assigning useless "initial state" which gets immediately replaced by the actual state in `handleAction`&co. In React you just execute what you need in `Component` and then pass it over to the lambda that will be creating the component.
-* React elements *(`JSX`es)* are `Monoid`, Halogen's aren't. This simplifies conditionally rendering elements: instead of doing a `[many, children] <> if a then [anotherElem] else []` you just write `[many, children, guard anotherElem]`, where `guard` is the Monoid's. Much shorter, right!
+* React elements *(`JSX`es)* are `Monoid`, Halogen's aren't. This simplifies conditionally rendering elements: instead of doing a `[multiple, children] <> if a then [anotherElem] else []` you just write `[multiple, children, guard anotherElem]`, where `guard` is the Monoid's. Much shorter, huh?
 * Halogen's "Ref"s require you to name them, whereas React's don't. So React refs can't collide, whereas in a big Halogen project you can come up with name that was already used.
 
 # Testing
