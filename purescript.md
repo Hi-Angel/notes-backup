@@ -31,6 +31,14 @@ Partially gotten [from here](https://github.com/purescript/documentation/blob/ma
   ```
   First two fields are referred to by `foo.a` and `foo.b` and are basically the same. But the other two can't be referred directly as such and instead this syntax is used `foo."A"`, `foo."A B"`.
 
+# …VS TypeScript
+
+* In TS `const` works arbitrary. It won't disallow you to assign into `const` object or an array.
+* In TS equality works arbitrary. Comparing objects of different classes ignores their types, and just looks up the fields. If they match, you'll get no type mismatch.
+* TS has exceptions. This is a large separate topic, but exceptions generally frowned upon. Rust doesn't even include them.
+* TS has no syntax for do-notation
+* TS has no currying. "Who cares?" you might say, but bear with me: I looked at some production TS code using React, and it seems TS React programmers create long chains of `lambda` calls just because the lack of currying. So the feature is actually needed.
+
 # Misc
 
 * tools:
