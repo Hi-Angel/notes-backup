@@ -33,11 +33,14 @@ Partially gotten [from here](https://github.com/purescript/documentation/blob/ma
 
 # …vs TypeScript
 
-* In TS `const` works arbitrary. It won't disallow you to assign into `const` object or an array.
-* In TS equality works arbitrary. Comparing objects of different classes ignores their types, and just looks up the fields. If they match, you'll get no type mismatch.
+* In TS `const` and `readonly` works arbitrary. It won't disallow you to assign into `const` object or an array.
+  * separately worth noting that even that is implemented poorly. If you want to declare a `const` parameter in a function, you can't just declare it `const`, but you instead have to do that via generic `function f<const T extends string>(arg: T)`.
+* In TS equality works arbitrary. Comparing objects of different classes or interfaces or `type`s ignores their types, and just looks up the fields. If they match, you'll get no type mismatch. Worth pointing out it also stands for function parameters, not just comparisons. This has huge implications, because not only simply class objects are unreliable, but also *(or rather "especially")* unions of different types. And you also can't declare a simple wrapper type such as `Degree` vs `Radian`, well not without some tricks with `unique symbol` field.
 * TS has exceptions. This is a large separate topic, but exceptions are generally frowned upon. Rust doesn't even include them.
 * TS has no syntax for do-notation
 * TS has no currying. "Who cares?" you might say, but bear with me: I looked at some production TS code using React, and it seems TS React programmers frequently create chains of `lambda` calls just because the lack of currying. So the feature is actually needed.
+* ADTs *(like `data`)*are complicated to implement. You basically have to write a union, where each field is an object type with an explicit tag.
+* There are some problems with Higher Kinded Types. An example of HKT is `Array<T>`, where type `Array` takes a type-parameter `T`. Now, `Array` is a predeclared HKT, but creating a new one such as `Functor<T>` results in some problems, which I can't give details about because I didn't dig into it *(just read that in a post with possible workarounds)*.
 
 # Misc
 
