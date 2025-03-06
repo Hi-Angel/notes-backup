@@ -177,6 +177,10 @@ There're two implementations: `react-basic-classic` and `react-basic-hooks`. The
 * React elements *(`JSX`es)* are `Monoid`, Halogen's aren't. This simplifies conditionally rendering elements: instead of doing a `[multiple, children] <> if a then [anotherElem] else []` you just write `[multiple, children, guard anotherElem]`, where `guard` is the Monoid's. Much shorter, huh?
 * Halogen's "Ref"s require you to name them, whereas React's don't. So React refs can't collide, whereas in a big Halogen project you can come up with name that was already used.
 
+# Parsing
+
+* Alternating branches via `<|>` should only be done at the top of do-block, otherwise failure wouldn't propagate properly. This works the same in original Parsec. [See this for details](https://github.com/purescript-contrib/purescript-parsing/issues/235#issuecomment-2692904083).
+
 # Testing
 
 * QuickCheck: for property-based testing, randomly generates tests that check given function properties.
@@ -209,3 +213,38 @@ spec = do
 The `it` inside `spec` function are the separate tests.
 
 There's also some `spec-discovery` for automatically discovering tests, but for me it wasn't finding some `output/cache-db.json/index.js` after following the docs and I didn't dig into that.
+
+# Passing a pre-defined Record with all fields being optional
+
+It may be desirable *(e.g. for FFI purposes)* to define some `type Props = {x :: Int, y :: Int}` but then to be able to pass just `{x: 7}` to some function, i.e. so `y` is not defined in the parameter.
+
+It's useful to look at naive attempt first. Param here doesn't provide "predefined" fields, instead being "any possible record":
+
+```haskell
+foo :: ∀ a. Record a -> Effect Unit
+foo = const unit
+
+main = foo {x: 7}
+```
+
+We can improve it with some type-magic. PureScript has class `Union lhs rhs theUnion` which allows to declare a union of `lhs` and `rhs`. It works on `Row`s, but `Record` accepts one type-parameter that is a `Row`.
+
+So we declare `Props` as a Row *(parentheses instead of curly braces)*, and in function declaration say that `Props` is a union of any two possible Rows; and then as the parameter we use `Record lhs` *(may also be `Record rhs`, doesn't matter)*, which basically says that the parameter is a record with any field enlisted in `Props`, which is exactly what we want.
+
+```haskell
+type Props = (x :: Int, y :: Int)
+
+foo :: ∀ lhs rhs. Union lhs rhs Props => Record lhs -> Effect Unit
+foo _ = pure unit
+
+main = foo {x: 7}
+```
+
+It's interesting to note here that `Props` is used implicitly. The function parameter is just "some" type with type-constraint related to `Props`.
+
+# Low-level debugging
+
+`spago bundle-app` produces a JS, which may be run with `node` or a browser *(by augmenting it with `index.html`)*, and you can add `console.log()`s in it. In the JS stuff is getting renamed/mangled, but there is some structure to you can follow:
+
+* `mkFnX` functions are translated to a `function (…) {}`. E.g. `mkFn2 \state2@(ParseState _ _ consumed) err -> …` is translated to `function(v4, err) { … }`.
+* `runFnX` function are translated to `return someVal(…)`. E.g. `runFn5 k1 (ParseState input pos false) more lift foo done` is translated to `return v(new ParseState(v2.value0, v2.value1, false), more, lift1, foo, done);`
