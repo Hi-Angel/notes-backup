@@ -36,6 +36,7 @@ Configuration consists mainly of paragraphs written as `ParName {…}`. E.g. `Fi
 # Misc
 
 * "Restoring": done with `restore` command which uses "jobid" of the jobs log to restore from. But for some reason it also requires a `Job` with `Type = Restore` to be present, otherwise restore won't work. In particular, the `FileSet` directive is completely ignored *(but required to be present)*, and instead you'd have to manually chose which files you want to restore.
+* "Storage daemon" may provide multiple devices, but there's no simple syntax to enlist them. Instead you'd have to declare the `Storage` paragraph that contains SD credentials multiple times, once per device.
 
 # Gotchas
 
