@@ -41,6 +41,48 @@ Although the following assumes Ubuntu system and scripts come from `bacula-direc
 2. Create the DB and user: `su postgres -c "createuser -s bacula && /usr/share/bacula-director/create_postgresql_database && /usr/share/bacula-director/make_postgresql_tables && /usr/share/bacula-director/grant_postgresql_privileges"`
 3. Set the password that's in the config: `echo "alter user bacula with password '$(grep -Po 'dbpassword = "\K[^"]+' /etc/bacula/bacula-dir.conf)';" | su bacula -s /bin/bash -c "psql -Ubacula bacula"`
 
+## Plugins
+
+Plugins are `.so` files automatically loaded from a predefined dir, e.g. `/usr/lib/bacula`. There are at least plugins for file daemon, storage daemon, director.
+
+Client plugins are pointed out as:
+
+```
+FileSet {
+  Include {
+    Plugin = "example-plugin"
+    …
+  }
+  …
+}
+```
+
+here, naming comes from plugin filename `example-plugin-fd.so`, where you subtract `-fd.so` part. Presumably, works similarly for SD and Dir.
+
+If you need to pass params, you write them after colon:
+
+```
+FileSet {
+  Include {
+    Plugin = "example-plugin: params in free-flow text go here"
+    …
+  }
+  …
+}
+```
+
+During plugin load Bacula only compares text prior to colon. Inside plugin it's available during `bEventPluginCommand` event.
+
+### bpipe file daemon plugin
+
+Allows to backup from stdout and conversely restore into stdin. Syntax is:
+
+```
+    Plugin = "bpipe:filename:cat /tmp/1.txt:tee /tmp/1.txt"
+```
+
+…where the 2 last commands are "backup" and "restore" commands accordingly. They're launched in `sh`, so anything that it allows should work. The 2nd parameter named `filename` is just for convenience, so upon restoring you could chose a filename that makes sense. So really, any string can go here, barring an empty one.
+
 # Misc
 
 * "Restoring": done with `restore` command which uses "jobid" of the jobs log to restore from. But for some reason it also requires a `Job` with `Type = Restore` to be present, otherwise restore won't work. In particular, the `FileSet` directive is completely ignored *(but required to be present)*, and instead you'd have to manually chose which files you want to restore.
