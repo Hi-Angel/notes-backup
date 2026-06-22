@@ -17,3 +17,7 @@ ATM it's implemented terribly: you need to actually "install" stuff somewhere, a
 ## docker or a virtualbox of `KDE Neon Developer Edition Unstable`
 
 It's a distro with all that latest stuff. A docker image specifically for development PIM stuff *(which is the one most often requiring upstream versions)* can be found here https://community.kde.org/KDE_PIM/Docker
+
+# KWin devel
+
+To test kwin-related changes, assuming they're installed into the system, just run `dbus-run-session startplasma-wayland`.
